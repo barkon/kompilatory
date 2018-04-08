@@ -138,7 +138,7 @@ class MParser(object):
         """assignment : var_id '=' expression
                       | op_assignment"""
         #print('assignment:', p)
-        p[0] = data.AssignmentInstr(p[1], p[3])
+        p[0] = data.AssignmentInstr(p[1], p[3]) if len(p) == 4 else p[1]
 
     def p_expression(self, p):
         """expression : var_id
