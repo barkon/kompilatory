@@ -71,7 +71,7 @@ t_ignore = ' \t'
 literals = ['+', '-', '*', '/', '(', ')', '=', '<', '>', '[', ']', '{', '}', ':', '\'', ',', ';']
 
 lexer = lex.lex()
-fh = open(sys.argv[1], "r")
+fh = open(sys.argv[1], "r") if len(sys.argv) > 1 else open("example.txt")
 lexer.input(fh.read())
 for token in lexer:
     print("line %d: %s(%s)" % (token.lineno, token.type, token.value))

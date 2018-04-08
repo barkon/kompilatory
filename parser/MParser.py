@@ -11,8 +11,11 @@ class MParser(object):
     tokens = scanner.tokens
 
     precedence = (
-       ("left", '+', '-'),
-       ("left", '*', '/'),
+        ('nonassoc', 'IFX'),
+        ('left', '.+', '.-'),
+        ('left', '.*', './'),
+        ("left", '+', '-'),
+        ("left", '*', '/'),
     )
 
     def p_error(self, p):
@@ -42,13 +45,13 @@ class MParser(object):
 
     def p_instruction(self, p):
         """instruction : assignment
-                       | if_else_inst
-                       | while_inst
-                       | for_inst
-                       | break_inst
-                       | continue_inst
-                       | return_inst
-                       | nested_inst
+                       | if_else_instr
+                       | while_instr
+                       | for_instr
+                       | break_instr
+                       | continue_instr
+                       | return_instr
+                       | complex_instr
                        | empty"""
         p[0] = p[1]
 
@@ -57,6 +60,23 @@ class MParser(object):
         p[0] = data.AssignmentInstr(p[1], p[3])
 
     def p_if_else_inst(self, p):
-        """if_else_inst : IF '(' condition ')' instruction %prec IFX
+        """if_else_instr : IF '(' condition ')' instruction %prec IFX
                         | IF '(' condition ')' instruction ELSE instruction"""
+        else_inst = p[7] if len(p) == 8 else None
+        p[0] = data.IfElseInstr(p[3], p[5], else_inst)
 
+    def p_while_inst(self, p):
+        """while_instr : WHILE '(' condition ')' instruction"""
+        p[0] = data.WhileInstr(p[3], p[5])
+
+    def p_for_inst(self, p):
+        """for_instr : FOR for_assignment instruction"""
+
+    def p_break_inst(self, p):
+        """break_instr : BREAK ';'"""
+
+    def p_continue_inst(self, p):
+        """continue_instr : CONTINUE ';'"""
+
+    def p_return_instr(self, p):
+        """return_instr : RETURN expression ';'"""
