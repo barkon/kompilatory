@@ -9,7 +9,7 @@ class MParser(object):
         self.scanner = scanner
 
     tokens = scanner.tokens + scanner.literals
-    print('tokens:', tokens)
+
 
     precedence = (
        ('nonassoc', 'IFX'),
@@ -22,7 +22,9 @@ class MParser(object):
 
     def p_error(self, p):
         if p:
-            print("Syntax error at line {0}: LexToken({1}, '{2}')".format(p.lineno, p.type, p.value))
+            print("Syntax error at line {0}, column {1}: LexToken({2}, '{3}')".format(p.lineno,
+                                                                                      scanner.find_tok_column(p),
+                                                                                      p.type, p.value))
         else:
             print("Unexpected end of input")
 
@@ -50,7 +52,6 @@ class MParser(object):
         else:
             p[0] = data.InstructionList()
             p[0].add_instruction(p[1])
-
 
     def p_instruction(self, p):
         """instruction : if_else_instr
@@ -90,6 +91,7 @@ class MParser(object):
     def p_for_init_var(self, p):
         """for_init_var : number
                         | var_id"""
+        #print('for init var:', p)
         p[0] = p[1]
 
     def p_break_inst(self, p):
@@ -142,6 +144,7 @@ class MParser(object):
     def p_print_vars(self, p):
         """print_vars : print_vars ',' print_var
                       | print_var"""
+        #print('print vars:', p)
         if len(p) == 4:
             p[0] = data.PrintVarsList() if p[1] is None else p[1]
             p[0].add_var(p[3])
@@ -152,6 +155,7 @@ class MParser(object):
     def p_print_var(self, p):
         """print_var : const
                      | var_id"""
+        #print('print var', p)
         p[0] = p[1]
 
     def p_assignment(self, p):
@@ -227,7 +231,7 @@ class MParser(object):
                      | matrix_expr DOTMUL matrix_expr
                      | matrix_expr DOTDIV matrix_expr
                      | matrix_expr '\\''"""
-        #print('matrix op:', p)]
+        #print('matrix op:', p)
         p[0] = data.MatrixOp(p[2], [p[1], p[3]]) if len(p) == 4 else data.MatrixOp(p[2], p[1])
 
     def p_number_op(self, p):

@@ -73,9 +73,18 @@ def t_error(t):
 
 t_ignore = ' \t'
 literals = ['+', '-', '*', '/', '(', ')', '=', '<', '>', '[', ']', '{', '}', ':', '\'', ',', ';']
-
 lexer = lex.lex()
-fh = open(sys.argv[1], "r") if len(sys.argv) > 1 else open("example.txt")
-lexer.input(fh.read())
-for token in lexer:
-    print("line %d: %s(%s)" % (token.lineno, token.type, token.value))
+
+
+def find_tok_column(tok):
+    last_cr = lexer.lexdata.rfind('\n', 0, tok.lexpos)
+    if last_cr < 0:
+        last_cr = 0
+    return tok.lexpos - last_cr
+
+
+def scan():
+    fh = open(sys.argv[1], "r") if len(sys.argv) > 1 else open("example.txt")
+    lexer.input(fh.read())
+    for token in lexer:
+        print("line %d: %s(%s)" % (token.lineno, token.type, token.value))
