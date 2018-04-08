@@ -26,13 +26,13 @@ class MParser(object):
         else:
             print("Unexpected end of input")
 
-    def p_program(p):
+    def p_program(self, p):
         """program : instructions_opt"""
 
-    def p_instructions_opt_1(p):
+    def p_instructions_opt_1(self, p):
         """instructions_opt : instructions """
 
-    def p_instructions_opt_2(p):
+    def p_instructions_opt_2(self, p):
         """instructions_opt : """
 
     def p_instructions(self, p):
@@ -46,19 +46,15 @@ class MParser(object):
             p[0].add_instruction(p[1])
 
     def p_instruction(self, p):
-        """instruction : assignment
-                       | if_else_instr
+        """instruction : if_else_instr
                        | while_instr
                        | for_instr
                        | break_instr
                        | continue_instr
                        | return_instr
-                       | complex_instr"""
+                       | complex_instr
+                       | assignment"""
         p[0] = p[1]
-
-    def p_assignment(self, p):
-        """assignment : ID '=' expression ';'"""
-        p[0] = data.AssignmentInstr(p[1], p[3])
 
     def p_if_else_inst(self, p):
         """if_else_instr : IF '(' condition ')' instruction %prec IFX
@@ -71,7 +67,10 @@ class MParser(object):
         p[0] = data.WhileInstr(p[3], p[5])
 
     def p_for_inst(self, p):
-        """for_instr : FOR for_assignment instruction"""
+        """for_instr : FOR for_init instruction"""
+
+    def p_for_init(self, p):
+        """for_init : ID '=' INT ':' INT"""
 
     def p_break_inst(self, p):
         """break_instr : BREAK ';'"""
@@ -81,3 +80,11 @@ class MParser(object):
 
     def p_return_instr(self, p):
         """return_instr : RETURN expression ';'"""
+
+    def p_complex_instr(self, p):
+        """complex_instr : '{' instructions '}'"""
+        p[0] = data.InstructionList
+
+    def p_assignment(self, p):
+        """assignment : ID '=' expression ';'"""
+        p[0] = data.AssignmentInstr(p[1], p[3])

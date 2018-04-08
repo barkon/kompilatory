@@ -53,7 +53,14 @@ class ForInstr(object):
     def __init__(self, for_assignment, instr):
         self.for_assignment = for_assignment
         self.instr = instr
-        
+
+
+class ForInit(object):
+    def __init__(self, var, fr, to):
+        self.var = var
+        self.fr = fr
+        self.to = to
+
 
 class BreakInstr(object):
     pass
