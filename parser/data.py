@@ -114,20 +114,29 @@ class ZerosInit(object):
         self.size = size
 
 
-class Operation(object):
-    def __init__(self, operator, args):
+class BinOperation(object):
+    def __init__(self, operator, larg, rarg):
         self.operator = operator
-        self.args = args
+        self.larg = larg
+        self.rarg = rarg
 
 
-class MatrixOp(Operation):
-    def __init__(self, operator, args):
-        super().__init__(operator, args)
+class UnOperation(object):
+    def __init__(self, operator, arg):
+        self.op = operator
+        self.arg = arg
 
 
-class NumberOp(Operation):
-    def __init__(self, operator, args):
-        super().__init__(operator, args)
+class MatrixBinOp(BinOperation):
+    pass
+
+
+class MatrixUnOp(UnOperation):
+    pass
+
+
+class NumberOp(BinOperation):
+    pass
 
 
 class Condition(object):

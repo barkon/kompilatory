@@ -172,7 +172,10 @@ class MParser(object):
                       | '-' expression
                       | '(' expression ')'"""
         #print('expression:', p)
-        p[0] = p[1]
+        if len(p) == 2:
+            p[0] = p[1]
+        else:
+            p[0] = data.UnOperation(p[1], p[2]) if len(p) == 3 else p[2]
 
     def p_matrix_expr(self, p):
         """matrix_expr : matrix_init
@@ -232,7 +235,7 @@ class MParser(object):
                      | matrix_expr DOTDIV matrix_expr
                      | matrix_expr '\\''"""
         #print('matrix op:', p)
-        p[0] = data.MatrixOp(p[2], [p[1], p[3]]) if len(p) == 4 else data.MatrixOp(p[2], p[1])
+        p[0] = data.MatrixBinOp(p[2], p[1], p[3]) if len(p) == 4 else data.MatrixUnOp(p[2], p[1])
 
     def p_number_op(self, p):
         """number_op : expression '+' expression
@@ -240,7 +243,7 @@ class MParser(object):
                      | expression '*' expression
                      | expression '/' expression"""
         #print('number op:', p)
-        p[0] = data.MatrixOp(p[2], [p[1], p[3]])
+        p[0] = data.NumberOp(p[2], p[1], p[3])
 
     def p_op_assignment(self, p):
         """op_assignment : var_id PLUSASSIGN expression
