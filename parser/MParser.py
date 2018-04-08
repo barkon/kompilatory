@@ -60,7 +60,7 @@ class MParser(object):
                        | continue_instr
                        | return_instr
                        | print_instr
-                       | complex_instr
+                       | instr_block
                        | assignment ';'"""
         p[0] = p[1]
         #print('instruction:', p)
@@ -83,9 +83,14 @@ class MParser(object):
         p[0] = data.ForInstr(p[2], p[3])
 
     def p_for_init(self, p):
-        """for_init : ID '=' INT ':' INT"""
+        """for_init : ID '=' for_init_var ':' for_init_var"""
         #print('for init:', p)
         p[0] = data.ForInit(p[1], p[3], p[5])
+
+    def p_for_init_var(self, p):
+        """for_init_var : number
+                        | var_id"""
+        p[0] = p[1]
 
     def p_break_inst(self, p):
         """break_instr : BREAK ';'"""
@@ -103,14 +108,14 @@ class MParser(object):
         p[0] = data.ReturnInstr(p[2])
 
     def p_print_instr(self, p):
-        """print_instr : PRINT STRING ';'"""
+        """print_instr : PRINT print_vars ';'"""
         #print('print:', p)
         p[0] = data.PrintInstr(p[2])
 
     def p_complex_instr(self, p):
-        """complex_instr : '{' instructions '}'"""
+        """instr_block : '{' instructions '}'"""
         #print('complex:', p)
-        p[0] = data.InstructionList
+        p[0] = data.InstrBlock(p[2])
 
     def p_number(self, p):
         """number : INT
@@ -133,6 +138,15 @@ class MParser(object):
             p[0] = data.VarId(p[1])
         else:
             p[0] = data.VarId(p[1], p[3]) if len(p) == 5 else data.VarId(p[1], p[3], p[5])
+
+    def p_print_vars(self, p):
+        """print_vars : print_var
+                      | print_var ',' print_vars"""
+
+    def p_print_var(self, p):
+        """print_var : const
+                     | var_id"""
+        p[0] = p[1]
 
     def p_assignment(self, p):
         """assignment : var_id '=' expression

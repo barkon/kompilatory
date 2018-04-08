@@ -94,7 +94,7 @@ class PrintInstr(object):
         self.to_print = to_print
 
 
-class ComplexInstr(object):
+class InstrBlock(object):
     def __init__(self, instructions):
         self.instructions = instructions
 
