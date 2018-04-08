@@ -126,9 +126,13 @@ class MParser(object):
 
     def p_var_id(self, p):
         """var_id : ID
-                  | ID '[' INT ']'"""
+                  | ID '[' INT ']'
+                  | ID '[' INT ',' INT ']'"""
         #print('var id:', p)
-        p[0] = data.VarId(p[1], p[3]) if len(p) > 2 else data.VarId(p[1])
+        if len(p) == 2:
+            p[0] = data.VarId(p[1])
+        else:
+            p[0] = data.VarId(p[1], p[3]) if len(p) == 5 else data.VarId(p[1], p[3], p[5])
 
     def p_assignment(self, p):
         """assignment : var_id '=' expression
@@ -158,20 +162,20 @@ class MParser(object):
                        | zeros
                        | '[' matrix_rows ']'"""
         #print('matrix init:', p)
-        p[0] = p[1] if len(p) > 2 else p[2]
+        p[0] = p[1] if len(p) == 2 else p[2]
 
     def p_eye(self, p):
-        """eye : EYE '(' INT ')' ';'"""
+        """eye : EYE '(' INT ')' """
         #print('eye:', p)
         p[0] = data.EyeInit(p[3])
 
     def p_ones(self, p):
-        """ones : ONES '(' INT ')' ';'"""
+        """ones : ONES '(' INT ')' """
         #print('ones:', p)
         p[0] = data.OnesInit(p[3])
 
     def p_zeros(self, p):
-        """zeros : ZEROS '(' INT ')' ';'"""
+        """zeros : ZEROS '(' INT ')' """
         #print('zeros:', p)
         p[0] = data.ZerosInit(p[3])
 
@@ -179,7 +183,6 @@ class MParser(object):
         """matrix_rows : row_elems
                        | row_elems ';' matrix_rows"""
         #print('matrix rows:', p)
-        
 
     def p_row_elems(self, p):
         """row_elems : number

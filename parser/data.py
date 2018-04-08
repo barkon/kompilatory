@@ -13,9 +13,10 @@ class Float(Const):
 
 
 class VarId(object):
-    def __init__(self, name, index=None):
-        self.index = index
+    def __init__(self, name, row_index=None, column_index=None):
         self.name = name
+        self.row_index = row_index
+        self.column_index = column_index
 
 
 class Program(object):
