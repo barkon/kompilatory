@@ -26,7 +26,7 @@ class InstructionList(object):
     def __init__(self):
         self.instr_list = []
 
-    def add_instrruction(self, instr):
+    def add_instruction(self, instr):
         self.instr_list.append(instr)
 
 
@@ -45,7 +45,7 @@ class IfElseInstr(object):
 
 class WhileInstr(object):
     def __init__(self, cond, instr):
-        self.conc = cond
+        self.cond = cond
         self.instr = instr
         
         

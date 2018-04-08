@@ -16,7 +16,7 @@ reserved = {
 }
 
 tokens = ['DOTPLUS', 'DOTMINUS', 'DOTMUL', 'DOTDIV', 'PLUSASSIGN', 'MINUSASSIGN', 'MULASSIGN', 'DIVASSIGN', 'LESSEQ',
-          'MOREEQ', 'NEQ', 'EQ', 'ID', 'INT', 'FLOAT']\
+          'MOREEQ', 'NEQ', 'EQ', 'ID', 'INT', 'FLOAT', 'STRING']\
          + list(reserved.values())
 
 t_DOTPLUS = r'.\+'
@@ -31,7 +31,6 @@ t_LESSEQ = r'<='
 t_MOREEQ = r'>='
 t_NEQ = r'!='
 t_EQ = r'=='
-
 
 
 def t_newline(t):
@@ -55,6 +54,11 @@ def t_INT(t):
 def t_ID(t):
     r"""[a-zA-Z_]\w*"""
     t.type = reserved.get(t.value, 'ID')
+    return t
+
+
+def t_STRING(t):
+    r"""\"[^\"]*\""""
     return t
 
 
