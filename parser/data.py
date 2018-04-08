@@ -135,3 +135,27 @@ class Condition(object):
         self.larg = larg
         self.op = op
         self.rarg = rarg
+
+
+class PrintVarsList(object):
+    def __init__(self):
+        self.print_list = []
+
+    def add_var(self, var):
+        self.print_list.append(var)
+
+
+class MatrixRows(object):
+    def __init__(self):
+        self.rows = []
+
+    def add_row(self, row):
+        self.rows.append(row)
+
+
+class MatrixRow(object):
+    def __init__(self):
+        self.row = []
+
+    def add_elem(self, elem):
+        self.row.append(elem)

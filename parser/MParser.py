@@ -22,7 +22,7 @@ class MParser(object):
 
     def p_error(self, p):
         if p:
-            print("Syntax error at line {0}, column {1}: LexToken({2}, '{3}')".format(p.lineno, 0, p.type, p.value))
+            print("Syntax error at line {0}: LexToken({1}, '{2}')".format(p.lineno, p.type, p.value))
         else:
             print("Unexpected end of input")
 
@@ -140,8 +140,14 @@ class MParser(object):
             p[0] = data.VarId(p[1], p[3]) if len(p) == 5 else data.VarId(p[1], p[3], p[5])
 
     def p_print_vars(self, p):
-        """print_vars : print_var
-                      | print_var ',' print_vars"""
+        """print_vars : print_vars ',' print_var
+                      | print_var"""
+        if len(p) == 4:
+            p[0] = data.PrintVarsList() if p[1] is None else p[1]
+            p[0].add_var(p[3])
+        else:
+            p[0] = data.PrintVarsList()
+            p[0].add_var(p[1])
 
     def p_print_var(self, p):
         """print_var : const
@@ -194,14 +200,26 @@ class MParser(object):
         p[0] = data.ZerosInit(p[3])
 
     def p_matrix_rows(self, p):
-        """matrix_rows : row_elems
-                       | row_elems ';' matrix_rows"""
+        """matrix_rows : matrix_rows ';' row_elems
+                       | row_elems """
         #print('matrix rows:', p)
+        if len(p) == 4:
+            p[0] = data.MatrixRows() if p[1] is None else p[1]
+            p[0].add_row(p[3])
+        else:
+            p[0] = data.MatrixRows()
+            p[0].add_row(p[1])
 
     def p_row_elems(self, p):
-        """row_elems : number
-                     | number ',' row_elems"""
+        """row_elems : row_elems ',' number
+                     | number """
         #print('rows elems:', p)
+        if len(p) == 4:
+            p[0] = data.MatrixRow() if p[1] is None else p[1]
+            p[0].add_elem(p[3])
+        else:
+            p[0] = data.MatrixRow()
+            p[0].add_elem(p[1])
 
     def p_matrix_op(self, p):
         """matrix_op : matrix_expr DOTPLUS matrix_expr
