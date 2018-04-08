@@ -26,8 +26,14 @@ class MParser(object):
         else:
             print("Unexpected end of input")
 
-    def p_program(self, p):
-        """program : instructions"""
+    def p_program(p):
+        """program : instructions_opt"""
+
+    def p_instructions_opt_1(p):
+        """instructions_opt : instructions """
+
+    def p_instructions_opt_2(p):
+        """instructions_opt : """
 
     def p_instructions(self, p):
         """instructions : instructions instruction
@@ -39,10 +45,6 @@ class MParser(object):
             p[0] = data.InstructionList()
             p[0].add_instruction(p[1])
 
-    def p_empty(self, p):
-        """empty : """
-        p[0] = None
-
     def p_instruction(self, p):
         """instruction : assignment
                        | if_else_instr
@@ -51,8 +53,7 @@ class MParser(object):
                        | break_instr
                        | continue_instr
                        | return_instr
-                       | complex_instr
-                       | empty"""
+                       | complex_instr"""
         p[0] = p[1]
 
     def p_assignment(self, p):
