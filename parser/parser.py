@@ -59,4 +59,4 @@ class MParser(object):
     def p_if_else_inst(self, p):
         """if_else_inst : IF '(' condition ')' instruction %prec IFX
                         | IF '(' condition ')' instruction ELSE instruction"""
-        p[0] = data.
+
