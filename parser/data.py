@@ -17,7 +17,7 @@ class Float(Const):
     pass
 
 
-class VarId(Node):
+class LValue(Node):
     def __init__(self, name, row_index=None, column_index=None):
         self.name = name
         self.row_index = row_index
@@ -43,12 +43,6 @@ class InstructionList(Node):
 
 
 class AssignmentInstr(Node):
-    def __init__(self, name, expr):
-        self.name = name
-        self.expr = expr
-
-
-class OpAssignmentInstr(Node):
     def __init__(self, name, op, expr):
         self.name = name
         self.op = op
@@ -130,29 +124,6 @@ class UnOperation(Node):
     def __init__(self, operator, arg):
         self.op = operator
         self.arg = arg
-
-
-class MatrixBinOp(BinOperation):
-    pass
-
-
-class MatrixUnOp(UnOperation):
-    pass
-
-
-class NumberBinOp(BinOperation):
-    pass
-
-
-class NumberUnOp(UnOperation):
-    pass
-
-
-class Condition(Node):
-    def __init__(self, larg, op, rarg):
-        self.larg = larg
-        self.op = op
-        self.rarg = rarg
 
 
 class PrintVarsList(Node):
