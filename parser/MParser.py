@@ -3,6 +3,13 @@ import scanner
 import data
 
 
+def prod_str(p):
+    str = ""
+    for i in range(len(p)):
+        str += "| {0} ".format(p[i])
+    return str
+
+
 class MParser(object):
 
     def __init__(self):
@@ -10,12 +17,13 @@ class MParser(object):
 
     tokens = scanner.tokens + scanner.literals
 
-
     precedence = (
        ('nonassoc', 'IFX'),
        ('nonassoc', 'ELSE'),
+       ('right', '='),
        ('left', 'DOTPLUS', 'DOTMINUS'),
        ('left', 'DOTMUL', 'DOTDIV'),
+       ('nonassoc', '>', '<', 'EQ', 'NEQ', 'LESSEQ', 'MOREEQ'),
        ('left', '+', '-'),
        ('left', '*', '/'),
     )
@@ -62,13 +70,13 @@ class MParser(object):
         p[0] = p[1]
 
     def p_if_else_inst(self, p):
-        """if_else_instr : IF '(' condition ')' instruction %prec IFX
-                        | IF '(' condition ')' instruction ELSE instruction"""
+        """if_else_instr : IF '(' expression ')' instruction %prec IFX 
+                         | IF '(' expression ')' instruction ELSE instruction"""
         else_inst = p[7] if len(p) == 8 else None
         p[0] = data.IfElseInstr(p[3], p[5], else_inst)
 
     def p_while_inst(self, p):
-        """while_instr : WHILE '(' condition ')' instruction"""
+        """while_instr : WHILE '(' expression ')' instruction"""
         p[0] = data.WhileInstr(p[3], p[5])
 
     def p_for_inst(self, p):
@@ -81,7 +89,7 @@ class MParser(object):
 
     def p_for_init_var(self, p):
         """for_init_var : number
-                        | var_id"""
+                        | lvalue"""
         p[0] = p[1]
 
     def p_break_inst(self, p):
@@ -100,6 +108,21 @@ class MParser(object):
         """print_instr : PRINT print_vars ';'"""
         p[0] = data.PrintInstr(p[2])
 
+    def p_print_vars(self, p):
+        """print_vars : print_vars ',' print_var
+                      | print_var"""
+        if len(p) == 4:
+            p[0] = data.PrintVarsList() if p[1] is None else p[1]
+            p[0].add_var(p[3])
+        else:
+            p[0] = data.PrintVarsList()
+            p[0].add_var(p[1])
+
+    def p_print_var(self, p):
+        """print_var : const
+                     | lvalue"""
+        p[0] = p[1]
+
     def p_complex_instr(self, p):
         """instr_block : '{' instructions '}'"""
         p[0] = data.InstrBlock(p[2])
@@ -114,58 +137,77 @@ class MParser(object):
                  | STRING"""
         p[0] = data.Const(p[1])
 
-    def p_var_id(self, p):
-        """var_id : ID
+    def p_lvalue(self, p):
+        """lvalue : ID
                   | ID '[' INT ']'
                   | ID '[' INT ',' INT ']'"""
         if len(p) == 2:
-            p[0] = data.VarId(p[1])
+            p[0] = data.LValue(p[1])
         else:
-            p[0] = data.VarId(p[1], p[3]) if len(p) == 5 else data.VarId(p[1], p[3], p[5])
-
-    def p_print_vars(self, p):
-        """print_vars : print_vars ',' print_var
-                      | print_var"""
-        if len(p) == 4:
-            p[0] = data.PrintVarsList() if p[1] is None else p[1]
-            p[0].add_var(p[3])
-        else:
-            p[0] = data.PrintVarsList()
-            p[0].add_var(p[1])
-
-    def p_print_var(self, p):
-        """print_var : const
-                     | var_id"""
-        p[0] = p[1]
+            p[0] = data.LValue(p[1], p[3]) if len(p) == 5 else data.LValue(p[1], p[3], p[5])
 
     def p_assignment(self, p):
-        """assignment : ID '=' expression
-                      | ID '=' matrix_expr
-                      | op_assignment"""
-        p[0] = data.AssignmentInstr(p[1], p[3]) if len(p) == 4 else p[1]
+        """assignment : lvalue assign_op expression"""
+        p[0] = data.AssignmentInstr(p[1], p[2], p[3])
+
+    def p_assign_op(self, p):
+        """assign_op : '='
+                     | PLUSASSIGN
+                     | MINUSASSIGN
+                     | MULASSIGN
+                     | DIVASSIGN"""
+        p[0] = p[1]
 
     def p_expression(self, p):
-        """expression : ID
-                      | number
-                      | number_op
+        """expression : number
+                      | lvalue
+                      | matrix_init
+                      | '(' expression ')'
                       | '-' expression
-                      | '(' expression ')'"""
+                      | expression '\\''
+                      | expression bin_op expression"""
         if len(p) == 2:
             p[0] = p[1]
+        elif len(p) == 3:
+            p[0] = data.UnOperation(p[1], p[2]) if p[1] == '-' else data.UnOperation(p[2], p[1])
         else:
-            p[0] = data.UnOperation(p[1], p[2]) if len(p) == 3 else p[2]
+            p[0] = p[2] if p[1] == '(' and p[2] == ')' else data.BinOperation(p[2], p[1], p[3])
 
-    def p_matrix_expr(self, p):
-        """matrix_expr : ID
-                       | matrix_init
-                       | matrix_op"""
+    def p_bin_op(self, p):
+        """bin_op : rel_op
+                  | num_op
+                  | dot_op"""
+        p[0] = p[1]
+
+    def p_rel_op(self, p):
+        """rel_op : '<'
+                  | '>'
+                  | EQ
+                  | NEQ
+                  | LESSEQ
+                  | MOREEQ"""
+        p[0] = p[1]
+
+    def p_num_op(self, p):
+        """num_op : '+'
+                  | '-'
+                  | '*'
+                  | '/'"""
+        p[0] = p[1]
+
+    def p_dot_op(self, p):
+        """dot_op : DOTPLUS
+                  | DOTMINUS
+                  | DOTMUL
+                  | DOTDIV"""
         p[0] = p[1]
 
     def p_matrix_init(self, p):
         """matrix_init : eye
                        | ones
                        | zeros
-                       | '[' matrix_rows ']'"""
+                       | '[' matrix_rows ']'
+                       | '[' scopes ']'"""
         p[0] = p[1] if len(p) == 2 else p[2]
 
     def p_eye(self, p):
@@ -200,33 +242,23 @@ class MParser(object):
             p[0] = data.MatrixRow()
             p[0].add_elem(p[1])
 
-    def p_matrix_op(self, p):
-        """matrix_op : matrix_expr DOTPLUS matrix_expr
-                     | matrix_expr DOTMINUS matrix_expr
-                     | matrix_expr DOTMUL matrix_expr
-                     | matrix_expr DOTDIV matrix_expr
-                     | matrix_expr '\\''"""
-        p[0] = data.MatrixBinOp(p[2], p[1], p[3]) if len(p) == 4 else data.MatrixUnOp(p[2], p[1])
+    def p_scopes(self, p):
+        """scopes : scope
+                | scopes ';' scope """
 
-    def p_number_op(self, p):
-        """number_op : expression '+' expression
-                     | expression '-' expression
-                     | expression '*' expression
-                     | expression '/' expression"""
-        p[0] = data.NumberOp(p[2], p[1], p[3])
+        if len(p) == 4:
+            p[0] = data.MatrixRows() if p[1] is None else p[1]
+            p[0].add_row(p[3])
+        else:
+            p[0] = data.MatrixRows()
+            p[0].add_row(p[1])
 
-    def p_op_assignment(self, p):
-        """op_assignment : var_id PLUSASSIGN expression
-                         | var_id MINUSASSIGN expression
-                         | var_id MULASSIGN expression
-                         | var_id DIVASSIGN expression"""
-        p[0] = data.OpAssignmentInstr(p[1], p[2], p[3])
+    def p_scope(self, p):
+        """scope : INT ':' INT
+                | number ':' number ':' number"""
 
-    def p_condition(self, p):
-        """condition : expression '<' expression
-                     | expression '>' expression
-                     | expression EQ expression
-                     | expression LESSEQ expression
-                     | expression MOREEQ expression
-                     | expression NEQ expression"""
-        p[0] = data.Condition(p[1], p[2], p[3])
+        p[0] = data.MatrixRow()
+        if len(p) == 4:
+            p[0].add_from_scope(p[1], 1, p[3])
+        else:
+            p[0].add_from_scope(p[1], p[3], p[5])
