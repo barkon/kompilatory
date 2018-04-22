@@ -1,6 +1,5 @@
 import sys
 import ply.yacc as yacc
-import scanner
 import MParser
 
 if __name__ == '__main__':
@@ -15,4 +14,4 @@ if __name__ == '__main__':
     MParser = MParser.MParser()
     parser = yacc.yacc(module=MParser)
     text = file.read()
-    parser.parse(text, lexer=scanner.lexer)
+    parser.parse(text, lexer=MParser.scanner)

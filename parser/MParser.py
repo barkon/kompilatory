@@ -1,13 +1,15 @@
 import ply.yacc as yacc
-import scanner
+from scanner import Scanner
 import data
+
 
 class MParser(object):
 
     def __init__(self):
-        self.scanner = scanner
+        self.scanner = Scanner()
+        self.scanner.build()
 
-    tokens = scanner.tokens + scanner.literals
+    tokens = Scanner.tokens + Scanner.literals
 
     precedence = (
        ('nonassoc', 'IFX'),
@@ -26,7 +28,7 @@ class MParser(object):
     def p_error(self, p):
         if p:
             print("Syntax error at line {0}, column {1}: LexToken({2}, '{3}')".format(p.lineno,
-                                                                                      scanner.find_tok_column(p),
+                                                                                      self.scanner.find_tok_column(p),
                                                                                       p.type, p.value))
         else:
             print("Unexpected end of input")
