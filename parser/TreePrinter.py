@@ -15,7 +15,6 @@ class TreePrinter:
     def printTree(self, indent=0):
         raise Exception("printTree not defined in class " + self.__class__.__name__)
 
-
     @addToClass(data.Const)
     def printTree(self, indent=0):
         return INDENT_TOKEN * indent + str(self.value) + "\n"
@@ -23,8 +22,8 @@ class TreePrinter:
     @addToClass(data.LValue)
     def printTree(self, indent=0):
         return INDENT_TOKEN * indent + self.name + \
-                ("" if self.row_index is None else ("[" + self.row_index + \
-                 "]" if self.column_index is None else ", " + self.column_index + "]"))
+               ("" if self.row_index is None else "[" + str(self.row_index) +
+                ("]" if self.column_index is None else ", " + str(self.column_index) + "]")) + '\n'
 
     @addToClass(data.Program)
     def printTree(self, indent=0):
@@ -43,12 +42,13 @@ class TreePrinter:
 
     @addToClass(data.AssignmentInstr)
     def printTree(self, indent=0):
-        return self.name.printTree(indent) + self.op.printTree(indent + 1) + self.expr.printTree(indent + 1)
+        return INDENT_TOKEN * indent + str(self.op) + '\n' + INDENT_TOKEN * (indent+1) + str(self.name) + '\n' +\
+               self.expr.printTree(indent+1)
 
     @addToClass(data.IfElseInstr)
     def printTree(self, indent=0):
         return INDENT_TOKEN * indent + "IF\n" + self.cond.printTree(indent + 1) + self.instr.printTree(indent + 1) + \
-            ("" if self.else_instr  is None else INDENT_TOKEN * indent + "ELSE\n" +
+            ("" if self.else_instr is None else INDENT_TOKEN * indent + "ELSE\n" +
                 self.else_instr.printTree(indent + 1))
 
     @addToClass(data.WhileInstr)
@@ -61,7 +61,7 @@ class TreePrinter:
 
     @addToClass(data.ForInit)
     def printTree(self, indent=0):
-        return self.var.printTree(indent) + self.fr.printTree(indent) + self.to.printTree(indent)
+        return INDENT_TOKEN * indent + self.var + '\n' + self.fr.printTree(indent) + self.to.printTree(indent)
 
     @addToClass(data.BreakInstr)
     def printTree(self, indent=0):
@@ -97,11 +97,12 @@ class TreePrinter:
 
     @addToClass(data.BinOperation)
     def printTree(self, indent=0):
-        return self.operator.printTree(indent) + self.larg.printTree(indent+1) + self.rarg.printTree(indent+1)
+        return INDENT_TOKEN * indent + str(self.op) + '\n' + self.larg.printTree(indent+1) \
+               + self.rarg.printTree(indent+1)
 
     @addToClass(data.UnOperation)
     def printTree(self, indent=0):
-        return self.operator.printTree(indent) + self.arg.printTree(indent+1)
+        return INDENT_TOKEN * indent + str(self.op) + '\n' + self.arg.printTree(indent+1)
 
     @addToClass(data.PrintVarsList)
     def printTree(self, indent=0):
@@ -122,6 +123,6 @@ class TreePrinter:
     def printTree(self, indent=0):
         ret = INDENT_TOKEN * indent + '[\n'
         for i in range(len(self.row)):
-            ret += str(self.row[i]) + '\n'
+            ret += INDENT_TOKEN * (indent+1) + str(self.row[i])
         ret += INDENT_TOKEN * indent + ']\n'
         return ret
