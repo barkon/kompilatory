@@ -118,15 +118,15 @@ class ZerosInit(Node):
 
 
 class BinOperation(Node):
-    def __init__(self, operator, larg, rarg):
-        self.operator = operator
+    def __init__(self, op, larg, rarg):
+        self.op = op
         self.larg = larg
         self.rarg = rarg
 
 
 class UnOperation(Node):
-    def __init__(self, operator, arg):
-        self.op = operator
+    def __init__(self, op, arg):
+        self.op = op
         self.arg = arg
 
 

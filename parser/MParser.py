@@ -124,10 +124,13 @@ class MParser(object):
         """instr_block : '{' instructions '}'"""
         p[0] = data.InstrBlock(p[2])
 
-    def p_number(self, p):
-        """number : INT
-                  | FLOAT"""
-        p[0] = p[1]
+    def p_number_int(self, p):
+        """number : INT"""
+        p[0] = data.Integer(p[1])
+
+    def p_number_float(self, p):
+        """number : FLOAT"""
+        p[0] = data.Float(p[1])
 
     def p_lvalue(self, p):
         """lvalue : ID
