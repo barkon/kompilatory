@@ -2,14 +2,6 @@ import ply.yacc as yacc
 import scanner
 import data
 
-
-def prod_str(p):
-    str = ""
-    for i in range(len(p)):
-        str += "| {0} ".format(p[i])
-    return str
-
-
 class MParser(object):
 
     def __init__(self):
@@ -20,12 +12,15 @@ class MParser(object):
     precedence = (
        ('nonassoc', 'IFX'),
        ('nonassoc', 'ELSE'),
-       ('right', '='),
-       ('left', 'DOTPLUS', 'DOTMINUS'),
-       ('left', 'DOTMUL', 'DOTDIV'),
-       ('nonassoc', '>', '<', 'EQ', 'NEQ', 'LESSEQ', 'MOREEQ'),
+       ('left', ','),
+       ('right', '=', 'PLUSASSIGN', 'MINUSASSIGN', 'MULASSIGN', 'DIVASSIGN'),
+       ('left', 'EQ', 'NEQ'),
+       ('left', '>', '<', 'LESSEQ', 'MOREEQ'),
        ('left', '+', '-'),
        ('left', '*', '/'),
+       ('left', 'DOTPLUS', 'DOTMINUS'),#?
+       ('left', 'DOTMUL', 'DOTDIV'),#?
+       ('left', ':'),
     )
 
     def p_error(self, p):
@@ -71,20 +66,27 @@ class MParser(object):
 
     def p_if_else_inst(self, p):
         """if_else_instr : IF '(' expression ')' instruction %prec IFX 
-                         | IF '(' expression ')' instruction ELSE instruction"""
+                         | IF '(' expression ')' instruction ELSE instruction
+                         | IF '(' error ')' instruction  %prec IFX
+                         | IF '(' error ')' instruction ELSE instruction """
         else_inst = p[7] if len(p) == 8 else None
         p[0] = data.IfElseInstr(p[3], p[5], else_inst)
 
     def p_while_inst(self, p):
-        """while_instr : WHILE '(' expression ')' instruction"""
+        """while_instr : WHILE '(' expression ')' instruction
+                       | WHILE '(' error ')' instruction """
         p[0] = data.WhileInstr(p[3], p[5])
 
     def p_for_inst(self, p):
         """for_instr : FOR for_init instruction"""
         p[0] = data.ForInstr(p[2], p[3])
 
+    # def p_for_init(self, p):
+    #     """for_init : ID '=' for_init_var ':' for_init_var"""
+    #     p[0] = data.ForInit(p[1], p[3], p[5])
+
     def p_for_init(self, p):
-        """for_init : ID '=' for_init_var ':' for_init_var"""
+        """for_init : ID '=' expression ':' expression"""
         p[0] = data.ForInit(p[1], p[3], p[5])
 
     def p_for_init_var(self, p):
@@ -105,12 +107,23 @@ class MParser(object):
         p[0] = data.ReturnInstr(p[2])
 
     def p_print_instr(self, p):
-        """print_instr : PRINT print_vars ';'"""
+        """print_instr : PRINT print_vars ';'
+                       | PRINT error ';'"""
         p[0] = data.PrintInstr(p[2])
 
+    # def p_print_vars(self, p):
+    #     """print_vars : print_vars ',' print_var
+    #                   | print_var"""
+    #     if len(p) == 4:
+    #         p[0] = data.PrintVarsList() if p[1] is None else p[1]
+    #         p[0].add_var(p[3])
+    #     else:
+    #         p[0] = data.PrintVarsList()
+    #         p[0].add_var(p[1])
+
     def p_print_vars(self, p):
-        """print_vars : print_vars ',' print_var
-                      | print_var"""
+        """print_vars : print_vars ',' expression
+                      | expression"""
         if len(p) == 4:
             p[0] = data.PrintVarsList() if p[1] is None else p[1]
             p[0].add_var(p[3])
