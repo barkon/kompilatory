@@ -34,15 +34,15 @@ class TreePrinter:
 
     @addToClass(data.EyeInit)
     def printTree(self, indent=0):
-        return INDENT_TOKEN * indent + 'EYE\n' + self.size.printTree(indent+1)
+        return INDENT_TOKEN * indent + 'EYE\n' + INDENT_TOKEN * (indent+1) + str(self.size) + '\n'
 
     @addToClass(data.OnesInit)
     def printTree(self, indent=0):
-        return INDENT_TOKEN * indent + 'ONES\n' + self.size.printTree(indent+1)
+        return INDENT_TOKEN * indent + 'ONES\n' + INDENT_TOKEN * (indent+1) + str(self.size) + '\n'
 
     @addToClass(data.ZerosInit)
     def printTree(self, indent=0):
-        return INDENT_TOKEN * indent + 'ZEROS\n' + self.size.printTree(indent+1)
+        return INDENT_TOKEN * indent + 'ZEROS\n' + INDENT_TOKEN * (indent+1) + str(self.size) + '\n'
 
     @addToClass(data.BinOperation)
     def printTree(self, indent=0):
@@ -71,6 +71,6 @@ class TreePrinter:
     def printTree(self, indent=0):
         ret = INDENT_TOKEN * indent + '[\n'
         for i in range(len(self.row)):
-            ret += self.row[i].printTree(indent+1)
+            ret += str(self.row[i]) + '\n'
         ret += INDENT_TOKEN * indent + ']\n'
         return ret
