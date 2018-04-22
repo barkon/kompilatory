@@ -1,7 +1,7 @@
 
 class Node(object):
     def __str__(self):
-        return __name__
+        return self.printTree()
 
 
 class Const(Node):
