@@ -1,0 +1,3645 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> instructions_opt
+Rule 2     instructions_opt -> instructions
+Rule 3     instructions_opt -> <empty>
+Rule 4     instructions -> instructions instruction
+Rule 5     instructions -> instruction
+Rule 6     instruction -> if_else_instr
+Rule 7     instruction -> while_instr
+Rule 8     instruction -> for_instr
+Rule 9     instruction -> break_instr
+Rule 10    instruction -> continue_instr
+Rule 11    instruction -> return_instr
+Rule 12    instruction -> print_instr
+Rule 13    instruction -> instr_block
+Rule 14    instruction -> assignment ;
+Rule 15    if_else_instr -> IF ( expression ) instruction
+Rule 16    if_else_instr -> IF ( expression ) instruction ELSE instruction
+Rule 17    if_else_instr -> IF ( error ) instruction
+Rule 18    if_else_instr -> IF ( error ) instruction ELSE instruction
+Rule 19    while_instr -> WHILE ( expression ) instruction
+Rule 20    while_instr -> WHILE ( error ) instruction
+Rule 21    for_instr -> FOR for_init instruction
+Rule 22    for_init -> ID = expression : expression
+Rule 23    break_instr -> BREAK ;
+Rule 24    continue_instr -> CONTINUE ;
+Rule 25    return_instr -> RETURN expression ;
+Rule 26    print_instr -> PRINT print_vars ;
+Rule 27    print_instr -> PRINT error ;
+Rule 28    print_vars -> print_vars , print_var
+Rule 29    print_vars -> print_var
+Rule 30    print_var -> STRING
+Rule 31    print_var -> expression
+Rule 32    instr_block -> { instructions }
+Rule 33    number -> INT
+Rule 34    number -> FLOAT
+Rule 35    lvalue -> ID
+Rule 36    lvalue -> ID [ INT ]
+Rule 37    lvalue -> ID [ INT , INT ]
+Rule 38    assignment -> lvalue assign_op expression
+Rule 39    assign_op -> =
+Rule 40    assign_op -> PLUSASSIGN
+Rule 41    assign_op -> MINUSASSIGN
+Rule 42    assign_op -> MULASSIGN
+Rule 43    assign_op -> DIVASSIGN
+Rule 44    expression -> number
+Rule 45    expression -> lvalue
+Rule 46    expression -> matrix_init
+Rule 47    expression -> ( expression )
+Rule 48    expression -> - expression
+Rule 49    expression -> expression '
+Rule 50    expression -> expression bin_op expression
+Rule 51    bin_op -> rel_op
+Rule 52    bin_op -> num_op
+Rule 53    bin_op -> dot_op
+Rule 54    rel_op -> <
+Rule 55    rel_op -> >
+Rule 56    rel_op -> EQ
+Rule 57    rel_op -> NEQ
+Rule 58    rel_op -> LESSEQ
+Rule 59    rel_op -> MOREEQ
+Rule 60    num_op -> +
+Rule 61    num_op -> -
+Rule 62    num_op -> *
+Rule 63    num_op -> /
+Rule 64    dot_op -> DOTPLUS
+Rule 65    dot_op -> DOTMINUS
+Rule 66    dot_op -> DOTMUL
+Rule 67    dot_op -> DOTDIV
+Rule 68    matrix_init -> eye
+Rule 69    matrix_init -> ones
+Rule 70    matrix_init -> zeros
+Rule 71    matrix_init -> [ matrix_rows ]
+Rule 72    matrix_init -> [ scopes ]
+Rule 73    eye -> EYE ( INT )
+Rule 74    ones -> ONES ( INT )
+Rule 75    zeros -> ZEROS ( INT )
+Rule 76    matrix_rows -> matrix_rows ; row_elems
+Rule 77    matrix_rows -> row_elems
+Rule 78    row_elems -> row_elems , number
+Rule 79    row_elems -> number
+Rule 80    scopes -> scope
+Rule 81    scopes -> scopes ; scope
+Rule 82    scope -> INT : INT
+Rule 83    scope -> number : number : number
+
+Terminals, with rules where they appear
+
+'                    : 49
+(                    : 15 16 17 18 19 20 47 73 74 75
+)                    : 15 16 17 18 19 20 47 73 74 75
+*                    : 62
++                    : 60
+,                    : 28 37 78
+-                    : 48 61
+/                    : 63
+:                    : 22 82 83 83
+;                    : 14 23 24 25 26 27 76 81
+<                    : 54
+=                    : 22 39
+>                    : 55
+BREAK                : 23
+CONTINUE             : 24
+DIVASSIGN            : 43
+DOTDIV               : 67
+DOTMINUS             : 65
+DOTMUL               : 66
+DOTPLUS              : 64
+ELSE                 : 16 18
+EQ                   : 56
+EYE                  : 73
+FLOAT                : 34
+FOR                  : 21
+ID                   : 22 35 36 37
+IF                   : 15 16 17 18
+INT                  : 33 36 37 37 73 74 75 82 82
+LESSEQ               : 58
+MINUSASSIGN          : 41
+MOREEQ               : 59
+MULASSIGN            : 42
+NEQ                  : 57
+ONES                 : 74
+PLUSASSIGN           : 40
+PRINT                : 26 27
+RETURN               : 25
+STRING               : 30
+WHILE                : 19 20
+ZEROS                : 75
+[                    : 36 37 71 72
+]                    : 36 37 71 72
+error                : 17 18 20 27
+{                    : 32
+}                    : 32
+
+Nonterminals, with rules where they appear
+
+assign_op            : 38
+assignment           : 14
+bin_op               : 50
+break_instr          : 9
+continue_instr       : 10
+dot_op               : 53
+expression           : 15 16 19 22 22 25 31 38 47 48 49 50 50
+eye                  : 68
+for_init             : 21
+for_instr            : 8
+if_else_instr        : 6
+instr_block          : 13
+instruction          : 4 5 15 16 16 17 18 18 19 20 21
+instructions         : 2 4 32
+instructions_opt     : 1
+lvalue               : 38 45
+matrix_init          : 46
+matrix_rows          : 71 76
+num_op               : 52
+number               : 44 78 79 83 83 83
+ones                 : 69
+print_instr          : 12
+print_var            : 28 29
+print_vars           : 26 28
+program              : 0
+rel_op               : 51
+return_instr         : 11
+row_elems            : 76 77 78
+scope                : 80 81
+scopes               : 72 81
+while_instr          : 7
+zeros                : 70
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . instructions_opt
+    (2) instructions_opt -> . instructions
+    (3) instructions_opt -> .
+    (4) instructions -> . instructions instruction
+    (5) instructions -> . instruction
+    (6) instruction -> . if_else_instr
+    (7) instruction -> . while_instr
+    (8) instruction -> . for_instr
+    (9) instruction -> . break_instr
+    (10) instruction -> . continue_instr
+    (11) instruction -> . return_instr
+    (12) instruction -> . print_instr
+    (13) instruction -> . instr_block
+    (14) instruction -> . assignment ;
+    (15) if_else_instr -> . IF ( expression ) instruction
+    (16) if_else_instr -> . IF ( expression ) instruction ELSE instruction
+    (17) if_else_instr -> . IF ( error ) instruction
+    (18) if_else_instr -> . IF ( error ) instruction ELSE instruction
+    (19) while_instr -> . WHILE ( expression ) instruction
+    (20) while_instr -> . WHILE ( error ) instruction
+    (21) for_instr -> . FOR for_init instruction
+    (23) break_instr -> . BREAK ;
+    (24) continue_instr -> . CONTINUE ;
+    (25) return_instr -> . RETURN expression ;
+    (26) print_instr -> . PRINT print_vars ;
+    (27) print_instr -> . PRINT error ;
+    (32) instr_block -> . { instructions }
+    (38) assignment -> . lvalue assign_op expression
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+
+    $end            reduce using rule 3 (instructions_opt -> .)
+    IF              shift and go to state 18
+    WHILE           shift and go to state 12
+    FOR             shift and go to state 1
+    BREAK           shift and go to state 22
+    CONTINUE        shift and go to state 5
+    RETURN          shift and go to state 23
+    PRINT           shift and go to state 14
+    {               shift and go to state 9
+    ID              shift and go to state 10
+
+    program                        shift and go to state 2
+    while_instr                    shift and go to state 19
+    instructions_opt               shift and go to state 13
+    print_instr                    shift and go to state 11
+    lvalue                         shift and go to state 4
+    instructions                   shift and go to state 15
+    instr_block                    shift and go to state 16
+    for_instr                      shift and go to state 17
+    return_instr                   shift and go to state 7
+    continue_instr                 shift and go to state 6
+    instruction                    shift and go to state 20
+    if_else_instr                  shift and go to state 21
+    assignment                     shift and go to state 8
+    break_instr                    shift and go to state 3
+
+state 1
+
+    (21) for_instr -> FOR . for_init instruction
+    (22) for_init -> . ID = expression : expression
+
+    ID              shift and go to state 24
+
+    for_init                       shift and go to state 25
+
+state 2
+
+    (0) S' -> program .
+
+
+
+state 3
+
+    (9) instruction -> break_instr .
+
+    IF              reduce using rule 9 (instruction -> break_instr .)
+    WHILE           reduce using rule 9 (instruction -> break_instr .)
+    FOR             reduce using rule 9 (instruction -> break_instr .)
+    BREAK           reduce using rule 9 (instruction -> break_instr .)
+    CONTINUE        reduce using rule 9 (instruction -> break_instr .)
+    RETURN          reduce using rule 9 (instruction -> break_instr .)
+    PRINT           reduce using rule 9 (instruction -> break_instr .)
+    {               reduce using rule 9 (instruction -> break_instr .)
+    ID              reduce using rule 9 (instruction -> break_instr .)
+    $end            reduce using rule 9 (instruction -> break_instr .)
+    }               reduce using rule 9 (instruction -> break_instr .)
+    ELSE            reduce using rule 9 (instruction -> break_instr .)
+
+
+state 4
+
+    (38) assignment -> lvalue . assign_op expression
+    (39) assign_op -> . =
+    (40) assign_op -> . PLUSASSIGN
+    (41) assign_op -> . MINUSASSIGN
+    (42) assign_op -> . MULASSIGN
+    (43) assign_op -> . DIVASSIGN
+
+    =               shift and go to state 29
+    PLUSASSIGN      shift and go to state 31
+    MINUSASSIGN     shift and go to state 27
+    MULASSIGN       shift and go to state 28
+    DIVASSIGN       shift and go to state 26
+
+    assign_op                      shift and go to state 30
+
+state 5
+
+    (24) continue_instr -> CONTINUE . ;
+
+    ;               shift and go to state 32
+
+
+state 6
+
+    (10) instruction -> continue_instr .
+
+    IF              reduce using rule 10 (instruction -> continue_instr .)
+    WHILE           reduce using rule 10 (instruction -> continue_instr .)
+    FOR             reduce using rule 10 (instruction -> continue_instr .)
+    BREAK           reduce using rule 10 (instruction -> continue_instr .)
+    CONTINUE        reduce using rule 10 (instruction -> continue_instr .)
+    RETURN          reduce using rule 10 (instruction -> continue_instr .)
+    PRINT           reduce using rule 10 (instruction -> continue_instr .)
+    {               reduce using rule 10 (instruction -> continue_instr .)
+    ID              reduce using rule 10 (instruction -> continue_instr .)
+    $end            reduce using rule 10 (instruction -> continue_instr .)
+    }               reduce using rule 10 (instruction -> continue_instr .)
+    ELSE            reduce using rule 10 (instruction -> continue_instr .)
+
+
+state 7
+
+    (11) instruction -> return_instr .
+
+    IF              reduce using rule 11 (instruction -> return_instr .)
+    WHILE           reduce using rule 11 (instruction -> return_instr .)
+    FOR             reduce using rule 11 (instruction -> return_instr .)
+    BREAK           reduce using rule 11 (instruction -> return_instr .)
+    CONTINUE        reduce using rule 11 (instruction -> return_instr .)
+    RETURN          reduce using rule 11 (instruction -> return_instr .)
+    PRINT           reduce using rule 11 (instruction -> return_instr .)
+    {               reduce using rule 11 (instruction -> return_instr .)
+    ID              reduce using rule 11 (instruction -> return_instr .)
+    $end            reduce using rule 11 (instruction -> return_instr .)
+    }               reduce using rule 11 (instruction -> return_instr .)
+    ELSE            reduce using rule 11 (instruction -> return_instr .)
+
+
+state 8
+
+    (14) instruction -> assignment . ;
+
+    ;               shift and go to state 33
+
+
+state 9
+
+    (32) instr_block -> { . instructions }
+    (4) instructions -> . instructions instruction
+    (5) instructions -> . instruction
+    (6) instruction -> . if_else_instr
+    (7) instruction -> . while_instr
+    (8) instruction -> . for_instr
+    (9) instruction -> . break_instr
+    (10) instruction -> . continue_instr
+    (11) instruction -> . return_instr
+    (12) instruction -> . print_instr
+    (13) instruction -> . instr_block
+    (14) instruction -> . assignment ;
+    (15) if_else_instr -> . IF ( expression ) instruction
+    (16) if_else_instr -> . IF ( expression ) instruction ELSE instruction
+    (17) if_else_instr -> . IF ( error ) instruction
+    (18) if_else_instr -> . IF ( error ) instruction ELSE instruction
+    (19) while_instr -> . WHILE ( expression ) instruction
+    (20) while_instr -> . WHILE ( error ) instruction
+    (21) for_instr -> . FOR for_init instruction
+    (23) break_instr -> . BREAK ;
+    (24) continue_instr -> . CONTINUE ;
+    (25) return_instr -> . RETURN expression ;
+    (26) print_instr -> . PRINT print_vars ;
+    (27) print_instr -> . PRINT error ;
+    (32) instr_block -> . { instructions }
+    (38) assignment -> . lvalue assign_op expression
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+
+    IF              shift and go to state 18
+    WHILE           shift and go to state 12
+    FOR             shift and go to state 1
+    BREAK           shift and go to state 22
+    CONTINUE        shift and go to state 5
+    RETURN          shift and go to state 23
+    PRINT           shift and go to state 14
+    {               shift and go to state 9
+    ID              shift and go to state 10
+
+    print_instr                    shift and go to state 11
+    while_instr                    shift and go to state 19
+    break_instr                    shift and go to state 3
+    lvalue                         shift and go to state 4
+    instructions                   shift and go to state 34
+    instr_block                    shift and go to state 16
+    for_instr                      shift and go to state 17
+    continue_instr                 shift and go to state 6
+    return_instr                   shift and go to state 7
+    instruction                    shift and go to state 20
+    if_else_instr                  shift and go to state 21
+    assignment                     shift and go to state 8
+
+state 10
+
+    (35) lvalue -> ID .
+    (36) lvalue -> ID . [ INT ]
+    (37) lvalue -> ID . [ INT , INT ]
+
+    ;               reduce using rule 35 (lvalue -> ID .)
+    '               reduce using rule 35 (lvalue -> ID .)
+    <               reduce using rule 35 (lvalue -> ID .)
+    >               reduce using rule 35 (lvalue -> ID .)
+    EQ              reduce using rule 35 (lvalue -> ID .)
+    NEQ             reduce using rule 35 (lvalue -> ID .)
+    LESSEQ          reduce using rule 35 (lvalue -> ID .)
+    MOREEQ          reduce using rule 35 (lvalue -> ID .)
+    +               reduce using rule 35 (lvalue -> ID .)
+    -               reduce using rule 35 (lvalue -> ID .)
+    *               reduce using rule 35 (lvalue -> ID .)
+    /               reduce using rule 35 (lvalue -> ID .)
+    DOTPLUS         reduce using rule 35 (lvalue -> ID .)
+    DOTMINUS        reduce using rule 35 (lvalue -> ID .)
+    DOTMUL          reduce using rule 35 (lvalue -> ID .)
+    DOTDIV          reduce using rule 35 (lvalue -> ID .)
+    =               reduce using rule 35 (lvalue -> ID .)
+    PLUSASSIGN      reduce using rule 35 (lvalue -> ID .)
+    MINUSASSIGN     reduce using rule 35 (lvalue -> ID .)
+    MULASSIGN       reduce using rule 35 (lvalue -> ID .)
+    DIVASSIGN       reduce using rule 35 (lvalue -> ID .)
+    )               reduce using rule 35 (lvalue -> ID .)
+    ,               reduce using rule 35 (lvalue -> ID .)
+    :               reduce using rule 35 (lvalue -> ID .)
+    IF              reduce using rule 35 (lvalue -> ID .)
+    WHILE           reduce using rule 35 (lvalue -> ID .)
+    FOR             reduce using rule 35 (lvalue -> ID .)
+    BREAK           reduce using rule 35 (lvalue -> ID .)
+    CONTINUE        reduce using rule 35 (lvalue -> ID .)
+    RETURN          reduce using rule 35 (lvalue -> ID .)
+    PRINT           reduce using rule 35 (lvalue -> ID .)
+    {               reduce using rule 35 (lvalue -> ID .)
+    ID              reduce using rule 35 (lvalue -> ID .)
+    [               shift and go to state 35
+
+
+state 11
+
+    (12) instruction -> print_instr .
+
+    IF              reduce using rule 12 (instruction -> print_instr .)
+    WHILE           reduce using rule 12 (instruction -> print_instr .)
+    FOR             reduce using rule 12 (instruction -> print_instr .)
+    BREAK           reduce using rule 12 (instruction -> print_instr .)
+    CONTINUE        reduce using rule 12 (instruction -> print_instr .)
+    RETURN          reduce using rule 12 (instruction -> print_instr .)
+    PRINT           reduce using rule 12 (instruction -> print_instr .)
+    {               reduce using rule 12 (instruction -> print_instr .)
+    ID              reduce using rule 12 (instruction -> print_instr .)
+    $end            reduce using rule 12 (instruction -> print_instr .)
+    }               reduce using rule 12 (instruction -> print_instr .)
+    ELSE            reduce using rule 12 (instruction -> print_instr .)
+
+
+state 12
+
+    (19) while_instr -> WHILE . ( expression ) instruction
+    (20) while_instr -> WHILE . ( error ) instruction
+
+    (               shift and go to state 36
+
+
+state 13
+
+    (1) program -> instructions_opt .
+
+    $end            reduce using rule 1 (program -> instructions_opt .)
+
+
+state 14
+
+    (26) print_instr -> PRINT . print_vars ;
+    (27) print_instr -> PRINT . error ;
+    (28) print_vars -> . print_vars , print_var
+    (29) print_vars -> . print_var
+    (30) print_var -> . STRING
+    (31) print_var -> . expression
+    (44) expression -> . number
+    (45) expression -> . lvalue
+    (46) expression -> . matrix_init
+    (47) expression -> . ( expression )
+    (48) expression -> . - expression
+    (49) expression -> . expression '
+    (50) expression -> . expression bin_op expression
+    (33) number -> . INT
+    (34) number -> . FLOAT
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+    (68) matrix_init -> . eye
+    (69) matrix_init -> . ones
+    (70) matrix_init -> . zeros
+    (71) matrix_init -> . [ matrix_rows ]
+    (72) matrix_init -> . [ scopes ]
+    (73) eye -> . EYE ( INT )
+    (74) ones -> . ONES ( INT )
+    (75) zeros -> . ZEROS ( INT )
+
+    error           shift and go to state 48
+    STRING          shift and go to state 42
+    (               shift and go to state 40
+    -               shift and go to state 46
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+    ID              shift and go to state 10
+    [               shift and go to state 37
+    EYE             shift and go to state 54
+    ONES            shift and go to state 53
+    ZEROS           shift and go to state 51
+
+    matrix_init                    shift and go to state 49
+    ones                           shift and go to state 50
+    print_vars                     shift and go to state 39
+    expression                     shift and go to state 52
+    lvalue                         shift and go to state 41
+    number                         shift and go to state 43
+    eye                            shift and go to state 45
+    zeros                          shift and go to state 47
+    print_var                      shift and go to state 55
+
+state 15
+
+    (2) instructions_opt -> instructions .
+    (4) instructions -> instructions . instruction
+    (6) instruction -> . if_else_instr
+    (7) instruction -> . while_instr
+    (8) instruction -> . for_instr
+    (9) instruction -> . break_instr
+    (10) instruction -> . continue_instr
+    (11) instruction -> . return_instr
+    (12) instruction -> . print_instr
+    (13) instruction -> . instr_block
+    (14) instruction -> . assignment ;
+    (15) if_else_instr -> . IF ( expression ) instruction
+    (16) if_else_instr -> . IF ( expression ) instruction ELSE instruction
+    (17) if_else_instr -> . IF ( error ) instruction
+    (18) if_else_instr -> . IF ( error ) instruction ELSE instruction
+    (19) while_instr -> . WHILE ( expression ) instruction
+    (20) while_instr -> . WHILE ( error ) instruction
+    (21) for_instr -> . FOR for_init instruction
+    (23) break_instr -> . BREAK ;
+    (24) continue_instr -> . CONTINUE ;
+    (25) return_instr -> . RETURN expression ;
+    (26) print_instr -> . PRINT print_vars ;
+    (27) print_instr -> . PRINT error ;
+    (32) instr_block -> . { instructions }
+    (38) assignment -> . lvalue assign_op expression
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+
+    $end            reduce using rule 2 (instructions_opt -> instructions .)
+    IF              shift and go to state 18
+    WHILE           shift and go to state 12
+    FOR             shift and go to state 1
+    BREAK           shift and go to state 22
+    CONTINUE        shift and go to state 5
+    RETURN          shift and go to state 23
+    PRINT           shift and go to state 14
+    {               shift and go to state 9
+    ID              shift and go to state 10
+
+    print_instr                    shift and go to state 11
+    while_instr                    shift and go to state 19
+    break_instr                    shift and go to state 3
+    lvalue                         shift and go to state 4
+    instr_block                    shift and go to state 16
+    for_instr                      shift and go to state 17
+    continue_instr                 shift and go to state 6
+    return_instr                   shift and go to state 7
+    instruction                    shift and go to state 56
+    if_else_instr                  shift and go to state 21
+    assignment                     shift and go to state 8
+
+state 16
+
+    (13) instruction -> instr_block .
+
+    IF              reduce using rule 13 (instruction -> instr_block .)
+    WHILE           reduce using rule 13 (instruction -> instr_block .)
+    FOR             reduce using rule 13 (instruction -> instr_block .)
+    BREAK           reduce using rule 13 (instruction -> instr_block .)
+    CONTINUE        reduce using rule 13 (instruction -> instr_block .)
+    RETURN          reduce using rule 13 (instruction -> instr_block .)
+    PRINT           reduce using rule 13 (instruction -> instr_block .)
+    {               reduce using rule 13 (instruction -> instr_block .)
+    ID              reduce using rule 13 (instruction -> instr_block .)
+    $end            reduce using rule 13 (instruction -> instr_block .)
+    }               reduce using rule 13 (instruction -> instr_block .)
+    ELSE            reduce using rule 13 (instruction -> instr_block .)
+
+
+state 17
+
+    (8) instruction -> for_instr .
+
+    IF              reduce using rule 8 (instruction -> for_instr .)
+    WHILE           reduce using rule 8 (instruction -> for_instr .)
+    FOR             reduce using rule 8 (instruction -> for_instr .)
+    BREAK           reduce using rule 8 (instruction -> for_instr .)
+    CONTINUE        reduce using rule 8 (instruction -> for_instr .)
+    RETURN          reduce using rule 8 (instruction -> for_instr .)
+    PRINT           reduce using rule 8 (instruction -> for_instr .)
+    {               reduce using rule 8 (instruction -> for_instr .)
+    ID              reduce using rule 8 (instruction -> for_instr .)
+    $end            reduce using rule 8 (instruction -> for_instr .)
+    }               reduce using rule 8 (instruction -> for_instr .)
+    ELSE            reduce using rule 8 (instruction -> for_instr .)
+
+
+state 18
+
+    (15) if_else_instr -> IF . ( expression ) instruction
+    (16) if_else_instr -> IF . ( expression ) instruction ELSE instruction
+    (17) if_else_instr -> IF . ( error ) instruction
+    (18) if_else_instr -> IF . ( error ) instruction ELSE instruction
+
+    (               shift and go to state 57
+
+
+state 19
+
+    (7) instruction -> while_instr .
+
+    IF              reduce using rule 7 (instruction -> while_instr .)
+    WHILE           reduce using rule 7 (instruction -> while_instr .)
+    FOR             reduce using rule 7 (instruction -> while_instr .)
+    BREAK           reduce using rule 7 (instruction -> while_instr .)
+    CONTINUE        reduce using rule 7 (instruction -> while_instr .)
+    RETURN          reduce using rule 7 (instruction -> while_instr .)
+    PRINT           reduce using rule 7 (instruction -> while_instr .)
+    {               reduce using rule 7 (instruction -> while_instr .)
+    ID              reduce using rule 7 (instruction -> while_instr .)
+    $end            reduce using rule 7 (instruction -> while_instr .)
+    }               reduce using rule 7 (instruction -> while_instr .)
+    ELSE            reduce using rule 7 (instruction -> while_instr .)
+
+
+state 20
+
+    (5) instructions -> instruction .
+
+    }               reduce using rule 5 (instructions -> instruction .)
+    IF              reduce using rule 5 (instructions -> instruction .)
+    WHILE           reduce using rule 5 (instructions -> instruction .)
+    FOR             reduce using rule 5 (instructions -> instruction .)
+    BREAK           reduce using rule 5 (instructions -> instruction .)
+    CONTINUE        reduce using rule 5 (instructions -> instruction .)
+    RETURN          reduce using rule 5 (instructions -> instruction .)
+    PRINT           reduce using rule 5 (instructions -> instruction .)
+    {               reduce using rule 5 (instructions -> instruction .)
+    ID              reduce using rule 5 (instructions -> instruction .)
+    $end            reduce using rule 5 (instructions -> instruction .)
+
+
+state 21
+
+    (6) instruction -> if_else_instr .
+
+    IF              reduce using rule 6 (instruction -> if_else_instr .)
+    WHILE           reduce using rule 6 (instruction -> if_else_instr .)
+    FOR             reduce using rule 6 (instruction -> if_else_instr .)
+    BREAK           reduce using rule 6 (instruction -> if_else_instr .)
+    CONTINUE        reduce using rule 6 (instruction -> if_else_instr .)
+    RETURN          reduce using rule 6 (instruction -> if_else_instr .)
+    PRINT           reduce using rule 6 (instruction -> if_else_instr .)
+    {               reduce using rule 6 (instruction -> if_else_instr .)
+    ID              reduce using rule 6 (instruction -> if_else_instr .)
+    $end            reduce using rule 6 (instruction -> if_else_instr .)
+    }               reduce using rule 6 (instruction -> if_else_instr .)
+    ELSE            reduce using rule 6 (instruction -> if_else_instr .)
+
+
+state 22
+
+    (23) break_instr -> BREAK . ;
+
+    ;               shift and go to state 58
+
+
+state 23
+
+    (25) return_instr -> RETURN . expression ;
+    (44) expression -> . number
+    (45) expression -> . lvalue
+    (46) expression -> . matrix_init
+    (47) expression -> . ( expression )
+    (48) expression -> . - expression
+    (49) expression -> . expression '
+    (50) expression -> . expression bin_op expression
+    (33) number -> . INT
+    (34) number -> . FLOAT
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+    (68) matrix_init -> . eye
+    (69) matrix_init -> . ones
+    (70) matrix_init -> . zeros
+    (71) matrix_init -> . [ matrix_rows ]
+    (72) matrix_init -> . [ scopes ]
+    (73) eye -> . EYE ( INT )
+    (74) ones -> . ONES ( INT )
+    (75) zeros -> . ZEROS ( INT )
+
+    (               shift and go to state 40
+    -               shift and go to state 46
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+    ID              shift and go to state 10
+    [               shift and go to state 37
+    EYE             shift and go to state 54
+    ONES            shift and go to state 53
+    ZEROS           shift and go to state 51
+
+    matrix_init                    shift and go to state 49
+    eye                            shift and go to state 45
+    ones                           shift and go to state 50
+    zeros                          shift and go to state 47
+    expression                     shift and go to state 59
+    lvalue                         shift and go to state 41
+    number                         shift and go to state 43
+
+state 24
+
+    (22) for_init -> ID . = expression : expression
+
+    =               shift and go to state 60
+
+
+state 25
+
+    (21) for_instr -> FOR for_init . instruction
+    (6) instruction -> . if_else_instr
+    (7) instruction -> . while_instr
+    (8) instruction -> . for_instr
+    (9) instruction -> . break_instr
+    (10) instruction -> . continue_instr
+    (11) instruction -> . return_instr
+    (12) instruction -> . print_instr
+    (13) instruction -> . instr_block
+    (14) instruction -> . assignment ;
+    (15) if_else_instr -> . IF ( expression ) instruction
+    (16) if_else_instr -> . IF ( expression ) instruction ELSE instruction
+    (17) if_else_instr -> . IF ( error ) instruction
+    (18) if_else_instr -> . IF ( error ) instruction ELSE instruction
+    (19) while_instr -> . WHILE ( expression ) instruction
+    (20) while_instr -> . WHILE ( error ) instruction
+    (21) for_instr -> . FOR for_init instruction
+    (23) break_instr -> . BREAK ;
+    (24) continue_instr -> . CONTINUE ;
+    (25) return_instr -> . RETURN expression ;
+    (26) print_instr -> . PRINT print_vars ;
+    (27) print_instr -> . PRINT error ;
+    (32) instr_block -> . { instructions }
+    (38) assignment -> . lvalue assign_op expression
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+
+    IF              shift and go to state 18
+    WHILE           shift and go to state 12
+    FOR             shift and go to state 1
+    BREAK           shift and go to state 22
+    CONTINUE        shift and go to state 5
+    RETURN          shift and go to state 23
+    PRINT           shift and go to state 14
+    {               shift and go to state 9
+    ID              shift and go to state 10
+
+    print_instr                    shift and go to state 11
+    while_instr                    shift and go to state 19
+    break_instr                    shift and go to state 3
+    lvalue                         shift and go to state 4
+    if_else_instr                  shift and go to state 21
+    instr_block                    shift and go to state 16
+    for_instr                      shift and go to state 17
+    continue_instr                 shift and go to state 6
+    return_instr                   shift and go to state 7
+    instruction                    shift and go to state 61
+    assignment                     shift and go to state 8
+
+state 26
+
+    (43) assign_op -> DIVASSIGN .
+
+    (               reduce using rule 43 (assign_op -> DIVASSIGN .)
+    -               reduce using rule 43 (assign_op -> DIVASSIGN .)
+    INT             reduce using rule 43 (assign_op -> DIVASSIGN .)
+    FLOAT           reduce using rule 43 (assign_op -> DIVASSIGN .)
+    ID              reduce using rule 43 (assign_op -> DIVASSIGN .)
+    [               reduce using rule 43 (assign_op -> DIVASSIGN .)
+    EYE             reduce using rule 43 (assign_op -> DIVASSIGN .)
+    ONES            reduce using rule 43 (assign_op -> DIVASSIGN .)
+    ZEROS           reduce using rule 43 (assign_op -> DIVASSIGN .)
+
+
+state 27
+
+    (41) assign_op -> MINUSASSIGN .
+
+    (               reduce using rule 41 (assign_op -> MINUSASSIGN .)
+    -               reduce using rule 41 (assign_op -> MINUSASSIGN .)
+    INT             reduce using rule 41 (assign_op -> MINUSASSIGN .)
+    FLOAT           reduce using rule 41 (assign_op -> MINUSASSIGN .)
+    ID              reduce using rule 41 (assign_op -> MINUSASSIGN .)
+    [               reduce using rule 41 (assign_op -> MINUSASSIGN .)
+    EYE             reduce using rule 41 (assign_op -> MINUSASSIGN .)
+    ONES            reduce using rule 41 (assign_op -> MINUSASSIGN .)
+    ZEROS           reduce using rule 41 (assign_op -> MINUSASSIGN .)
+
+
+state 28
+
+    (42) assign_op -> MULASSIGN .
+
+    (               reduce using rule 42 (assign_op -> MULASSIGN .)
+    -               reduce using rule 42 (assign_op -> MULASSIGN .)
+    INT             reduce using rule 42 (assign_op -> MULASSIGN .)
+    FLOAT           reduce using rule 42 (assign_op -> MULASSIGN .)
+    ID              reduce using rule 42 (assign_op -> MULASSIGN .)
+    [               reduce using rule 42 (assign_op -> MULASSIGN .)
+    EYE             reduce using rule 42 (assign_op -> MULASSIGN .)
+    ONES            reduce using rule 42 (assign_op -> MULASSIGN .)
+    ZEROS           reduce using rule 42 (assign_op -> MULASSIGN .)
+
+
+state 29
+
+    (39) assign_op -> = .
+
+    (               reduce using rule 39 (assign_op -> = .)
+    -               reduce using rule 39 (assign_op -> = .)
+    INT             reduce using rule 39 (assign_op -> = .)
+    FLOAT           reduce using rule 39 (assign_op -> = .)
+    ID              reduce using rule 39 (assign_op -> = .)
+    [               reduce using rule 39 (assign_op -> = .)
+    EYE             reduce using rule 39 (assign_op -> = .)
+    ONES            reduce using rule 39 (assign_op -> = .)
+    ZEROS           reduce using rule 39 (assign_op -> = .)
+
+
+state 30
+
+    (38) assignment -> lvalue assign_op . expression
+    (44) expression -> . number
+    (45) expression -> . lvalue
+    (46) expression -> . matrix_init
+    (47) expression -> . ( expression )
+    (48) expression -> . - expression
+    (49) expression -> . expression '
+    (50) expression -> . expression bin_op expression
+    (33) number -> . INT
+    (34) number -> . FLOAT
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+    (68) matrix_init -> . eye
+    (69) matrix_init -> . ones
+    (70) matrix_init -> . zeros
+    (71) matrix_init -> . [ matrix_rows ]
+    (72) matrix_init -> . [ scopes ]
+    (73) eye -> . EYE ( INT )
+    (74) ones -> . ONES ( INT )
+    (75) zeros -> . ZEROS ( INT )
+
+    (               shift and go to state 40
+    -               shift and go to state 46
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+    ID              shift and go to state 10
+    [               shift and go to state 37
+    EYE             shift and go to state 54
+    ONES            shift and go to state 53
+    ZEROS           shift and go to state 51
+
+    matrix_init                    shift and go to state 49
+    eye                            shift and go to state 45
+    ones                           shift and go to state 50
+    zeros                          shift and go to state 47
+    expression                     shift and go to state 62
+    lvalue                         shift and go to state 41
+    number                         shift and go to state 43
+
+state 31
+
+    (40) assign_op -> PLUSASSIGN .
+
+    (               reduce using rule 40 (assign_op -> PLUSASSIGN .)
+    -               reduce using rule 40 (assign_op -> PLUSASSIGN .)
+    INT             reduce using rule 40 (assign_op -> PLUSASSIGN .)
+    FLOAT           reduce using rule 40 (assign_op -> PLUSASSIGN .)
+    ID              reduce using rule 40 (assign_op -> PLUSASSIGN .)
+    [               reduce using rule 40 (assign_op -> PLUSASSIGN .)
+    EYE             reduce using rule 40 (assign_op -> PLUSASSIGN .)
+    ONES            reduce using rule 40 (assign_op -> PLUSASSIGN .)
+    ZEROS           reduce using rule 40 (assign_op -> PLUSASSIGN .)
+
+
+state 32
+
+    (24) continue_instr -> CONTINUE ; .
+
+    IF              reduce using rule 24 (continue_instr -> CONTINUE ; .)
+    WHILE           reduce using rule 24 (continue_instr -> CONTINUE ; .)
+    FOR             reduce using rule 24 (continue_instr -> CONTINUE ; .)
+    BREAK           reduce using rule 24 (continue_instr -> CONTINUE ; .)
+    CONTINUE        reduce using rule 24 (continue_instr -> CONTINUE ; .)
+    RETURN          reduce using rule 24 (continue_instr -> CONTINUE ; .)
+    PRINT           reduce using rule 24 (continue_instr -> CONTINUE ; .)
+    {               reduce using rule 24 (continue_instr -> CONTINUE ; .)
+    ID              reduce using rule 24 (continue_instr -> CONTINUE ; .)
+    $end            reduce using rule 24 (continue_instr -> CONTINUE ; .)
+    }               reduce using rule 24 (continue_instr -> CONTINUE ; .)
+    ELSE            reduce using rule 24 (continue_instr -> CONTINUE ; .)
+
+
+state 33
+
+    (14) instruction -> assignment ; .
+
+    IF              reduce using rule 14 (instruction -> assignment ; .)
+    WHILE           reduce using rule 14 (instruction -> assignment ; .)
+    FOR             reduce using rule 14 (instruction -> assignment ; .)
+    BREAK           reduce using rule 14 (instruction -> assignment ; .)
+    CONTINUE        reduce using rule 14 (instruction -> assignment ; .)
+    RETURN          reduce using rule 14 (instruction -> assignment ; .)
+    PRINT           reduce using rule 14 (instruction -> assignment ; .)
+    {               reduce using rule 14 (instruction -> assignment ; .)
+    ID              reduce using rule 14 (instruction -> assignment ; .)
+    $end            reduce using rule 14 (instruction -> assignment ; .)
+    }               reduce using rule 14 (instruction -> assignment ; .)
+    ELSE            reduce using rule 14 (instruction -> assignment ; .)
+
+
+state 34
+
+    (32) instr_block -> { instructions . }
+    (4) instructions -> instructions . instruction
+    (6) instruction -> . if_else_instr
+    (7) instruction -> . while_instr
+    (8) instruction -> . for_instr
+    (9) instruction -> . break_instr
+    (10) instruction -> . continue_instr
+    (11) instruction -> . return_instr
+    (12) instruction -> . print_instr
+    (13) instruction -> . instr_block
+    (14) instruction -> . assignment ;
+    (15) if_else_instr -> . IF ( expression ) instruction
+    (16) if_else_instr -> . IF ( expression ) instruction ELSE instruction
+    (17) if_else_instr -> . IF ( error ) instruction
+    (18) if_else_instr -> . IF ( error ) instruction ELSE instruction
+    (19) while_instr -> . WHILE ( expression ) instruction
+    (20) while_instr -> . WHILE ( error ) instruction
+    (21) for_instr -> . FOR for_init instruction
+    (23) break_instr -> . BREAK ;
+    (24) continue_instr -> . CONTINUE ;
+    (25) return_instr -> . RETURN expression ;
+    (26) print_instr -> . PRINT print_vars ;
+    (27) print_instr -> . PRINT error ;
+    (32) instr_block -> . { instructions }
+    (38) assignment -> . lvalue assign_op expression
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+
+    }               shift and go to state 63
+    IF              shift and go to state 18
+    WHILE           shift and go to state 12
+    FOR             shift and go to state 1
+    BREAK           shift and go to state 22
+    CONTINUE        shift and go to state 5
+    RETURN          shift and go to state 23
+    PRINT           shift and go to state 14
+    {               shift and go to state 9
+    ID              shift and go to state 10
+
+    print_instr                    shift and go to state 11
+    while_instr                    shift and go to state 19
+    break_instr                    shift and go to state 3
+    lvalue                         shift and go to state 4
+    instr_block                    shift and go to state 16
+    for_instr                      shift and go to state 17
+    continue_instr                 shift and go to state 6
+    return_instr                   shift and go to state 7
+    instruction                    shift and go to state 56
+    if_else_instr                  shift and go to state 21
+    assignment                     shift and go to state 8
+
+state 35
+
+    (36) lvalue -> ID [ . INT ]
+    (37) lvalue -> ID [ . INT , INT ]
+
+    INT             shift and go to state 64
+
+
+state 36
+
+    (19) while_instr -> WHILE ( . expression ) instruction
+    (20) while_instr -> WHILE ( . error ) instruction
+    (44) expression -> . number
+    (45) expression -> . lvalue
+    (46) expression -> . matrix_init
+    (47) expression -> . ( expression )
+    (48) expression -> . - expression
+    (49) expression -> . expression '
+    (50) expression -> . expression bin_op expression
+    (33) number -> . INT
+    (34) number -> . FLOAT
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+    (68) matrix_init -> . eye
+    (69) matrix_init -> . ones
+    (70) matrix_init -> . zeros
+    (71) matrix_init -> . [ matrix_rows ]
+    (72) matrix_init -> . [ scopes ]
+    (73) eye -> . EYE ( INT )
+    (74) ones -> . ONES ( INT )
+    (75) zeros -> . ZEROS ( INT )
+
+    error           shift and go to state 65
+    (               shift and go to state 40
+    -               shift and go to state 46
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+    ID              shift and go to state 10
+    [               shift and go to state 37
+    EYE             shift and go to state 54
+    ONES            shift and go to state 53
+    ZEROS           shift and go to state 51
+
+    matrix_init                    shift and go to state 49
+    eye                            shift and go to state 45
+    ones                           shift and go to state 50
+    zeros                          shift and go to state 47
+    expression                     shift and go to state 66
+    lvalue                         shift and go to state 41
+    number                         shift and go to state 43
+
+state 37
+
+    (71) matrix_init -> [ . matrix_rows ]
+    (72) matrix_init -> [ . scopes ]
+    (76) matrix_rows -> . matrix_rows ; row_elems
+    (77) matrix_rows -> . row_elems
+    (80) scopes -> . scope
+    (81) scopes -> . scopes ; scope
+    (78) row_elems -> . row_elems , number
+    (79) row_elems -> . number
+    (82) scope -> . INT : INT
+    (83) scope -> . number : number : number
+    (33) number -> . INT
+    (34) number -> . FLOAT
+
+    INT             shift and go to state 67
+    FLOAT           shift and go to state 44
+
+    matrix_rows                    shift and go to state 68
+    row_elems                      shift and go to state 69
+    scope                          shift and go to state 71
+    scopes                         shift and go to state 70
+    number                         shift and go to state 72
+
+state 38
+
+    (33) number -> INT .
+
+    ,               reduce using rule 33 (number -> INT .)
+    ]               reduce using rule 33 (number -> INT .)
+    ;               reduce using rule 33 (number -> INT .)
+    )               reduce using rule 33 (number -> INT .)
+    '               reduce using rule 33 (number -> INT .)
+    <               reduce using rule 33 (number -> INT .)
+    >               reduce using rule 33 (number -> INT .)
+    EQ              reduce using rule 33 (number -> INT .)
+    NEQ             reduce using rule 33 (number -> INT .)
+    LESSEQ          reduce using rule 33 (number -> INT .)
+    MOREEQ          reduce using rule 33 (number -> INT .)
+    +               reduce using rule 33 (number -> INT .)
+    -               reduce using rule 33 (number -> INT .)
+    *               reduce using rule 33 (number -> INT .)
+    /               reduce using rule 33 (number -> INT .)
+    DOTPLUS         reduce using rule 33 (number -> INT .)
+    DOTMINUS        reduce using rule 33 (number -> INT .)
+    DOTMUL          reduce using rule 33 (number -> INT .)
+    DOTDIV          reduce using rule 33 (number -> INT .)
+    :               reduce using rule 33 (number -> INT .)
+    IF              reduce using rule 33 (number -> INT .)
+    WHILE           reduce using rule 33 (number -> INT .)
+    FOR             reduce using rule 33 (number -> INT .)
+    BREAK           reduce using rule 33 (number -> INT .)
+    CONTINUE        reduce using rule 33 (number -> INT .)
+    RETURN          reduce using rule 33 (number -> INT .)
+    PRINT           reduce using rule 33 (number -> INT .)
+    {               reduce using rule 33 (number -> INT .)
+    ID              reduce using rule 33 (number -> INT .)
+
+
+state 39
+
+    (26) print_instr -> PRINT print_vars . ;
+    (28) print_vars -> print_vars . , print_var
+
+    ;               shift and go to state 73
+    ,               shift and go to state 74
+
+
+state 40
+
+    (47) expression -> ( . expression )
+    (44) expression -> . number
+    (45) expression -> . lvalue
+    (46) expression -> . matrix_init
+    (47) expression -> . ( expression )
+    (48) expression -> . - expression
+    (49) expression -> . expression '
+    (50) expression -> . expression bin_op expression
+    (33) number -> . INT
+    (34) number -> . FLOAT
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+    (68) matrix_init -> . eye
+    (69) matrix_init -> . ones
+    (70) matrix_init -> . zeros
+    (71) matrix_init -> . [ matrix_rows ]
+    (72) matrix_init -> . [ scopes ]
+    (73) eye -> . EYE ( INT )
+    (74) ones -> . ONES ( INT )
+    (75) zeros -> . ZEROS ( INT )
+
+    (               shift and go to state 40
+    -               shift and go to state 46
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+    ID              shift and go to state 10
+    [               shift and go to state 37
+    EYE             shift and go to state 54
+    ONES            shift and go to state 53
+    ZEROS           shift and go to state 51
+
+    matrix_init                    shift and go to state 49
+    eye                            shift and go to state 45
+    ones                           shift and go to state 50
+    zeros                          shift and go to state 47
+    expression                     shift and go to state 75
+    lvalue                         shift and go to state 41
+    number                         shift and go to state 43
+
+state 41
+
+    (45) expression -> lvalue .
+
+    )               reduce using rule 45 (expression -> lvalue .)
+    '               reduce using rule 45 (expression -> lvalue .)
+    <               reduce using rule 45 (expression -> lvalue .)
+    >               reduce using rule 45 (expression -> lvalue .)
+    EQ              reduce using rule 45 (expression -> lvalue .)
+    NEQ             reduce using rule 45 (expression -> lvalue .)
+    LESSEQ          reduce using rule 45 (expression -> lvalue .)
+    MOREEQ          reduce using rule 45 (expression -> lvalue .)
+    +               reduce using rule 45 (expression -> lvalue .)
+    -               reduce using rule 45 (expression -> lvalue .)
+    *               reduce using rule 45 (expression -> lvalue .)
+    /               reduce using rule 45 (expression -> lvalue .)
+    DOTPLUS         reduce using rule 45 (expression -> lvalue .)
+    DOTMINUS        reduce using rule 45 (expression -> lvalue .)
+    DOTMUL          reduce using rule 45 (expression -> lvalue .)
+    DOTDIV          reduce using rule 45 (expression -> lvalue .)
+    :               reduce using rule 45 (expression -> lvalue .)
+    IF              reduce using rule 45 (expression -> lvalue .)
+    WHILE           reduce using rule 45 (expression -> lvalue .)
+    FOR             reduce using rule 45 (expression -> lvalue .)
+    BREAK           reduce using rule 45 (expression -> lvalue .)
+    CONTINUE        reduce using rule 45 (expression -> lvalue .)
+    RETURN          reduce using rule 45 (expression -> lvalue .)
+    PRINT           reduce using rule 45 (expression -> lvalue .)
+    {               reduce using rule 45 (expression -> lvalue .)
+    ID              reduce using rule 45 (expression -> lvalue .)
+    ;               reduce using rule 45 (expression -> lvalue .)
+    ,               reduce using rule 45 (expression -> lvalue .)
+
+
+state 42
+
+    (30) print_var -> STRING .
+
+    ;               reduce using rule 30 (print_var -> STRING .)
+    ,               reduce using rule 30 (print_var -> STRING .)
+
+
+state 43
+
+    (44) expression -> number .
+
+    )               reduce using rule 44 (expression -> number .)
+    '               reduce using rule 44 (expression -> number .)
+    <               reduce using rule 44 (expression -> number .)
+    >               reduce using rule 44 (expression -> number .)
+    EQ              reduce using rule 44 (expression -> number .)
+    NEQ             reduce using rule 44 (expression -> number .)
+    LESSEQ          reduce using rule 44 (expression -> number .)
+    MOREEQ          reduce using rule 44 (expression -> number .)
+    +               reduce using rule 44 (expression -> number .)
+    -               reduce using rule 44 (expression -> number .)
+    *               reduce using rule 44 (expression -> number .)
+    /               reduce using rule 44 (expression -> number .)
+    DOTPLUS         reduce using rule 44 (expression -> number .)
+    DOTMINUS        reduce using rule 44 (expression -> number .)
+    DOTMUL          reduce using rule 44 (expression -> number .)
+    DOTDIV          reduce using rule 44 (expression -> number .)
+    :               reduce using rule 44 (expression -> number .)
+    IF              reduce using rule 44 (expression -> number .)
+    WHILE           reduce using rule 44 (expression -> number .)
+    FOR             reduce using rule 44 (expression -> number .)
+    BREAK           reduce using rule 44 (expression -> number .)
+    CONTINUE        reduce using rule 44 (expression -> number .)
+    RETURN          reduce using rule 44 (expression -> number .)
+    PRINT           reduce using rule 44 (expression -> number .)
+    {               reduce using rule 44 (expression -> number .)
+    ID              reduce using rule 44 (expression -> number .)
+    ;               reduce using rule 44 (expression -> number .)
+    ,               reduce using rule 44 (expression -> number .)
+
+
+state 44
+
+    (34) number -> FLOAT .
+
+    :               reduce using rule 34 (number -> FLOAT .)
+    ,               reduce using rule 34 (number -> FLOAT .)
+    ]               reduce using rule 34 (number -> FLOAT .)
+    ;               reduce using rule 34 (number -> FLOAT .)
+    )               reduce using rule 34 (number -> FLOAT .)
+    '               reduce using rule 34 (number -> FLOAT .)
+    <               reduce using rule 34 (number -> FLOAT .)
+    >               reduce using rule 34 (number -> FLOAT .)
+    EQ              reduce using rule 34 (number -> FLOAT .)
+    NEQ             reduce using rule 34 (number -> FLOAT .)
+    LESSEQ          reduce using rule 34 (number -> FLOAT .)
+    MOREEQ          reduce using rule 34 (number -> FLOAT .)
+    +               reduce using rule 34 (number -> FLOAT .)
+    -               reduce using rule 34 (number -> FLOAT .)
+    *               reduce using rule 34 (number -> FLOAT .)
+    /               reduce using rule 34 (number -> FLOAT .)
+    DOTPLUS         reduce using rule 34 (number -> FLOAT .)
+    DOTMINUS        reduce using rule 34 (number -> FLOAT .)
+    DOTMUL          reduce using rule 34 (number -> FLOAT .)
+    DOTDIV          reduce using rule 34 (number -> FLOAT .)
+    IF              reduce using rule 34 (number -> FLOAT .)
+    WHILE           reduce using rule 34 (number -> FLOAT .)
+    FOR             reduce using rule 34 (number -> FLOAT .)
+    BREAK           reduce using rule 34 (number -> FLOAT .)
+    CONTINUE        reduce using rule 34 (number -> FLOAT .)
+    RETURN          reduce using rule 34 (number -> FLOAT .)
+    PRINT           reduce using rule 34 (number -> FLOAT .)
+    {               reduce using rule 34 (number -> FLOAT .)
+    ID              reduce using rule 34 (number -> FLOAT .)
+
+
+state 45
+
+    (68) matrix_init -> eye .
+
+    '               reduce using rule 68 (matrix_init -> eye .)
+    <               reduce using rule 68 (matrix_init -> eye .)
+    >               reduce using rule 68 (matrix_init -> eye .)
+    EQ              reduce using rule 68 (matrix_init -> eye .)
+    NEQ             reduce using rule 68 (matrix_init -> eye .)
+    LESSEQ          reduce using rule 68 (matrix_init -> eye .)
+    MOREEQ          reduce using rule 68 (matrix_init -> eye .)
+    +               reduce using rule 68 (matrix_init -> eye .)
+    -               reduce using rule 68 (matrix_init -> eye .)
+    *               reduce using rule 68 (matrix_init -> eye .)
+    /               reduce using rule 68 (matrix_init -> eye .)
+    DOTPLUS         reduce using rule 68 (matrix_init -> eye .)
+    DOTMINUS        reduce using rule 68 (matrix_init -> eye .)
+    DOTMUL          reduce using rule 68 (matrix_init -> eye .)
+    DOTDIV          reduce using rule 68 (matrix_init -> eye .)
+    ;               reduce using rule 68 (matrix_init -> eye .)
+    ,               reduce using rule 68 (matrix_init -> eye .)
+    )               reduce using rule 68 (matrix_init -> eye .)
+    :               reduce using rule 68 (matrix_init -> eye .)
+    IF              reduce using rule 68 (matrix_init -> eye .)
+    WHILE           reduce using rule 68 (matrix_init -> eye .)
+    FOR             reduce using rule 68 (matrix_init -> eye .)
+    BREAK           reduce using rule 68 (matrix_init -> eye .)
+    CONTINUE        reduce using rule 68 (matrix_init -> eye .)
+    RETURN          reduce using rule 68 (matrix_init -> eye .)
+    PRINT           reduce using rule 68 (matrix_init -> eye .)
+    {               reduce using rule 68 (matrix_init -> eye .)
+    ID              reduce using rule 68 (matrix_init -> eye .)
+
+
+state 46
+
+    (48) expression -> - . expression
+    (44) expression -> . number
+    (45) expression -> . lvalue
+    (46) expression -> . matrix_init
+    (47) expression -> . ( expression )
+    (48) expression -> . - expression
+    (49) expression -> . expression '
+    (50) expression -> . expression bin_op expression
+    (33) number -> . INT
+    (34) number -> . FLOAT
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+    (68) matrix_init -> . eye
+    (69) matrix_init -> . ones
+    (70) matrix_init -> . zeros
+    (71) matrix_init -> . [ matrix_rows ]
+    (72) matrix_init -> . [ scopes ]
+    (73) eye -> . EYE ( INT )
+    (74) ones -> . ONES ( INT )
+    (75) zeros -> . ZEROS ( INT )
+
+    (               shift and go to state 40
+    -               shift and go to state 46
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+    ID              shift and go to state 10
+    [               shift and go to state 37
+    EYE             shift and go to state 54
+    ONES            shift and go to state 53
+    ZEROS           shift and go to state 51
+
+    matrix_init                    shift and go to state 49
+    eye                            shift and go to state 45
+    ones                           shift and go to state 50
+    zeros                          shift and go to state 47
+    expression                     shift and go to state 76
+    lvalue                         shift and go to state 41
+    number                         shift and go to state 43
+
+state 47
+
+    (70) matrix_init -> zeros .
+
+    '               reduce using rule 70 (matrix_init -> zeros .)
+    <               reduce using rule 70 (matrix_init -> zeros .)
+    >               reduce using rule 70 (matrix_init -> zeros .)
+    EQ              reduce using rule 70 (matrix_init -> zeros .)
+    NEQ             reduce using rule 70 (matrix_init -> zeros .)
+    LESSEQ          reduce using rule 70 (matrix_init -> zeros .)
+    MOREEQ          reduce using rule 70 (matrix_init -> zeros .)
+    +               reduce using rule 70 (matrix_init -> zeros .)
+    -               reduce using rule 70 (matrix_init -> zeros .)
+    *               reduce using rule 70 (matrix_init -> zeros .)
+    /               reduce using rule 70 (matrix_init -> zeros .)
+    DOTPLUS         reduce using rule 70 (matrix_init -> zeros .)
+    DOTMINUS        reduce using rule 70 (matrix_init -> zeros .)
+    DOTMUL          reduce using rule 70 (matrix_init -> zeros .)
+    DOTDIV          reduce using rule 70 (matrix_init -> zeros .)
+    ;               reduce using rule 70 (matrix_init -> zeros .)
+    ,               reduce using rule 70 (matrix_init -> zeros .)
+    )               reduce using rule 70 (matrix_init -> zeros .)
+    :               reduce using rule 70 (matrix_init -> zeros .)
+    IF              reduce using rule 70 (matrix_init -> zeros .)
+    WHILE           reduce using rule 70 (matrix_init -> zeros .)
+    FOR             reduce using rule 70 (matrix_init -> zeros .)
+    BREAK           reduce using rule 70 (matrix_init -> zeros .)
+    CONTINUE        reduce using rule 70 (matrix_init -> zeros .)
+    RETURN          reduce using rule 70 (matrix_init -> zeros .)
+    PRINT           reduce using rule 70 (matrix_init -> zeros .)
+    {               reduce using rule 70 (matrix_init -> zeros .)
+    ID              reduce using rule 70 (matrix_init -> zeros .)
+
+
+state 48
+
+    (27) print_instr -> PRINT error . ;
+
+    ;               shift and go to state 77
+
+
+state 49
+
+    (46) expression -> matrix_init .
+
+    )               reduce using rule 46 (expression -> matrix_init .)
+    '               reduce using rule 46 (expression -> matrix_init .)
+    <               reduce using rule 46 (expression -> matrix_init .)
+    >               reduce using rule 46 (expression -> matrix_init .)
+    EQ              reduce using rule 46 (expression -> matrix_init .)
+    NEQ             reduce using rule 46 (expression -> matrix_init .)
+    LESSEQ          reduce using rule 46 (expression -> matrix_init .)
+    MOREEQ          reduce using rule 46 (expression -> matrix_init .)
+    +               reduce using rule 46 (expression -> matrix_init .)
+    -               reduce using rule 46 (expression -> matrix_init .)
+    *               reduce using rule 46 (expression -> matrix_init .)
+    /               reduce using rule 46 (expression -> matrix_init .)
+    DOTPLUS         reduce using rule 46 (expression -> matrix_init .)
+    DOTMINUS        reduce using rule 46 (expression -> matrix_init .)
+    DOTMUL          reduce using rule 46 (expression -> matrix_init .)
+    DOTDIV          reduce using rule 46 (expression -> matrix_init .)
+    :               reduce using rule 46 (expression -> matrix_init .)
+    IF              reduce using rule 46 (expression -> matrix_init .)
+    WHILE           reduce using rule 46 (expression -> matrix_init .)
+    FOR             reduce using rule 46 (expression -> matrix_init .)
+    BREAK           reduce using rule 46 (expression -> matrix_init .)
+    CONTINUE        reduce using rule 46 (expression -> matrix_init .)
+    RETURN          reduce using rule 46 (expression -> matrix_init .)
+    PRINT           reduce using rule 46 (expression -> matrix_init .)
+    {               reduce using rule 46 (expression -> matrix_init .)
+    ID              reduce using rule 46 (expression -> matrix_init .)
+    ;               reduce using rule 46 (expression -> matrix_init .)
+    ,               reduce using rule 46 (expression -> matrix_init .)
+
+
+state 50
+
+    (69) matrix_init -> ones .
+
+    '               reduce using rule 69 (matrix_init -> ones .)
+    <               reduce using rule 69 (matrix_init -> ones .)
+    >               reduce using rule 69 (matrix_init -> ones .)
+    EQ              reduce using rule 69 (matrix_init -> ones .)
+    NEQ             reduce using rule 69 (matrix_init -> ones .)
+    LESSEQ          reduce using rule 69 (matrix_init -> ones .)
+    MOREEQ          reduce using rule 69 (matrix_init -> ones .)
+    +               reduce using rule 69 (matrix_init -> ones .)
+    -               reduce using rule 69 (matrix_init -> ones .)
+    *               reduce using rule 69 (matrix_init -> ones .)
+    /               reduce using rule 69 (matrix_init -> ones .)
+    DOTPLUS         reduce using rule 69 (matrix_init -> ones .)
+    DOTMINUS        reduce using rule 69 (matrix_init -> ones .)
+    DOTMUL          reduce using rule 69 (matrix_init -> ones .)
+    DOTDIV          reduce using rule 69 (matrix_init -> ones .)
+    ;               reduce using rule 69 (matrix_init -> ones .)
+    ,               reduce using rule 69 (matrix_init -> ones .)
+    )               reduce using rule 69 (matrix_init -> ones .)
+    :               reduce using rule 69 (matrix_init -> ones .)
+    IF              reduce using rule 69 (matrix_init -> ones .)
+    WHILE           reduce using rule 69 (matrix_init -> ones .)
+    FOR             reduce using rule 69 (matrix_init -> ones .)
+    BREAK           reduce using rule 69 (matrix_init -> ones .)
+    CONTINUE        reduce using rule 69 (matrix_init -> ones .)
+    RETURN          reduce using rule 69 (matrix_init -> ones .)
+    PRINT           reduce using rule 69 (matrix_init -> ones .)
+    {               reduce using rule 69 (matrix_init -> ones .)
+    ID              reduce using rule 69 (matrix_init -> ones .)
+
+
+state 51
+
+    (75) zeros -> ZEROS . ( INT )
+
+    (               shift and go to state 78
+
+
+state 52
+
+    (31) print_var -> expression .
+    (49) expression -> expression . '
+    (50) expression -> expression . bin_op expression
+    (51) bin_op -> . rel_op
+    (52) bin_op -> . num_op
+    (53) bin_op -> . dot_op
+    (54) rel_op -> . <
+    (55) rel_op -> . >
+    (56) rel_op -> . EQ
+    (57) rel_op -> . NEQ
+    (58) rel_op -> . LESSEQ
+    (59) rel_op -> . MOREEQ
+    (60) num_op -> . +
+    (61) num_op -> . -
+    (62) num_op -> . *
+    (63) num_op -> . /
+    (64) dot_op -> . DOTPLUS
+    (65) dot_op -> . DOTMINUS
+    (66) dot_op -> . DOTMUL
+    (67) dot_op -> . DOTDIV
+
+    ;               reduce using rule 31 (print_var -> expression .)
+    ,               reduce using rule 31 (print_var -> expression .)
+    '               shift and go to state 92
+    <               shift and go to state 83
+    >               shift and go to state 81
+    EQ              shift and go to state 85
+    NEQ             shift and go to state 80
+    LESSEQ          shift and go to state 97
+    MOREEQ          shift and go to state 86
+    +               shift and go to state 79
+    -               shift and go to state 91
+    *               shift and go to state 88
+    /               shift and go to state 82
+    DOTPLUS         shift and go to state 87
+    DOTMINUS        shift and go to state 84
+    DOTMUL          shift and go to state 93
+    DOTDIV          shift and go to state 96
+
+    num_op                         shift and go to state 89
+    bin_op                         shift and go to state 90
+    rel_op                         shift and go to state 94
+    dot_op                         shift and go to state 95
+
+state 53
+
+    (74) ones -> ONES . ( INT )
+
+    (               shift and go to state 98
+
+
+state 54
+
+    (73) eye -> EYE . ( INT )
+
+    (               shift and go to state 99
+
+
+state 55
+
+    (29) print_vars -> print_var .
+
+    ;               reduce using rule 29 (print_vars -> print_var .)
+    ,               reduce using rule 29 (print_vars -> print_var .)
+
+
+state 56
+
+    (4) instructions -> instructions instruction .
+
+    }               reduce using rule 4 (instructions -> instructions instruction .)
+    IF              reduce using rule 4 (instructions -> instructions instruction .)
+    WHILE           reduce using rule 4 (instructions -> instructions instruction .)
+    FOR             reduce using rule 4 (instructions -> instructions instruction .)
+    BREAK           reduce using rule 4 (instructions -> instructions instruction .)
+    CONTINUE        reduce using rule 4 (instructions -> instructions instruction .)
+    RETURN          reduce using rule 4 (instructions -> instructions instruction .)
+    PRINT           reduce using rule 4 (instructions -> instructions instruction .)
+    {               reduce using rule 4 (instructions -> instructions instruction .)
+    ID              reduce using rule 4 (instructions -> instructions instruction .)
+    $end            reduce using rule 4 (instructions -> instructions instruction .)
+
+
+state 57
+
+    (15) if_else_instr -> IF ( . expression ) instruction
+    (16) if_else_instr -> IF ( . expression ) instruction ELSE instruction
+    (17) if_else_instr -> IF ( . error ) instruction
+    (18) if_else_instr -> IF ( . error ) instruction ELSE instruction
+    (44) expression -> . number
+    (45) expression -> . lvalue
+    (46) expression -> . matrix_init
+    (47) expression -> . ( expression )
+    (48) expression -> . - expression
+    (49) expression -> . expression '
+    (50) expression -> . expression bin_op expression
+    (33) number -> . INT
+    (34) number -> . FLOAT
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+    (68) matrix_init -> . eye
+    (69) matrix_init -> . ones
+    (70) matrix_init -> . zeros
+    (71) matrix_init -> . [ matrix_rows ]
+    (72) matrix_init -> . [ scopes ]
+    (73) eye -> . EYE ( INT )
+    (74) ones -> . ONES ( INT )
+    (75) zeros -> . ZEROS ( INT )
+
+    error           shift and go to state 100
+    (               shift and go to state 40
+    -               shift and go to state 46
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+    ID              shift and go to state 10
+    [               shift and go to state 37
+    EYE             shift and go to state 54
+    ONES            shift and go to state 53
+    ZEROS           shift and go to state 51
+
+    matrix_init                    shift and go to state 49
+    eye                            shift and go to state 45
+    ones                           shift and go to state 50
+    zeros                          shift and go to state 47
+    expression                     shift and go to state 101
+    lvalue                         shift and go to state 41
+    number                         shift and go to state 43
+
+state 58
+
+    (23) break_instr -> BREAK ; .
+
+    IF              reduce using rule 23 (break_instr -> BREAK ; .)
+    WHILE           reduce using rule 23 (break_instr -> BREAK ; .)
+    FOR             reduce using rule 23 (break_instr -> BREAK ; .)
+    BREAK           reduce using rule 23 (break_instr -> BREAK ; .)
+    CONTINUE        reduce using rule 23 (break_instr -> BREAK ; .)
+    RETURN          reduce using rule 23 (break_instr -> BREAK ; .)
+    PRINT           reduce using rule 23 (break_instr -> BREAK ; .)
+    {               reduce using rule 23 (break_instr -> BREAK ; .)
+    ID              reduce using rule 23 (break_instr -> BREAK ; .)
+    $end            reduce using rule 23 (break_instr -> BREAK ; .)
+    }               reduce using rule 23 (break_instr -> BREAK ; .)
+    ELSE            reduce using rule 23 (break_instr -> BREAK ; .)
+
+
+state 59
+
+    (25) return_instr -> RETURN expression . ;
+    (49) expression -> expression . '
+    (50) expression -> expression . bin_op expression
+    (51) bin_op -> . rel_op
+    (52) bin_op -> . num_op
+    (53) bin_op -> . dot_op
+    (54) rel_op -> . <
+    (55) rel_op -> . >
+    (56) rel_op -> . EQ
+    (57) rel_op -> . NEQ
+    (58) rel_op -> . LESSEQ
+    (59) rel_op -> . MOREEQ
+    (60) num_op -> . +
+    (61) num_op -> . -
+    (62) num_op -> . *
+    (63) num_op -> . /
+    (64) dot_op -> . DOTPLUS
+    (65) dot_op -> . DOTMINUS
+    (66) dot_op -> . DOTMUL
+    (67) dot_op -> . DOTDIV
+
+    ;               shift and go to state 102
+    '               shift and go to state 92
+    <               shift and go to state 83
+    >               shift and go to state 81
+    EQ              shift and go to state 85
+    NEQ             shift and go to state 80
+    LESSEQ          shift and go to state 97
+    MOREEQ          shift and go to state 86
+    +               shift and go to state 79
+    -               shift and go to state 91
+    *               shift and go to state 88
+    /               shift and go to state 82
+    DOTPLUS         shift and go to state 87
+    DOTMINUS        shift and go to state 84
+    DOTMUL          shift and go to state 93
+    DOTDIV          shift and go to state 96
+
+    num_op                         shift and go to state 89
+    bin_op                         shift and go to state 90
+    rel_op                         shift and go to state 94
+    dot_op                         shift and go to state 95
+
+state 60
+
+    (22) for_init -> ID = . expression : expression
+    (44) expression -> . number
+    (45) expression -> . lvalue
+    (46) expression -> . matrix_init
+    (47) expression -> . ( expression )
+    (48) expression -> . - expression
+    (49) expression -> . expression '
+    (50) expression -> . expression bin_op expression
+    (33) number -> . INT
+    (34) number -> . FLOAT
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+    (68) matrix_init -> . eye
+    (69) matrix_init -> . ones
+    (70) matrix_init -> . zeros
+    (71) matrix_init -> . [ matrix_rows ]
+    (72) matrix_init -> . [ scopes ]
+    (73) eye -> . EYE ( INT )
+    (74) ones -> . ONES ( INT )
+    (75) zeros -> . ZEROS ( INT )
+
+    (               shift and go to state 40
+    -               shift and go to state 46
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+    ID              shift and go to state 10
+    [               shift and go to state 37
+    EYE             shift and go to state 54
+    ONES            shift and go to state 53
+    ZEROS           shift and go to state 51
+
+    matrix_init                    shift and go to state 49
+    eye                            shift and go to state 45
+    ones                           shift and go to state 50
+    zeros                          shift and go to state 47
+    expression                     shift and go to state 103
+    lvalue                         shift and go to state 41
+    number                         shift and go to state 43
+
+state 61
+
+    (21) for_instr -> FOR for_init instruction .
+
+    IF              reduce using rule 21 (for_instr -> FOR for_init instruction .)
+    WHILE           reduce using rule 21 (for_instr -> FOR for_init instruction .)
+    FOR             reduce using rule 21 (for_instr -> FOR for_init instruction .)
+    BREAK           reduce using rule 21 (for_instr -> FOR for_init instruction .)
+    CONTINUE        reduce using rule 21 (for_instr -> FOR for_init instruction .)
+    RETURN          reduce using rule 21 (for_instr -> FOR for_init instruction .)
+    PRINT           reduce using rule 21 (for_instr -> FOR for_init instruction .)
+    {               reduce using rule 21 (for_instr -> FOR for_init instruction .)
+    ID              reduce using rule 21 (for_instr -> FOR for_init instruction .)
+    $end            reduce using rule 21 (for_instr -> FOR for_init instruction .)
+    }               reduce using rule 21 (for_instr -> FOR for_init instruction .)
+    ELSE            reduce using rule 21 (for_instr -> FOR for_init instruction .)
+
+
+state 62
+
+    (38) assignment -> lvalue assign_op expression .
+    (49) expression -> expression . '
+    (50) expression -> expression . bin_op expression
+    (51) bin_op -> . rel_op
+    (52) bin_op -> . num_op
+    (53) bin_op -> . dot_op
+    (54) rel_op -> . <
+    (55) rel_op -> . >
+    (56) rel_op -> . EQ
+    (57) rel_op -> . NEQ
+    (58) rel_op -> . LESSEQ
+    (59) rel_op -> . MOREEQ
+    (60) num_op -> . +
+    (61) num_op -> . -
+    (62) num_op -> . *
+    (63) num_op -> . /
+    (64) dot_op -> . DOTPLUS
+    (65) dot_op -> . DOTMINUS
+    (66) dot_op -> . DOTMUL
+    (67) dot_op -> . DOTDIV
+
+    ;               reduce using rule 38 (assignment -> lvalue assign_op expression .)
+    '               shift and go to state 92
+    <               shift and go to state 83
+    >               shift and go to state 81
+    EQ              shift and go to state 85
+    NEQ             shift and go to state 80
+    LESSEQ          shift and go to state 97
+    MOREEQ          shift and go to state 86
+    +               shift and go to state 79
+    -               shift and go to state 91
+    *               shift and go to state 88
+    /               shift and go to state 82
+    DOTPLUS         shift and go to state 87
+    DOTMINUS        shift and go to state 84
+    DOTMUL          shift and go to state 93
+    DOTDIV          shift and go to state 96
+
+    num_op                         shift and go to state 89
+    bin_op                         shift and go to state 90
+    dot_op                         shift and go to state 95
+    rel_op                         shift and go to state 94
+
+state 63
+
+    (32) instr_block -> { instructions } .
+
+    IF              reduce using rule 32 (instr_block -> { instructions } .)
+    WHILE           reduce using rule 32 (instr_block -> { instructions } .)
+    FOR             reduce using rule 32 (instr_block -> { instructions } .)
+    BREAK           reduce using rule 32 (instr_block -> { instructions } .)
+    CONTINUE        reduce using rule 32 (instr_block -> { instructions } .)
+    RETURN          reduce using rule 32 (instr_block -> { instructions } .)
+    PRINT           reduce using rule 32 (instr_block -> { instructions } .)
+    {               reduce using rule 32 (instr_block -> { instructions } .)
+    ID              reduce using rule 32 (instr_block -> { instructions } .)
+    $end            reduce using rule 32 (instr_block -> { instructions } .)
+    }               reduce using rule 32 (instr_block -> { instructions } .)
+    ELSE            reduce using rule 32 (instr_block -> { instructions } .)
+
+
+state 64
+
+    (36) lvalue -> ID [ INT . ]
+    (37) lvalue -> ID [ INT . , INT ]
+
+    ]               shift and go to state 105
+    ,               shift and go to state 104
+
+
+state 65
+
+    (20) while_instr -> WHILE ( error . ) instruction
+
+    )               shift and go to state 106
+
+
+state 66
+
+    (19) while_instr -> WHILE ( expression . ) instruction
+    (49) expression -> expression . '
+    (50) expression -> expression . bin_op expression
+    (51) bin_op -> . rel_op
+    (52) bin_op -> . num_op
+    (53) bin_op -> . dot_op
+    (54) rel_op -> . <
+    (55) rel_op -> . >
+    (56) rel_op -> . EQ
+    (57) rel_op -> . NEQ
+    (58) rel_op -> . LESSEQ
+    (59) rel_op -> . MOREEQ
+    (60) num_op -> . +
+    (61) num_op -> . -
+    (62) num_op -> . *
+    (63) num_op -> . /
+    (64) dot_op -> . DOTPLUS
+    (65) dot_op -> . DOTMINUS
+    (66) dot_op -> . DOTMUL
+    (67) dot_op -> . DOTDIV
+
+    )               shift and go to state 107
+    '               shift and go to state 92
+    <               shift and go to state 83
+    >               shift and go to state 81
+    EQ              shift and go to state 85
+    NEQ             shift and go to state 80
+    LESSEQ          shift and go to state 97
+    MOREEQ          shift and go to state 86
+    +               shift and go to state 79
+    -               shift and go to state 91
+    *               shift and go to state 88
+    /               shift and go to state 82
+    DOTPLUS         shift and go to state 87
+    DOTMINUS        shift and go to state 84
+    DOTMUL          shift and go to state 93
+    DOTDIV          shift and go to state 96
+
+    num_op                         shift and go to state 89
+    bin_op                         shift and go to state 90
+    dot_op                         shift and go to state 95
+    rel_op                         shift and go to state 94
+
+state 67
+
+    (82) scope -> INT . : INT
+    (33) number -> INT .
+
+  ! shift/reduce conflict for : resolved as shift
+    :               shift and go to state 108
+    ,               reduce using rule 33 (number -> INT .)
+    ]               reduce using rule 33 (number -> INT .)
+    ;               reduce using rule 33 (number -> INT .)
+
+  ! :               [ reduce using rule 33 (number -> INT .) ]
+
+
+state 68
+
+    (71) matrix_init -> [ matrix_rows . ]
+    (76) matrix_rows -> matrix_rows . ; row_elems
+
+    ]               shift and go to state 110
+    ;               shift and go to state 109
+
+
+state 69
+
+    (77) matrix_rows -> row_elems .
+    (78) row_elems -> row_elems . , number
+
+    ]               reduce using rule 77 (matrix_rows -> row_elems .)
+    ;               reduce using rule 77 (matrix_rows -> row_elems .)
+    ,               shift and go to state 111
+
+
+state 70
+
+    (72) matrix_init -> [ scopes . ]
+    (81) scopes -> scopes . ; scope
+
+    ]               shift and go to state 113
+    ;               shift and go to state 112
+
+
+state 71
+
+    (80) scopes -> scope .
+
+    ]               reduce using rule 80 (scopes -> scope .)
+    ;               reduce using rule 80 (scopes -> scope .)
+
+
+state 72
+
+    (79) row_elems -> number .
+    (83) scope -> number . : number : number
+
+    ,               reduce using rule 79 (row_elems -> number .)
+    ]               reduce using rule 79 (row_elems -> number .)
+    ;               reduce using rule 79 (row_elems -> number .)
+    :               shift and go to state 114
+
+
+state 73
+
+    (26) print_instr -> PRINT print_vars ; .
+
+    IF              reduce using rule 26 (print_instr -> PRINT print_vars ; .)
+    WHILE           reduce using rule 26 (print_instr -> PRINT print_vars ; .)
+    FOR             reduce using rule 26 (print_instr -> PRINT print_vars ; .)
+    BREAK           reduce using rule 26 (print_instr -> PRINT print_vars ; .)
+    CONTINUE        reduce using rule 26 (print_instr -> PRINT print_vars ; .)
+    RETURN          reduce using rule 26 (print_instr -> PRINT print_vars ; .)
+    PRINT           reduce using rule 26 (print_instr -> PRINT print_vars ; .)
+    {               reduce using rule 26 (print_instr -> PRINT print_vars ; .)
+    ID              reduce using rule 26 (print_instr -> PRINT print_vars ; .)
+    $end            reduce using rule 26 (print_instr -> PRINT print_vars ; .)
+    }               reduce using rule 26 (print_instr -> PRINT print_vars ; .)
+    ELSE            reduce using rule 26 (print_instr -> PRINT print_vars ; .)
+
+
+state 74
+
+    (28) print_vars -> print_vars , . print_var
+    (30) print_var -> . STRING
+    (31) print_var -> . expression
+    (44) expression -> . number
+    (45) expression -> . lvalue
+    (46) expression -> . matrix_init
+    (47) expression -> . ( expression )
+    (48) expression -> . - expression
+    (49) expression -> . expression '
+    (50) expression -> . expression bin_op expression
+    (33) number -> . INT
+    (34) number -> . FLOAT
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+    (68) matrix_init -> . eye
+    (69) matrix_init -> . ones
+    (70) matrix_init -> . zeros
+    (71) matrix_init -> . [ matrix_rows ]
+    (72) matrix_init -> . [ scopes ]
+    (73) eye -> . EYE ( INT )
+    (74) ones -> . ONES ( INT )
+    (75) zeros -> . ZEROS ( INT )
+
+    STRING          shift and go to state 42
+    (               shift and go to state 40
+    -               shift and go to state 46
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+    ID              shift and go to state 10
+    [               shift and go to state 37
+    EYE             shift and go to state 54
+    ONES            shift and go to state 53
+    ZEROS           shift and go to state 51
+
+    matrix_init                    shift and go to state 49
+    ones                           shift and go to state 50
+    expression                     shift and go to state 52
+    lvalue                         shift and go to state 41
+    number                         shift and go to state 43
+    eye                            shift and go to state 45
+    zeros                          shift and go to state 47
+    print_var                      shift and go to state 115
+
+state 75
+
+    (47) expression -> ( expression . )
+    (49) expression -> expression . '
+    (50) expression -> expression . bin_op expression
+    (51) bin_op -> . rel_op
+    (52) bin_op -> . num_op
+    (53) bin_op -> . dot_op
+    (54) rel_op -> . <
+    (55) rel_op -> . >
+    (56) rel_op -> . EQ
+    (57) rel_op -> . NEQ
+    (58) rel_op -> . LESSEQ
+    (59) rel_op -> . MOREEQ
+    (60) num_op -> . +
+    (61) num_op -> . -
+    (62) num_op -> . *
+    (63) num_op -> . /
+    (64) dot_op -> . DOTPLUS
+    (65) dot_op -> . DOTMINUS
+    (66) dot_op -> . DOTMUL
+    (67) dot_op -> . DOTDIV
+
+    )               shift and go to state 116
+    '               shift and go to state 92
+    <               shift and go to state 83
+    >               shift and go to state 81
+    EQ              shift and go to state 85
+    NEQ             shift and go to state 80
+    LESSEQ          shift and go to state 97
+    MOREEQ          shift and go to state 86
+    +               shift and go to state 79
+    -               shift and go to state 91
+    *               shift and go to state 88
+    /               shift and go to state 82
+    DOTPLUS         shift and go to state 87
+    DOTMINUS        shift and go to state 84
+    DOTMUL          shift and go to state 93
+    DOTDIV          shift and go to state 96
+
+    num_op                         shift and go to state 89
+    bin_op                         shift and go to state 90
+    rel_op                         shift and go to state 94
+    dot_op                         shift and go to state 95
+
+state 76
+
+    (48) expression -> - expression .
+    (49) expression -> expression . '
+    (50) expression -> expression . bin_op expression
+    (51) bin_op -> . rel_op
+    (52) bin_op -> . num_op
+    (53) bin_op -> . dot_op
+    (54) rel_op -> . <
+    (55) rel_op -> . >
+    (56) rel_op -> . EQ
+    (57) rel_op -> . NEQ
+    (58) rel_op -> . LESSEQ
+    (59) rel_op -> . MOREEQ
+    (60) num_op -> . +
+    (61) num_op -> . -
+    (62) num_op -> . *
+    (63) num_op -> . /
+    (64) dot_op -> . DOTPLUS
+    (65) dot_op -> . DOTMINUS
+    (66) dot_op -> . DOTMUL
+    (67) dot_op -> . DOTDIV
+
+    )               reduce using rule 48 (expression -> - expression .)
+    '               reduce using rule 48 (expression -> - expression .)
+    <               reduce using rule 48 (expression -> - expression .)
+    >               reduce using rule 48 (expression -> - expression .)
+    EQ              reduce using rule 48 (expression -> - expression .)
+    NEQ             reduce using rule 48 (expression -> - expression .)
+    LESSEQ          reduce using rule 48 (expression -> - expression .)
+    MOREEQ          reduce using rule 48 (expression -> - expression .)
+    +               reduce using rule 48 (expression -> - expression .)
+    -               reduce using rule 48 (expression -> - expression .)
+    :               reduce using rule 48 (expression -> - expression .)
+    IF              reduce using rule 48 (expression -> - expression .)
+    WHILE           reduce using rule 48 (expression -> - expression .)
+    FOR             reduce using rule 48 (expression -> - expression .)
+    BREAK           reduce using rule 48 (expression -> - expression .)
+    CONTINUE        reduce using rule 48 (expression -> - expression .)
+    RETURN          reduce using rule 48 (expression -> - expression .)
+    PRINT           reduce using rule 48 (expression -> - expression .)
+    {               reduce using rule 48 (expression -> - expression .)
+    ID              reduce using rule 48 (expression -> - expression .)
+    ;               reduce using rule 48 (expression -> - expression .)
+    ,               reduce using rule 48 (expression -> - expression .)
+    *               shift and go to state 88
+    /               shift and go to state 82
+    DOTPLUS         shift and go to state 87
+    DOTMINUS        shift and go to state 84
+    DOTMUL          shift and go to state 93
+    DOTDIV          shift and go to state 96
+
+  ! *               [ reduce using rule 48 (expression -> - expression .) ]
+  ! /               [ reduce using rule 48 (expression -> - expression .) ]
+  ! DOTPLUS         [ reduce using rule 48 (expression -> - expression .) ]
+  ! DOTMINUS        [ reduce using rule 48 (expression -> - expression .) ]
+  ! DOTMUL          [ reduce using rule 48 (expression -> - expression .) ]
+  ! DOTDIV          [ reduce using rule 48 (expression -> - expression .) ]
+  ! '               [ shift and go to state 92 ]
+  ! <               [ shift and go to state 83 ]
+  ! >               [ shift and go to state 81 ]
+  ! EQ              [ shift and go to state 85 ]
+  ! NEQ             [ shift and go to state 80 ]
+  ! LESSEQ          [ shift and go to state 97 ]
+  ! MOREEQ          [ shift and go to state 86 ]
+  ! +               [ shift and go to state 79 ]
+  ! -               [ shift and go to state 91 ]
+
+    num_op                         shift and go to state 89
+    bin_op                         shift and go to state 90
+    rel_op                         shift and go to state 94
+    dot_op                         shift and go to state 95
+
+state 77
+
+    (27) print_instr -> PRINT error ; .
+
+    IF              reduce using rule 27 (print_instr -> PRINT error ; .)
+    WHILE           reduce using rule 27 (print_instr -> PRINT error ; .)
+    FOR             reduce using rule 27 (print_instr -> PRINT error ; .)
+    BREAK           reduce using rule 27 (print_instr -> PRINT error ; .)
+    CONTINUE        reduce using rule 27 (print_instr -> PRINT error ; .)
+    RETURN          reduce using rule 27 (print_instr -> PRINT error ; .)
+    PRINT           reduce using rule 27 (print_instr -> PRINT error ; .)
+    {               reduce using rule 27 (print_instr -> PRINT error ; .)
+    ID              reduce using rule 27 (print_instr -> PRINT error ; .)
+    $end            reduce using rule 27 (print_instr -> PRINT error ; .)
+    }               reduce using rule 27 (print_instr -> PRINT error ; .)
+    ELSE            reduce using rule 27 (print_instr -> PRINT error ; .)
+
+
+state 78
+
+    (75) zeros -> ZEROS ( . INT )
+
+    INT             shift and go to state 117
+
+
+state 79
+
+    (60) num_op -> + .
+
+    (               reduce using rule 60 (num_op -> + .)
+    -               reduce using rule 60 (num_op -> + .)
+    INT             reduce using rule 60 (num_op -> + .)
+    FLOAT           reduce using rule 60 (num_op -> + .)
+    ID              reduce using rule 60 (num_op -> + .)
+    [               reduce using rule 60 (num_op -> + .)
+    EYE             reduce using rule 60 (num_op -> + .)
+    ONES            reduce using rule 60 (num_op -> + .)
+    ZEROS           reduce using rule 60 (num_op -> + .)
+
+
+state 80
+
+    (57) rel_op -> NEQ .
+
+    (               reduce using rule 57 (rel_op -> NEQ .)
+    -               reduce using rule 57 (rel_op -> NEQ .)
+    INT             reduce using rule 57 (rel_op -> NEQ .)
+    FLOAT           reduce using rule 57 (rel_op -> NEQ .)
+    ID              reduce using rule 57 (rel_op -> NEQ .)
+    [               reduce using rule 57 (rel_op -> NEQ .)
+    EYE             reduce using rule 57 (rel_op -> NEQ .)
+    ONES            reduce using rule 57 (rel_op -> NEQ .)
+    ZEROS           reduce using rule 57 (rel_op -> NEQ .)
+
+
+state 81
+
+    (55) rel_op -> > .
+
+    (               reduce using rule 55 (rel_op -> > .)
+    -               reduce using rule 55 (rel_op -> > .)
+    INT             reduce using rule 55 (rel_op -> > .)
+    FLOAT           reduce using rule 55 (rel_op -> > .)
+    ID              reduce using rule 55 (rel_op -> > .)
+    [               reduce using rule 55 (rel_op -> > .)
+    EYE             reduce using rule 55 (rel_op -> > .)
+    ONES            reduce using rule 55 (rel_op -> > .)
+    ZEROS           reduce using rule 55 (rel_op -> > .)
+
+
+state 82
+
+    (63) num_op -> / .
+
+    (               reduce using rule 63 (num_op -> / .)
+    -               reduce using rule 63 (num_op -> / .)
+    INT             reduce using rule 63 (num_op -> / .)
+    FLOAT           reduce using rule 63 (num_op -> / .)
+    ID              reduce using rule 63 (num_op -> / .)
+    [               reduce using rule 63 (num_op -> / .)
+    EYE             reduce using rule 63 (num_op -> / .)
+    ONES            reduce using rule 63 (num_op -> / .)
+    ZEROS           reduce using rule 63 (num_op -> / .)
+
+
+state 83
+
+    (54) rel_op -> < .
+
+    (               reduce using rule 54 (rel_op -> < .)
+    -               reduce using rule 54 (rel_op -> < .)
+    INT             reduce using rule 54 (rel_op -> < .)
+    FLOAT           reduce using rule 54 (rel_op -> < .)
+    ID              reduce using rule 54 (rel_op -> < .)
+    [               reduce using rule 54 (rel_op -> < .)
+    EYE             reduce using rule 54 (rel_op -> < .)
+    ONES            reduce using rule 54 (rel_op -> < .)
+    ZEROS           reduce using rule 54 (rel_op -> < .)
+
+
+state 84
+
+    (65) dot_op -> DOTMINUS .
+
+    (               reduce using rule 65 (dot_op -> DOTMINUS .)
+    -               reduce using rule 65 (dot_op -> DOTMINUS .)
+    INT             reduce using rule 65 (dot_op -> DOTMINUS .)
+    FLOAT           reduce using rule 65 (dot_op -> DOTMINUS .)
+    ID              reduce using rule 65 (dot_op -> DOTMINUS .)
+    [               reduce using rule 65 (dot_op -> DOTMINUS .)
+    EYE             reduce using rule 65 (dot_op -> DOTMINUS .)
+    ONES            reduce using rule 65 (dot_op -> DOTMINUS .)
+    ZEROS           reduce using rule 65 (dot_op -> DOTMINUS .)
+
+
+state 85
+
+    (56) rel_op -> EQ .
+
+    (               reduce using rule 56 (rel_op -> EQ .)
+    -               reduce using rule 56 (rel_op -> EQ .)
+    INT             reduce using rule 56 (rel_op -> EQ .)
+    FLOAT           reduce using rule 56 (rel_op -> EQ .)
+    ID              reduce using rule 56 (rel_op -> EQ .)
+    [               reduce using rule 56 (rel_op -> EQ .)
+    EYE             reduce using rule 56 (rel_op -> EQ .)
+    ONES            reduce using rule 56 (rel_op -> EQ .)
+    ZEROS           reduce using rule 56 (rel_op -> EQ .)
+
+
+state 86
+
+    (59) rel_op -> MOREEQ .
+
+    (               reduce using rule 59 (rel_op -> MOREEQ .)
+    -               reduce using rule 59 (rel_op -> MOREEQ .)
+    INT             reduce using rule 59 (rel_op -> MOREEQ .)
+    FLOAT           reduce using rule 59 (rel_op -> MOREEQ .)
+    ID              reduce using rule 59 (rel_op -> MOREEQ .)
+    [               reduce using rule 59 (rel_op -> MOREEQ .)
+    EYE             reduce using rule 59 (rel_op -> MOREEQ .)
+    ONES            reduce using rule 59 (rel_op -> MOREEQ .)
+    ZEROS           reduce using rule 59 (rel_op -> MOREEQ .)
+
+
+state 87
+
+    (64) dot_op -> DOTPLUS .
+
+    (               reduce using rule 64 (dot_op -> DOTPLUS .)
+    -               reduce using rule 64 (dot_op -> DOTPLUS .)
+    INT             reduce using rule 64 (dot_op -> DOTPLUS .)
+    FLOAT           reduce using rule 64 (dot_op -> DOTPLUS .)
+    ID              reduce using rule 64 (dot_op -> DOTPLUS .)
+    [               reduce using rule 64 (dot_op -> DOTPLUS .)
+    EYE             reduce using rule 64 (dot_op -> DOTPLUS .)
+    ONES            reduce using rule 64 (dot_op -> DOTPLUS .)
+    ZEROS           reduce using rule 64 (dot_op -> DOTPLUS .)
+
+
+state 88
+
+    (62) num_op -> * .
+
+    (               reduce using rule 62 (num_op -> * .)
+    -               reduce using rule 62 (num_op -> * .)
+    INT             reduce using rule 62 (num_op -> * .)
+    FLOAT           reduce using rule 62 (num_op -> * .)
+    ID              reduce using rule 62 (num_op -> * .)
+    [               reduce using rule 62 (num_op -> * .)
+    EYE             reduce using rule 62 (num_op -> * .)
+    ONES            reduce using rule 62 (num_op -> * .)
+    ZEROS           reduce using rule 62 (num_op -> * .)
+
+
+state 89
+
+    (52) bin_op -> num_op .
+
+    (               reduce using rule 52 (bin_op -> num_op .)
+    -               reduce using rule 52 (bin_op -> num_op .)
+    INT             reduce using rule 52 (bin_op -> num_op .)
+    FLOAT           reduce using rule 52 (bin_op -> num_op .)
+    ID              reduce using rule 52 (bin_op -> num_op .)
+    [               reduce using rule 52 (bin_op -> num_op .)
+    EYE             reduce using rule 52 (bin_op -> num_op .)
+    ONES            reduce using rule 52 (bin_op -> num_op .)
+    ZEROS           reduce using rule 52 (bin_op -> num_op .)
+
+
+state 90
+
+    (50) expression -> expression bin_op . expression
+    (44) expression -> . number
+    (45) expression -> . lvalue
+    (46) expression -> . matrix_init
+    (47) expression -> . ( expression )
+    (48) expression -> . - expression
+    (49) expression -> . expression '
+    (50) expression -> . expression bin_op expression
+    (33) number -> . INT
+    (34) number -> . FLOAT
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+    (68) matrix_init -> . eye
+    (69) matrix_init -> . ones
+    (70) matrix_init -> . zeros
+    (71) matrix_init -> . [ matrix_rows ]
+    (72) matrix_init -> . [ scopes ]
+    (73) eye -> . EYE ( INT )
+    (74) ones -> . ONES ( INT )
+    (75) zeros -> . ZEROS ( INT )
+
+    (               shift and go to state 40
+    -               shift and go to state 46
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+    ID              shift and go to state 10
+    [               shift and go to state 37
+    EYE             shift and go to state 54
+    ONES            shift and go to state 53
+    ZEROS           shift and go to state 51
+
+    eye                            shift and go to state 45
+    ones                           shift and go to state 50
+    matrix_init                    shift and go to state 49
+    zeros                          shift and go to state 47
+    expression                     shift and go to state 118
+    lvalue                         shift and go to state 41
+    number                         shift and go to state 43
+
+state 91
+
+    (61) num_op -> - .
+
+    (               reduce using rule 61 (num_op -> - .)
+    -               reduce using rule 61 (num_op -> - .)
+    INT             reduce using rule 61 (num_op -> - .)
+    FLOAT           reduce using rule 61 (num_op -> - .)
+    ID              reduce using rule 61 (num_op -> - .)
+    [               reduce using rule 61 (num_op -> - .)
+    EYE             reduce using rule 61 (num_op -> - .)
+    ONES            reduce using rule 61 (num_op -> - .)
+    ZEROS           reduce using rule 61 (num_op -> - .)
+
+
+state 92
+
+    (49) expression -> expression ' .
+
+    )               reduce using rule 49 (expression -> expression ' .)
+    '               reduce using rule 49 (expression -> expression ' .)
+    <               reduce using rule 49 (expression -> expression ' .)
+    >               reduce using rule 49 (expression -> expression ' .)
+    EQ              reduce using rule 49 (expression -> expression ' .)
+    NEQ             reduce using rule 49 (expression -> expression ' .)
+    LESSEQ          reduce using rule 49 (expression -> expression ' .)
+    MOREEQ          reduce using rule 49 (expression -> expression ' .)
+    +               reduce using rule 49 (expression -> expression ' .)
+    -               reduce using rule 49 (expression -> expression ' .)
+    *               reduce using rule 49 (expression -> expression ' .)
+    /               reduce using rule 49 (expression -> expression ' .)
+    DOTPLUS         reduce using rule 49 (expression -> expression ' .)
+    DOTMINUS        reduce using rule 49 (expression -> expression ' .)
+    DOTMUL          reduce using rule 49 (expression -> expression ' .)
+    DOTDIV          reduce using rule 49 (expression -> expression ' .)
+    :               reduce using rule 49 (expression -> expression ' .)
+    IF              reduce using rule 49 (expression -> expression ' .)
+    WHILE           reduce using rule 49 (expression -> expression ' .)
+    FOR             reduce using rule 49 (expression -> expression ' .)
+    BREAK           reduce using rule 49 (expression -> expression ' .)
+    CONTINUE        reduce using rule 49 (expression -> expression ' .)
+    RETURN          reduce using rule 49 (expression -> expression ' .)
+    PRINT           reduce using rule 49 (expression -> expression ' .)
+    {               reduce using rule 49 (expression -> expression ' .)
+    ID              reduce using rule 49 (expression -> expression ' .)
+    ;               reduce using rule 49 (expression -> expression ' .)
+    ,               reduce using rule 49 (expression -> expression ' .)
+
+
+state 93
+
+    (66) dot_op -> DOTMUL .
+
+    (               reduce using rule 66 (dot_op -> DOTMUL .)
+    -               reduce using rule 66 (dot_op -> DOTMUL .)
+    INT             reduce using rule 66 (dot_op -> DOTMUL .)
+    FLOAT           reduce using rule 66 (dot_op -> DOTMUL .)
+    ID              reduce using rule 66 (dot_op -> DOTMUL .)
+    [               reduce using rule 66 (dot_op -> DOTMUL .)
+    EYE             reduce using rule 66 (dot_op -> DOTMUL .)
+    ONES            reduce using rule 66 (dot_op -> DOTMUL .)
+    ZEROS           reduce using rule 66 (dot_op -> DOTMUL .)
+
+
+state 94
+
+    (51) bin_op -> rel_op .
+
+    (               reduce using rule 51 (bin_op -> rel_op .)
+    -               reduce using rule 51 (bin_op -> rel_op .)
+    INT             reduce using rule 51 (bin_op -> rel_op .)
+    FLOAT           reduce using rule 51 (bin_op -> rel_op .)
+    ID              reduce using rule 51 (bin_op -> rel_op .)
+    [               reduce using rule 51 (bin_op -> rel_op .)
+    EYE             reduce using rule 51 (bin_op -> rel_op .)
+    ONES            reduce using rule 51 (bin_op -> rel_op .)
+    ZEROS           reduce using rule 51 (bin_op -> rel_op .)
+
+
+state 95
+
+    (53) bin_op -> dot_op .
+
+    (               reduce using rule 53 (bin_op -> dot_op .)
+    -               reduce using rule 53 (bin_op -> dot_op .)
+    INT             reduce using rule 53 (bin_op -> dot_op .)
+    FLOAT           reduce using rule 53 (bin_op -> dot_op .)
+    ID              reduce using rule 53 (bin_op -> dot_op .)
+    [               reduce using rule 53 (bin_op -> dot_op .)
+    EYE             reduce using rule 53 (bin_op -> dot_op .)
+    ONES            reduce using rule 53 (bin_op -> dot_op .)
+    ZEROS           reduce using rule 53 (bin_op -> dot_op .)
+
+
+state 96
+
+    (67) dot_op -> DOTDIV .
+
+    (               reduce using rule 67 (dot_op -> DOTDIV .)
+    -               reduce using rule 67 (dot_op -> DOTDIV .)
+    INT             reduce using rule 67 (dot_op -> DOTDIV .)
+    FLOAT           reduce using rule 67 (dot_op -> DOTDIV .)
+    ID              reduce using rule 67 (dot_op -> DOTDIV .)
+    [               reduce using rule 67 (dot_op -> DOTDIV .)
+    EYE             reduce using rule 67 (dot_op -> DOTDIV .)
+    ONES            reduce using rule 67 (dot_op -> DOTDIV .)
+    ZEROS           reduce using rule 67 (dot_op -> DOTDIV .)
+
+
+state 97
+
+    (58) rel_op -> LESSEQ .
+
+    (               reduce using rule 58 (rel_op -> LESSEQ .)
+    -               reduce using rule 58 (rel_op -> LESSEQ .)
+    INT             reduce using rule 58 (rel_op -> LESSEQ .)
+    FLOAT           reduce using rule 58 (rel_op -> LESSEQ .)
+    ID              reduce using rule 58 (rel_op -> LESSEQ .)
+    [               reduce using rule 58 (rel_op -> LESSEQ .)
+    EYE             reduce using rule 58 (rel_op -> LESSEQ .)
+    ONES            reduce using rule 58 (rel_op -> LESSEQ .)
+    ZEROS           reduce using rule 58 (rel_op -> LESSEQ .)
+
+
+state 98
+
+    (74) ones -> ONES ( . INT )
+
+    INT             shift and go to state 119
+
+
+state 99
+
+    (73) eye -> EYE ( . INT )
+
+    INT             shift and go to state 120
+
+
+state 100
+
+    (17) if_else_instr -> IF ( error . ) instruction
+    (18) if_else_instr -> IF ( error . ) instruction ELSE instruction
+
+    )               shift and go to state 121
+
+
+state 101
+
+    (15) if_else_instr -> IF ( expression . ) instruction
+    (16) if_else_instr -> IF ( expression . ) instruction ELSE instruction
+    (49) expression -> expression . '
+    (50) expression -> expression . bin_op expression
+    (51) bin_op -> . rel_op
+    (52) bin_op -> . num_op
+    (53) bin_op -> . dot_op
+    (54) rel_op -> . <
+    (55) rel_op -> . >
+    (56) rel_op -> . EQ
+    (57) rel_op -> . NEQ
+    (58) rel_op -> . LESSEQ
+    (59) rel_op -> . MOREEQ
+    (60) num_op -> . +
+    (61) num_op -> . -
+    (62) num_op -> . *
+    (63) num_op -> . /
+    (64) dot_op -> . DOTPLUS
+    (65) dot_op -> . DOTMINUS
+    (66) dot_op -> . DOTMUL
+    (67) dot_op -> . DOTDIV
+
+    )               shift and go to state 122
+    '               shift and go to state 92
+    <               shift and go to state 83
+    >               shift and go to state 81
+    EQ              shift and go to state 85
+    NEQ             shift and go to state 80
+    LESSEQ          shift and go to state 97
+    MOREEQ          shift and go to state 86
+    +               shift and go to state 79
+    -               shift and go to state 91
+    *               shift and go to state 88
+    /               shift and go to state 82
+    DOTPLUS         shift and go to state 87
+    DOTMINUS        shift and go to state 84
+    DOTMUL          shift and go to state 93
+    DOTDIV          shift and go to state 96
+
+    num_op                         shift and go to state 89
+    bin_op                         shift and go to state 90
+    dot_op                         shift and go to state 95
+    rel_op                         shift and go to state 94
+
+state 102
+
+    (25) return_instr -> RETURN expression ; .
+
+    IF              reduce using rule 25 (return_instr -> RETURN expression ; .)
+    WHILE           reduce using rule 25 (return_instr -> RETURN expression ; .)
+    FOR             reduce using rule 25 (return_instr -> RETURN expression ; .)
+    BREAK           reduce using rule 25 (return_instr -> RETURN expression ; .)
+    CONTINUE        reduce using rule 25 (return_instr -> RETURN expression ; .)
+    RETURN          reduce using rule 25 (return_instr -> RETURN expression ; .)
+    PRINT           reduce using rule 25 (return_instr -> RETURN expression ; .)
+    {               reduce using rule 25 (return_instr -> RETURN expression ; .)
+    ID              reduce using rule 25 (return_instr -> RETURN expression ; .)
+    $end            reduce using rule 25 (return_instr -> RETURN expression ; .)
+    }               reduce using rule 25 (return_instr -> RETURN expression ; .)
+    ELSE            reduce using rule 25 (return_instr -> RETURN expression ; .)
+
+
+state 103
+
+    (22) for_init -> ID = expression . : expression
+    (49) expression -> expression . '
+    (50) expression -> expression . bin_op expression
+    (51) bin_op -> . rel_op
+    (52) bin_op -> . num_op
+    (53) bin_op -> . dot_op
+    (54) rel_op -> . <
+    (55) rel_op -> . >
+    (56) rel_op -> . EQ
+    (57) rel_op -> . NEQ
+    (58) rel_op -> . LESSEQ
+    (59) rel_op -> . MOREEQ
+    (60) num_op -> . +
+    (61) num_op -> . -
+    (62) num_op -> . *
+    (63) num_op -> . /
+    (64) dot_op -> . DOTPLUS
+    (65) dot_op -> . DOTMINUS
+    (66) dot_op -> . DOTMUL
+    (67) dot_op -> . DOTDIV
+
+    :               shift and go to state 123
+    '               shift and go to state 92
+    <               shift and go to state 83
+    >               shift and go to state 81
+    EQ              shift and go to state 85
+    NEQ             shift and go to state 80
+    LESSEQ          shift and go to state 97
+    MOREEQ          shift and go to state 86
+    +               shift and go to state 79
+    -               shift and go to state 91
+    *               shift and go to state 88
+    /               shift and go to state 82
+    DOTPLUS         shift and go to state 87
+    DOTMINUS        shift and go to state 84
+    DOTMUL          shift and go to state 93
+    DOTDIV          shift and go to state 96
+
+    num_op                         shift and go to state 89
+    bin_op                         shift and go to state 90
+    rel_op                         shift and go to state 94
+    dot_op                         shift and go to state 95
+
+state 104
+
+    (37) lvalue -> ID [ INT , . INT ]
+
+    INT             shift and go to state 124
+
+
+state 105
+
+    (36) lvalue -> ID [ INT ] .
+
+    ;               reduce using rule 36 (lvalue -> ID [ INT ] .)
+    '               reduce using rule 36 (lvalue -> ID [ INT ] .)
+    <               reduce using rule 36 (lvalue -> ID [ INT ] .)
+    >               reduce using rule 36 (lvalue -> ID [ INT ] .)
+    EQ              reduce using rule 36 (lvalue -> ID [ INT ] .)
+    NEQ             reduce using rule 36 (lvalue -> ID [ INT ] .)
+    LESSEQ          reduce using rule 36 (lvalue -> ID [ INT ] .)
+    MOREEQ          reduce using rule 36 (lvalue -> ID [ INT ] .)
+    +               reduce using rule 36 (lvalue -> ID [ INT ] .)
+    -               reduce using rule 36 (lvalue -> ID [ INT ] .)
+    *               reduce using rule 36 (lvalue -> ID [ INT ] .)
+    /               reduce using rule 36 (lvalue -> ID [ INT ] .)
+    DOTPLUS         reduce using rule 36 (lvalue -> ID [ INT ] .)
+    DOTMINUS        reduce using rule 36 (lvalue -> ID [ INT ] .)
+    DOTMUL          reduce using rule 36 (lvalue -> ID [ INT ] .)
+    DOTDIV          reduce using rule 36 (lvalue -> ID [ INT ] .)
+    =               reduce using rule 36 (lvalue -> ID [ INT ] .)
+    PLUSASSIGN      reduce using rule 36 (lvalue -> ID [ INT ] .)
+    MINUSASSIGN     reduce using rule 36 (lvalue -> ID [ INT ] .)
+    MULASSIGN       reduce using rule 36 (lvalue -> ID [ INT ] .)
+    DIVASSIGN       reduce using rule 36 (lvalue -> ID [ INT ] .)
+    )               reduce using rule 36 (lvalue -> ID [ INT ] .)
+    ,               reduce using rule 36 (lvalue -> ID [ INT ] .)
+    :               reduce using rule 36 (lvalue -> ID [ INT ] .)
+    IF              reduce using rule 36 (lvalue -> ID [ INT ] .)
+    WHILE           reduce using rule 36 (lvalue -> ID [ INT ] .)
+    FOR             reduce using rule 36 (lvalue -> ID [ INT ] .)
+    BREAK           reduce using rule 36 (lvalue -> ID [ INT ] .)
+    CONTINUE        reduce using rule 36 (lvalue -> ID [ INT ] .)
+    RETURN          reduce using rule 36 (lvalue -> ID [ INT ] .)
+    PRINT           reduce using rule 36 (lvalue -> ID [ INT ] .)
+    {               reduce using rule 36 (lvalue -> ID [ INT ] .)
+    ID              reduce using rule 36 (lvalue -> ID [ INT ] .)
+
+
+state 106
+
+    (20) while_instr -> WHILE ( error ) . instruction
+    (6) instruction -> . if_else_instr
+    (7) instruction -> . while_instr
+    (8) instruction -> . for_instr
+    (9) instruction -> . break_instr
+    (10) instruction -> . continue_instr
+    (11) instruction -> . return_instr
+    (12) instruction -> . print_instr
+    (13) instruction -> . instr_block
+    (14) instruction -> . assignment ;
+    (15) if_else_instr -> . IF ( expression ) instruction
+    (16) if_else_instr -> . IF ( expression ) instruction ELSE instruction
+    (17) if_else_instr -> . IF ( error ) instruction
+    (18) if_else_instr -> . IF ( error ) instruction ELSE instruction
+    (19) while_instr -> . WHILE ( expression ) instruction
+    (20) while_instr -> . WHILE ( error ) instruction
+    (21) for_instr -> . FOR for_init instruction
+    (23) break_instr -> . BREAK ;
+    (24) continue_instr -> . CONTINUE ;
+    (25) return_instr -> . RETURN expression ;
+    (26) print_instr -> . PRINT print_vars ;
+    (27) print_instr -> . PRINT error ;
+    (32) instr_block -> . { instructions }
+    (38) assignment -> . lvalue assign_op expression
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+
+    IF              shift and go to state 18
+    WHILE           shift and go to state 12
+    FOR             shift and go to state 1
+    BREAK           shift and go to state 22
+    CONTINUE        shift and go to state 5
+    RETURN          shift and go to state 23
+    PRINT           shift and go to state 14
+    {               shift and go to state 9
+    ID              shift and go to state 10
+
+    print_instr                    shift and go to state 11
+    while_instr                    shift and go to state 19
+    break_instr                    shift and go to state 3
+    lvalue                         shift and go to state 4
+    instr_block                    shift and go to state 16
+    for_instr                      shift and go to state 17
+    continue_instr                 shift and go to state 6
+    return_instr                   shift and go to state 7
+    instruction                    shift and go to state 125
+    if_else_instr                  shift and go to state 21
+    assignment                     shift and go to state 8
+
+state 107
+
+    (19) while_instr -> WHILE ( expression ) . instruction
+    (6) instruction -> . if_else_instr
+    (7) instruction -> . while_instr
+    (8) instruction -> . for_instr
+    (9) instruction -> . break_instr
+    (10) instruction -> . continue_instr
+    (11) instruction -> . return_instr
+    (12) instruction -> . print_instr
+    (13) instruction -> . instr_block
+    (14) instruction -> . assignment ;
+    (15) if_else_instr -> . IF ( expression ) instruction
+    (16) if_else_instr -> . IF ( expression ) instruction ELSE instruction
+    (17) if_else_instr -> . IF ( error ) instruction
+    (18) if_else_instr -> . IF ( error ) instruction ELSE instruction
+    (19) while_instr -> . WHILE ( expression ) instruction
+    (20) while_instr -> . WHILE ( error ) instruction
+    (21) for_instr -> . FOR for_init instruction
+    (23) break_instr -> . BREAK ;
+    (24) continue_instr -> . CONTINUE ;
+    (25) return_instr -> . RETURN expression ;
+    (26) print_instr -> . PRINT print_vars ;
+    (27) print_instr -> . PRINT error ;
+    (32) instr_block -> . { instructions }
+    (38) assignment -> . lvalue assign_op expression
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+
+    IF              shift and go to state 18
+    WHILE           shift and go to state 12
+    FOR             shift and go to state 1
+    BREAK           shift and go to state 22
+    CONTINUE        shift and go to state 5
+    RETURN          shift and go to state 23
+    PRINT           shift and go to state 14
+    {               shift and go to state 9
+    ID              shift and go to state 10
+
+    print_instr                    shift and go to state 11
+    while_instr                    shift and go to state 19
+    break_instr                    shift and go to state 3
+    lvalue                         shift and go to state 4
+    instr_block                    shift and go to state 16
+    for_instr                      shift and go to state 17
+    continue_instr                 shift and go to state 6
+    return_instr                   shift and go to state 7
+    instruction                    shift and go to state 126
+    if_else_instr                  shift and go to state 21
+    assignment                     shift and go to state 8
+
+state 108
+
+    (82) scope -> INT : . INT
+
+    INT             shift and go to state 127
+
+
+state 109
+
+    (76) matrix_rows -> matrix_rows ; . row_elems
+    (78) row_elems -> . row_elems , number
+    (79) row_elems -> . number
+    (33) number -> . INT
+    (34) number -> . FLOAT
+
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+
+    row_elems                      shift and go to state 128
+    number                         shift and go to state 129
+
+state 110
+
+    (71) matrix_init -> [ matrix_rows ] .
+
+    '               reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    <               reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    >               reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    EQ              reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    NEQ             reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    LESSEQ          reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    MOREEQ          reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    +               reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    -               reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    *               reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    /               reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    DOTPLUS         reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    DOTMINUS        reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    DOTMUL          reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    DOTDIV          reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    ;               reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    ,               reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    )               reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    :               reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    IF              reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    WHILE           reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    FOR             reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    BREAK           reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    CONTINUE        reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    RETURN          reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    PRINT           reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    {               reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+    ID              reduce using rule 71 (matrix_init -> [ matrix_rows ] .)
+
+
+state 111
+
+    (78) row_elems -> row_elems , . number
+    (33) number -> . INT
+    (34) number -> . FLOAT
+
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+
+    number                         shift and go to state 130
+
+state 112
+
+    (81) scopes -> scopes ; . scope
+    (82) scope -> . INT : INT
+    (83) scope -> . number : number : number
+    (33) number -> . INT
+    (34) number -> . FLOAT
+
+    INT             shift and go to state 67
+    FLOAT           shift and go to state 44
+
+    scope                          shift and go to state 131
+    number                         shift and go to state 132
+
+state 113
+
+    (72) matrix_init -> [ scopes ] .
+
+    '               reduce using rule 72 (matrix_init -> [ scopes ] .)
+    <               reduce using rule 72 (matrix_init -> [ scopes ] .)
+    >               reduce using rule 72 (matrix_init -> [ scopes ] .)
+    EQ              reduce using rule 72 (matrix_init -> [ scopes ] .)
+    NEQ             reduce using rule 72 (matrix_init -> [ scopes ] .)
+    LESSEQ          reduce using rule 72 (matrix_init -> [ scopes ] .)
+    MOREEQ          reduce using rule 72 (matrix_init -> [ scopes ] .)
+    +               reduce using rule 72 (matrix_init -> [ scopes ] .)
+    -               reduce using rule 72 (matrix_init -> [ scopes ] .)
+    *               reduce using rule 72 (matrix_init -> [ scopes ] .)
+    /               reduce using rule 72 (matrix_init -> [ scopes ] .)
+    DOTPLUS         reduce using rule 72 (matrix_init -> [ scopes ] .)
+    DOTMINUS        reduce using rule 72 (matrix_init -> [ scopes ] .)
+    DOTMUL          reduce using rule 72 (matrix_init -> [ scopes ] .)
+    DOTDIV          reduce using rule 72 (matrix_init -> [ scopes ] .)
+    ;               reduce using rule 72 (matrix_init -> [ scopes ] .)
+    ,               reduce using rule 72 (matrix_init -> [ scopes ] .)
+    )               reduce using rule 72 (matrix_init -> [ scopes ] .)
+    :               reduce using rule 72 (matrix_init -> [ scopes ] .)
+    IF              reduce using rule 72 (matrix_init -> [ scopes ] .)
+    WHILE           reduce using rule 72 (matrix_init -> [ scopes ] .)
+    FOR             reduce using rule 72 (matrix_init -> [ scopes ] .)
+    BREAK           reduce using rule 72 (matrix_init -> [ scopes ] .)
+    CONTINUE        reduce using rule 72 (matrix_init -> [ scopes ] .)
+    RETURN          reduce using rule 72 (matrix_init -> [ scopes ] .)
+    PRINT           reduce using rule 72 (matrix_init -> [ scopes ] .)
+    {               reduce using rule 72 (matrix_init -> [ scopes ] .)
+    ID              reduce using rule 72 (matrix_init -> [ scopes ] .)
+
+
+state 114
+
+    (83) scope -> number : . number : number
+    (33) number -> . INT
+    (34) number -> . FLOAT
+
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+
+    number                         shift and go to state 133
+
+state 115
+
+    (28) print_vars -> print_vars , print_var .
+
+    ;               reduce using rule 28 (print_vars -> print_vars , print_var .)
+    ,               reduce using rule 28 (print_vars -> print_vars , print_var .)
+
+
+state 116
+
+    (47) expression -> ( expression ) .
+
+    )               reduce using rule 47 (expression -> ( expression ) .)
+    '               reduce using rule 47 (expression -> ( expression ) .)
+    <               reduce using rule 47 (expression -> ( expression ) .)
+    >               reduce using rule 47 (expression -> ( expression ) .)
+    EQ              reduce using rule 47 (expression -> ( expression ) .)
+    NEQ             reduce using rule 47 (expression -> ( expression ) .)
+    LESSEQ          reduce using rule 47 (expression -> ( expression ) .)
+    MOREEQ          reduce using rule 47 (expression -> ( expression ) .)
+    +               reduce using rule 47 (expression -> ( expression ) .)
+    -               reduce using rule 47 (expression -> ( expression ) .)
+    *               reduce using rule 47 (expression -> ( expression ) .)
+    /               reduce using rule 47 (expression -> ( expression ) .)
+    DOTPLUS         reduce using rule 47 (expression -> ( expression ) .)
+    DOTMINUS        reduce using rule 47 (expression -> ( expression ) .)
+    DOTMUL          reduce using rule 47 (expression -> ( expression ) .)
+    DOTDIV          reduce using rule 47 (expression -> ( expression ) .)
+    :               reduce using rule 47 (expression -> ( expression ) .)
+    IF              reduce using rule 47 (expression -> ( expression ) .)
+    WHILE           reduce using rule 47 (expression -> ( expression ) .)
+    FOR             reduce using rule 47 (expression -> ( expression ) .)
+    BREAK           reduce using rule 47 (expression -> ( expression ) .)
+    CONTINUE        reduce using rule 47 (expression -> ( expression ) .)
+    RETURN          reduce using rule 47 (expression -> ( expression ) .)
+    PRINT           reduce using rule 47 (expression -> ( expression ) .)
+    {               reduce using rule 47 (expression -> ( expression ) .)
+    ID              reduce using rule 47 (expression -> ( expression ) .)
+    ;               reduce using rule 47 (expression -> ( expression ) .)
+    ,               reduce using rule 47 (expression -> ( expression ) .)
+
+
+state 117
+
+    (75) zeros -> ZEROS ( INT . )
+
+    )               shift and go to state 134
+
+
+state 118
+
+    (50) expression -> expression bin_op expression .
+    (49) expression -> expression . '
+    (50) expression -> expression . bin_op expression
+    (51) bin_op -> . rel_op
+    (52) bin_op -> . num_op
+    (53) bin_op -> . dot_op
+    (54) rel_op -> . <
+    (55) rel_op -> . >
+    (56) rel_op -> . EQ
+    (57) rel_op -> . NEQ
+    (58) rel_op -> . LESSEQ
+    (59) rel_op -> . MOREEQ
+    (60) num_op -> . +
+    (61) num_op -> . -
+    (62) num_op -> . *
+    (63) num_op -> . /
+    (64) dot_op -> . DOTPLUS
+    (65) dot_op -> . DOTMINUS
+    (66) dot_op -> . DOTMUL
+    (67) dot_op -> . DOTDIV
+
+  ! shift/reduce conflict for ' resolved as shift
+  ! shift/reduce conflict for < resolved as shift
+  ! shift/reduce conflict for > resolved as shift
+  ! shift/reduce conflict for EQ resolved as shift
+  ! shift/reduce conflict for NEQ resolved as shift
+  ! shift/reduce conflict for LESSEQ resolved as shift
+  ! shift/reduce conflict for MOREEQ resolved as shift
+  ! shift/reduce conflict for + resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+  ! shift/reduce conflict for * resolved as shift
+  ! shift/reduce conflict for / resolved as shift
+  ! shift/reduce conflict for DOTPLUS resolved as shift
+  ! shift/reduce conflict for DOTMINUS resolved as shift
+  ! shift/reduce conflict for DOTMUL resolved as shift
+  ! shift/reduce conflict for DOTDIV resolved as shift
+    )               reduce using rule 50 (expression -> expression bin_op expression .)
+    :               reduce using rule 50 (expression -> expression bin_op expression .)
+    IF              reduce using rule 50 (expression -> expression bin_op expression .)
+    WHILE           reduce using rule 50 (expression -> expression bin_op expression .)
+    FOR             reduce using rule 50 (expression -> expression bin_op expression .)
+    BREAK           reduce using rule 50 (expression -> expression bin_op expression .)
+    CONTINUE        reduce using rule 50 (expression -> expression bin_op expression .)
+    RETURN          reduce using rule 50 (expression -> expression bin_op expression .)
+    PRINT           reduce using rule 50 (expression -> expression bin_op expression .)
+    {               reduce using rule 50 (expression -> expression bin_op expression .)
+    ID              reduce using rule 50 (expression -> expression bin_op expression .)
+    ;               reduce using rule 50 (expression -> expression bin_op expression .)
+    ,               reduce using rule 50 (expression -> expression bin_op expression .)
+    '               shift and go to state 92
+    <               shift and go to state 83
+    >               shift and go to state 81
+    EQ              shift and go to state 85
+    NEQ             shift and go to state 80
+    LESSEQ          shift and go to state 97
+    MOREEQ          shift and go to state 86
+    +               shift and go to state 79
+    -               shift and go to state 91
+    *               shift and go to state 88
+    /               shift and go to state 82
+    DOTPLUS         shift and go to state 87
+    DOTMINUS        shift and go to state 84
+    DOTMUL          shift and go to state 93
+    DOTDIV          shift and go to state 96
+
+  ! '               [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+  ! <               [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+  ! >               [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+  ! EQ              [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+  ! NEQ             [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+  ! LESSEQ          [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+  ! MOREEQ          [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+  ! +               [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+  ! -               [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+  ! *               [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+  ! /               [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+  ! DOTPLUS         [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+  ! DOTMINUS        [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+  ! DOTMUL          [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+  ! DOTDIV          [ reduce using rule 50 (expression -> expression bin_op expression .) ]
+
+    num_op                         shift and go to state 89
+    bin_op                         shift and go to state 90
+    rel_op                         shift and go to state 94
+    dot_op                         shift and go to state 95
+
+state 119
+
+    (74) ones -> ONES ( INT . )
+
+    )               shift and go to state 135
+
+
+state 120
+
+    (73) eye -> EYE ( INT . )
+
+    )               shift and go to state 136
+
+
+state 121
+
+    (17) if_else_instr -> IF ( error ) . instruction
+    (18) if_else_instr -> IF ( error ) . instruction ELSE instruction
+    (6) instruction -> . if_else_instr
+    (7) instruction -> . while_instr
+    (8) instruction -> . for_instr
+    (9) instruction -> . break_instr
+    (10) instruction -> . continue_instr
+    (11) instruction -> . return_instr
+    (12) instruction -> . print_instr
+    (13) instruction -> . instr_block
+    (14) instruction -> . assignment ;
+    (15) if_else_instr -> . IF ( expression ) instruction
+    (16) if_else_instr -> . IF ( expression ) instruction ELSE instruction
+    (17) if_else_instr -> . IF ( error ) instruction
+    (18) if_else_instr -> . IF ( error ) instruction ELSE instruction
+    (19) while_instr -> . WHILE ( expression ) instruction
+    (20) while_instr -> . WHILE ( error ) instruction
+    (21) for_instr -> . FOR for_init instruction
+    (23) break_instr -> . BREAK ;
+    (24) continue_instr -> . CONTINUE ;
+    (25) return_instr -> . RETURN expression ;
+    (26) print_instr -> . PRINT print_vars ;
+    (27) print_instr -> . PRINT error ;
+    (32) instr_block -> . { instructions }
+    (38) assignment -> . lvalue assign_op expression
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+
+    IF              shift and go to state 18
+    WHILE           shift and go to state 12
+    FOR             shift and go to state 1
+    BREAK           shift and go to state 22
+    CONTINUE        shift and go to state 5
+    RETURN          shift and go to state 23
+    PRINT           shift and go to state 14
+    {               shift and go to state 9
+    ID              shift and go to state 10
+
+    print_instr                    shift and go to state 11
+    while_instr                    shift and go to state 19
+    break_instr                    shift and go to state 3
+    lvalue                         shift and go to state 4
+    instr_block                    shift and go to state 16
+    for_instr                      shift and go to state 17
+    continue_instr                 shift and go to state 6
+    return_instr                   shift and go to state 7
+    instruction                    shift and go to state 137
+    if_else_instr                  shift and go to state 21
+    assignment                     shift and go to state 8
+
+state 122
+
+    (15) if_else_instr -> IF ( expression ) . instruction
+    (16) if_else_instr -> IF ( expression ) . instruction ELSE instruction
+    (6) instruction -> . if_else_instr
+    (7) instruction -> . while_instr
+    (8) instruction -> . for_instr
+    (9) instruction -> . break_instr
+    (10) instruction -> . continue_instr
+    (11) instruction -> . return_instr
+    (12) instruction -> . print_instr
+    (13) instruction -> . instr_block
+    (14) instruction -> . assignment ;
+    (15) if_else_instr -> . IF ( expression ) instruction
+    (16) if_else_instr -> . IF ( expression ) instruction ELSE instruction
+    (17) if_else_instr -> . IF ( error ) instruction
+    (18) if_else_instr -> . IF ( error ) instruction ELSE instruction
+    (19) while_instr -> . WHILE ( expression ) instruction
+    (20) while_instr -> . WHILE ( error ) instruction
+    (21) for_instr -> . FOR for_init instruction
+    (23) break_instr -> . BREAK ;
+    (24) continue_instr -> . CONTINUE ;
+    (25) return_instr -> . RETURN expression ;
+    (26) print_instr -> . PRINT print_vars ;
+    (27) print_instr -> . PRINT error ;
+    (32) instr_block -> . { instructions }
+    (38) assignment -> . lvalue assign_op expression
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+
+    IF              shift and go to state 18
+    WHILE           shift and go to state 12
+    FOR             shift and go to state 1
+    BREAK           shift and go to state 22
+    CONTINUE        shift and go to state 5
+    RETURN          shift and go to state 23
+    PRINT           shift and go to state 14
+    {               shift and go to state 9
+    ID              shift and go to state 10
+
+    print_instr                    shift and go to state 11
+    while_instr                    shift and go to state 19
+    break_instr                    shift and go to state 3
+    lvalue                         shift and go to state 4
+    instr_block                    shift and go to state 16
+    for_instr                      shift and go to state 17
+    continue_instr                 shift and go to state 6
+    return_instr                   shift and go to state 7
+    instruction                    shift and go to state 138
+    if_else_instr                  shift and go to state 21
+    assignment                     shift and go to state 8
+
+state 123
+
+    (22) for_init -> ID = expression : . expression
+    (44) expression -> . number
+    (45) expression -> . lvalue
+    (46) expression -> . matrix_init
+    (47) expression -> . ( expression )
+    (48) expression -> . - expression
+    (49) expression -> . expression '
+    (50) expression -> . expression bin_op expression
+    (33) number -> . INT
+    (34) number -> . FLOAT
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+    (68) matrix_init -> . eye
+    (69) matrix_init -> . ones
+    (70) matrix_init -> . zeros
+    (71) matrix_init -> . [ matrix_rows ]
+    (72) matrix_init -> . [ scopes ]
+    (73) eye -> . EYE ( INT )
+    (74) ones -> . ONES ( INT )
+    (75) zeros -> . ZEROS ( INT )
+
+    (               shift and go to state 40
+    -               shift and go to state 46
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+    ID              shift and go to state 10
+    [               shift and go to state 37
+    EYE             shift and go to state 54
+    ONES            shift and go to state 53
+    ZEROS           shift and go to state 51
+
+    matrix_init                    shift and go to state 49
+    eye                            shift and go to state 45
+    ones                           shift and go to state 50
+    zeros                          shift and go to state 47
+    expression                     shift and go to state 139
+    lvalue                         shift and go to state 41
+    number                         shift and go to state 43
+
+state 124
+
+    (37) lvalue -> ID [ INT , INT . ]
+
+    ]               shift and go to state 140
+
+
+state 125
+
+    (20) while_instr -> WHILE ( error ) instruction .
+
+    IF              reduce using rule 20 (while_instr -> WHILE ( error ) instruction .)
+    WHILE           reduce using rule 20 (while_instr -> WHILE ( error ) instruction .)
+    FOR             reduce using rule 20 (while_instr -> WHILE ( error ) instruction .)
+    BREAK           reduce using rule 20 (while_instr -> WHILE ( error ) instruction .)
+    CONTINUE        reduce using rule 20 (while_instr -> WHILE ( error ) instruction .)
+    RETURN          reduce using rule 20 (while_instr -> WHILE ( error ) instruction .)
+    PRINT           reduce using rule 20 (while_instr -> WHILE ( error ) instruction .)
+    {               reduce using rule 20 (while_instr -> WHILE ( error ) instruction .)
+    ID              reduce using rule 20 (while_instr -> WHILE ( error ) instruction .)
+    $end            reduce using rule 20 (while_instr -> WHILE ( error ) instruction .)
+    }               reduce using rule 20 (while_instr -> WHILE ( error ) instruction .)
+    ELSE            reduce using rule 20 (while_instr -> WHILE ( error ) instruction .)
+
+
+state 126
+
+    (19) while_instr -> WHILE ( expression ) instruction .
+
+    IF              reduce using rule 19 (while_instr -> WHILE ( expression ) instruction .)
+    WHILE           reduce using rule 19 (while_instr -> WHILE ( expression ) instruction .)
+    FOR             reduce using rule 19 (while_instr -> WHILE ( expression ) instruction .)
+    BREAK           reduce using rule 19 (while_instr -> WHILE ( expression ) instruction .)
+    CONTINUE        reduce using rule 19 (while_instr -> WHILE ( expression ) instruction .)
+    RETURN          reduce using rule 19 (while_instr -> WHILE ( expression ) instruction .)
+    PRINT           reduce using rule 19 (while_instr -> WHILE ( expression ) instruction .)
+    {               reduce using rule 19 (while_instr -> WHILE ( expression ) instruction .)
+    ID              reduce using rule 19 (while_instr -> WHILE ( expression ) instruction .)
+    $end            reduce using rule 19 (while_instr -> WHILE ( expression ) instruction .)
+    }               reduce using rule 19 (while_instr -> WHILE ( expression ) instruction .)
+    ELSE            reduce using rule 19 (while_instr -> WHILE ( expression ) instruction .)
+
+
+state 127
+
+    (82) scope -> INT : INT .
+
+    ]               reduce using rule 82 (scope -> INT : INT .)
+    ;               reduce using rule 82 (scope -> INT : INT .)
+
+
+state 128
+
+    (76) matrix_rows -> matrix_rows ; row_elems .
+    (78) row_elems -> row_elems . , number
+
+    ]               reduce using rule 76 (matrix_rows -> matrix_rows ; row_elems .)
+    ;               reduce using rule 76 (matrix_rows -> matrix_rows ; row_elems .)
+    ,               shift and go to state 111
+
+
+state 129
+
+    (79) row_elems -> number .
+
+    ,               reduce using rule 79 (row_elems -> number .)
+    ]               reduce using rule 79 (row_elems -> number .)
+    ;               reduce using rule 79 (row_elems -> number .)
+
+
+state 130
+
+    (78) row_elems -> row_elems , number .
+
+    ,               reduce using rule 78 (row_elems -> row_elems , number .)
+    ]               reduce using rule 78 (row_elems -> row_elems , number .)
+    ;               reduce using rule 78 (row_elems -> row_elems , number .)
+
+
+state 131
+
+    (81) scopes -> scopes ; scope .
+
+    ]               reduce using rule 81 (scopes -> scopes ; scope .)
+    ;               reduce using rule 81 (scopes -> scopes ; scope .)
+
+
+state 132
+
+    (83) scope -> number . : number : number
+
+    :               shift and go to state 114
+
+
+state 133
+
+    (83) scope -> number : number . : number
+
+    :               shift and go to state 141
+
+
+state 134
+
+    (75) zeros -> ZEROS ( INT ) .
+
+    '               reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    <               reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    >               reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    EQ              reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    NEQ             reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    LESSEQ          reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    MOREEQ          reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    +               reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    -               reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    *               reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    /               reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    DOTPLUS         reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    DOTMINUS        reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    DOTMUL          reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    DOTDIV          reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    ;               reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    )               reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    :               reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    ,               reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    IF              reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    WHILE           reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    FOR             reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    BREAK           reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    CONTINUE        reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    RETURN          reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    PRINT           reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    {               reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+    ID              reduce using rule 75 (zeros -> ZEROS ( INT ) .)
+
+
+state 135
+
+    (74) ones -> ONES ( INT ) .
+
+    '               reduce using rule 74 (ones -> ONES ( INT ) .)
+    <               reduce using rule 74 (ones -> ONES ( INT ) .)
+    >               reduce using rule 74 (ones -> ONES ( INT ) .)
+    EQ              reduce using rule 74 (ones -> ONES ( INT ) .)
+    NEQ             reduce using rule 74 (ones -> ONES ( INT ) .)
+    LESSEQ          reduce using rule 74 (ones -> ONES ( INT ) .)
+    MOREEQ          reduce using rule 74 (ones -> ONES ( INT ) .)
+    +               reduce using rule 74 (ones -> ONES ( INT ) .)
+    -               reduce using rule 74 (ones -> ONES ( INT ) .)
+    *               reduce using rule 74 (ones -> ONES ( INT ) .)
+    /               reduce using rule 74 (ones -> ONES ( INT ) .)
+    DOTPLUS         reduce using rule 74 (ones -> ONES ( INT ) .)
+    DOTMINUS        reduce using rule 74 (ones -> ONES ( INT ) .)
+    DOTMUL          reduce using rule 74 (ones -> ONES ( INT ) .)
+    DOTDIV          reduce using rule 74 (ones -> ONES ( INT ) .)
+    ;               reduce using rule 74 (ones -> ONES ( INT ) .)
+    ,               reduce using rule 74 (ones -> ONES ( INT ) .)
+    )               reduce using rule 74 (ones -> ONES ( INT ) .)
+    :               reduce using rule 74 (ones -> ONES ( INT ) .)
+    IF              reduce using rule 74 (ones -> ONES ( INT ) .)
+    WHILE           reduce using rule 74 (ones -> ONES ( INT ) .)
+    FOR             reduce using rule 74 (ones -> ONES ( INT ) .)
+    BREAK           reduce using rule 74 (ones -> ONES ( INT ) .)
+    CONTINUE        reduce using rule 74 (ones -> ONES ( INT ) .)
+    RETURN          reduce using rule 74 (ones -> ONES ( INT ) .)
+    PRINT           reduce using rule 74 (ones -> ONES ( INT ) .)
+    {               reduce using rule 74 (ones -> ONES ( INT ) .)
+    ID              reduce using rule 74 (ones -> ONES ( INT ) .)
+
+
+state 136
+
+    (73) eye -> EYE ( INT ) .
+
+    '               reduce using rule 73 (eye -> EYE ( INT ) .)
+    <               reduce using rule 73 (eye -> EYE ( INT ) .)
+    >               reduce using rule 73 (eye -> EYE ( INT ) .)
+    EQ              reduce using rule 73 (eye -> EYE ( INT ) .)
+    NEQ             reduce using rule 73 (eye -> EYE ( INT ) .)
+    LESSEQ          reduce using rule 73 (eye -> EYE ( INT ) .)
+    MOREEQ          reduce using rule 73 (eye -> EYE ( INT ) .)
+    +               reduce using rule 73 (eye -> EYE ( INT ) .)
+    -               reduce using rule 73 (eye -> EYE ( INT ) .)
+    *               reduce using rule 73 (eye -> EYE ( INT ) .)
+    /               reduce using rule 73 (eye -> EYE ( INT ) .)
+    DOTPLUS         reduce using rule 73 (eye -> EYE ( INT ) .)
+    DOTMINUS        reduce using rule 73 (eye -> EYE ( INT ) .)
+    DOTMUL          reduce using rule 73 (eye -> EYE ( INT ) .)
+    DOTDIV          reduce using rule 73 (eye -> EYE ( INT ) .)
+    ;               reduce using rule 73 (eye -> EYE ( INT ) .)
+    ,               reduce using rule 73 (eye -> EYE ( INT ) .)
+    )               reduce using rule 73 (eye -> EYE ( INT ) .)
+    :               reduce using rule 73 (eye -> EYE ( INT ) .)
+    IF              reduce using rule 73 (eye -> EYE ( INT ) .)
+    WHILE           reduce using rule 73 (eye -> EYE ( INT ) .)
+    FOR             reduce using rule 73 (eye -> EYE ( INT ) .)
+    BREAK           reduce using rule 73 (eye -> EYE ( INT ) .)
+    CONTINUE        reduce using rule 73 (eye -> EYE ( INT ) .)
+    RETURN          reduce using rule 73 (eye -> EYE ( INT ) .)
+    PRINT           reduce using rule 73 (eye -> EYE ( INT ) .)
+    {               reduce using rule 73 (eye -> EYE ( INT ) .)
+    ID              reduce using rule 73 (eye -> EYE ( INT ) .)
+
+
+state 137
+
+    (17) if_else_instr -> IF ( error ) instruction .
+    (18) if_else_instr -> IF ( error ) instruction . ELSE instruction
+
+    IF              reduce using rule 17 (if_else_instr -> IF ( error ) instruction .)
+    WHILE           reduce using rule 17 (if_else_instr -> IF ( error ) instruction .)
+    FOR             reduce using rule 17 (if_else_instr -> IF ( error ) instruction .)
+    BREAK           reduce using rule 17 (if_else_instr -> IF ( error ) instruction .)
+    CONTINUE        reduce using rule 17 (if_else_instr -> IF ( error ) instruction .)
+    RETURN          reduce using rule 17 (if_else_instr -> IF ( error ) instruction .)
+    PRINT           reduce using rule 17 (if_else_instr -> IF ( error ) instruction .)
+    {               reduce using rule 17 (if_else_instr -> IF ( error ) instruction .)
+    ID              reduce using rule 17 (if_else_instr -> IF ( error ) instruction .)
+    $end            reduce using rule 17 (if_else_instr -> IF ( error ) instruction .)
+    }               reduce using rule 17 (if_else_instr -> IF ( error ) instruction .)
+    ELSE            shift and go to state 142
+
+  ! ELSE            [ reduce using rule 17 (if_else_instr -> IF ( error ) instruction .) ]
+
+
+state 138
+
+    (15) if_else_instr -> IF ( expression ) instruction .
+    (16) if_else_instr -> IF ( expression ) instruction . ELSE instruction
+
+    IF              reduce using rule 15 (if_else_instr -> IF ( expression ) instruction .)
+    WHILE           reduce using rule 15 (if_else_instr -> IF ( expression ) instruction .)
+    FOR             reduce using rule 15 (if_else_instr -> IF ( expression ) instruction .)
+    BREAK           reduce using rule 15 (if_else_instr -> IF ( expression ) instruction .)
+    CONTINUE        reduce using rule 15 (if_else_instr -> IF ( expression ) instruction .)
+    RETURN          reduce using rule 15 (if_else_instr -> IF ( expression ) instruction .)
+    PRINT           reduce using rule 15 (if_else_instr -> IF ( expression ) instruction .)
+    {               reduce using rule 15 (if_else_instr -> IF ( expression ) instruction .)
+    ID              reduce using rule 15 (if_else_instr -> IF ( expression ) instruction .)
+    $end            reduce using rule 15 (if_else_instr -> IF ( expression ) instruction .)
+    }               reduce using rule 15 (if_else_instr -> IF ( expression ) instruction .)
+    ELSE            shift and go to state 143
+
+  ! ELSE            [ reduce using rule 15 (if_else_instr -> IF ( expression ) instruction .) ]
+
+
+state 139
+
+    (22) for_init -> ID = expression : expression .
+    (49) expression -> expression . '
+    (50) expression -> expression . bin_op expression
+    (51) bin_op -> . rel_op
+    (52) bin_op -> . num_op
+    (53) bin_op -> . dot_op
+    (54) rel_op -> . <
+    (55) rel_op -> . >
+    (56) rel_op -> . EQ
+    (57) rel_op -> . NEQ
+    (58) rel_op -> . LESSEQ
+    (59) rel_op -> . MOREEQ
+    (60) num_op -> . +
+    (61) num_op -> . -
+    (62) num_op -> . *
+    (63) num_op -> . /
+    (64) dot_op -> . DOTPLUS
+    (65) dot_op -> . DOTMINUS
+    (66) dot_op -> . DOTMUL
+    (67) dot_op -> . DOTDIV
+
+    IF              reduce using rule 22 (for_init -> ID = expression : expression .)
+    WHILE           reduce using rule 22 (for_init -> ID = expression : expression .)
+    FOR             reduce using rule 22 (for_init -> ID = expression : expression .)
+    BREAK           reduce using rule 22 (for_init -> ID = expression : expression .)
+    CONTINUE        reduce using rule 22 (for_init -> ID = expression : expression .)
+    RETURN          reduce using rule 22 (for_init -> ID = expression : expression .)
+    PRINT           reduce using rule 22 (for_init -> ID = expression : expression .)
+    {               reduce using rule 22 (for_init -> ID = expression : expression .)
+    ID              reduce using rule 22 (for_init -> ID = expression : expression .)
+    '               shift and go to state 92
+    <               shift and go to state 83
+    >               shift and go to state 81
+    EQ              shift and go to state 85
+    NEQ             shift and go to state 80
+    LESSEQ          shift and go to state 97
+    MOREEQ          shift and go to state 86
+    +               shift and go to state 79
+    -               shift and go to state 91
+    *               shift and go to state 88
+    /               shift and go to state 82
+    DOTPLUS         shift and go to state 87
+    DOTMINUS        shift and go to state 84
+    DOTMUL          shift and go to state 93
+    DOTDIV          shift and go to state 96
+
+    num_op                         shift and go to state 89
+    bin_op                         shift and go to state 90
+    rel_op                         shift and go to state 94
+    dot_op                         shift and go to state 95
+
+state 140
+
+    (37) lvalue -> ID [ INT , INT ] .
+
+    ;               reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    '               reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    <               reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    >               reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    EQ              reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    NEQ             reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    LESSEQ          reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    MOREEQ          reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    +               reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    -               reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    *               reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    /               reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    DOTPLUS         reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    DOTMINUS        reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    DOTMUL          reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    DOTDIV          reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    =               reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    PLUSASSIGN      reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    MINUSASSIGN     reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    MULASSIGN       reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    DIVASSIGN       reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    )               reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    ,               reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    :               reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    IF              reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    WHILE           reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    FOR             reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    BREAK           reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    CONTINUE        reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    RETURN          reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    PRINT           reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    {               reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+    ID              reduce using rule 37 (lvalue -> ID [ INT , INT ] .)
+
+
+state 141
+
+    (83) scope -> number : number : . number
+    (33) number -> . INT
+    (34) number -> . FLOAT
+
+    INT             shift and go to state 38
+    FLOAT           shift and go to state 44
+
+    number                         shift and go to state 144
+
+state 142
+
+    (18) if_else_instr -> IF ( error ) instruction ELSE . instruction
+    (6) instruction -> . if_else_instr
+    (7) instruction -> . while_instr
+    (8) instruction -> . for_instr
+    (9) instruction -> . break_instr
+    (10) instruction -> . continue_instr
+    (11) instruction -> . return_instr
+    (12) instruction -> . print_instr
+    (13) instruction -> . instr_block
+    (14) instruction -> . assignment ;
+    (15) if_else_instr -> . IF ( expression ) instruction
+    (16) if_else_instr -> . IF ( expression ) instruction ELSE instruction
+    (17) if_else_instr -> . IF ( error ) instruction
+    (18) if_else_instr -> . IF ( error ) instruction ELSE instruction
+    (19) while_instr -> . WHILE ( expression ) instruction
+    (20) while_instr -> . WHILE ( error ) instruction
+    (21) for_instr -> . FOR for_init instruction
+    (23) break_instr -> . BREAK ;
+    (24) continue_instr -> . CONTINUE ;
+    (25) return_instr -> . RETURN expression ;
+    (26) print_instr -> . PRINT print_vars ;
+    (27) print_instr -> . PRINT error ;
+    (32) instr_block -> . { instructions }
+    (38) assignment -> . lvalue assign_op expression
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+
+    IF              shift and go to state 18
+    WHILE           shift and go to state 12
+    FOR             shift and go to state 1
+    BREAK           shift and go to state 22
+    CONTINUE        shift and go to state 5
+    RETURN          shift and go to state 23
+    PRINT           shift and go to state 14
+    {               shift and go to state 9
+    ID              shift and go to state 10
+
+    print_instr                    shift and go to state 11
+    while_instr                    shift and go to state 19
+    break_instr                    shift and go to state 3
+    lvalue                         shift and go to state 4
+    instr_block                    shift and go to state 16
+    for_instr                      shift and go to state 17
+    continue_instr                 shift and go to state 6
+    return_instr                   shift and go to state 7
+    instruction                    shift and go to state 145
+    if_else_instr                  shift and go to state 21
+    assignment                     shift and go to state 8
+
+state 143
+
+    (16) if_else_instr -> IF ( expression ) instruction ELSE . instruction
+    (6) instruction -> . if_else_instr
+    (7) instruction -> . while_instr
+    (8) instruction -> . for_instr
+    (9) instruction -> . break_instr
+    (10) instruction -> . continue_instr
+    (11) instruction -> . return_instr
+    (12) instruction -> . print_instr
+    (13) instruction -> . instr_block
+    (14) instruction -> . assignment ;
+    (15) if_else_instr -> . IF ( expression ) instruction
+    (16) if_else_instr -> . IF ( expression ) instruction ELSE instruction
+    (17) if_else_instr -> . IF ( error ) instruction
+    (18) if_else_instr -> . IF ( error ) instruction ELSE instruction
+    (19) while_instr -> . WHILE ( expression ) instruction
+    (20) while_instr -> . WHILE ( error ) instruction
+    (21) for_instr -> . FOR for_init instruction
+    (23) break_instr -> . BREAK ;
+    (24) continue_instr -> . CONTINUE ;
+    (25) return_instr -> . RETURN expression ;
+    (26) print_instr -> . PRINT print_vars ;
+    (27) print_instr -> . PRINT error ;
+    (32) instr_block -> . { instructions }
+    (38) assignment -> . lvalue assign_op expression
+    (35) lvalue -> . ID
+    (36) lvalue -> . ID [ INT ]
+    (37) lvalue -> . ID [ INT , INT ]
+
+    IF              shift and go to state 18
+    WHILE           shift and go to state 12
+    FOR             shift and go to state 1
+    BREAK           shift and go to state 22
+    CONTINUE        shift and go to state 5
+    RETURN          shift and go to state 23
+    PRINT           shift and go to state 14
+    {               shift and go to state 9
+    ID              shift and go to state 10
+
+    print_instr                    shift and go to state 11
+    while_instr                    shift and go to state 19
+    break_instr                    shift and go to state 3
+    lvalue                         shift and go to state 4
+    instr_block                    shift and go to state 16
+    for_instr                      shift and go to state 17
+    continue_instr                 shift and go to state 6
+    return_instr                   shift and go to state 7
+    instruction                    shift and go to state 146
+    if_else_instr                  shift and go to state 21
+    assignment                     shift and go to state 8
+
+state 144
+
+    (83) scope -> number : number : number .
+
+    ]               reduce using rule 83 (scope -> number : number : number .)
+    ;               reduce using rule 83 (scope -> number : number : number .)
+
+
+state 145
+
+    (18) if_else_instr -> IF ( error ) instruction ELSE instruction .
+
+    IF              reduce using rule 18 (if_else_instr -> IF ( error ) instruction ELSE instruction .)
+    WHILE           reduce using rule 18 (if_else_instr -> IF ( error ) instruction ELSE instruction .)
+    FOR             reduce using rule 18 (if_else_instr -> IF ( error ) instruction ELSE instruction .)
+    BREAK           reduce using rule 18 (if_else_instr -> IF ( error ) instruction ELSE instruction .)
+    CONTINUE        reduce using rule 18 (if_else_instr -> IF ( error ) instruction ELSE instruction .)
+    RETURN          reduce using rule 18 (if_else_instr -> IF ( error ) instruction ELSE instruction .)
+    PRINT           reduce using rule 18 (if_else_instr -> IF ( error ) instruction ELSE instruction .)
+    {               reduce using rule 18 (if_else_instr -> IF ( error ) instruction ELSE instruction .)
+    ID              reduce using rule 18 (if_else_instr -> IF ( error ) instruction ELSE instruction .)
+    $end            reduce using rule 18 (if_else_instr -> IF ( error ) instruction ELSE instruction .)
+    }               reduce using rule 18 (if_else_instr -> IF ( error ) instruction ELSE instruction .)
+    ELSE            reduce using rule 18 (if_else_instr -> IF ( error ) instruction ELSE instruction .)
+
+
+state 146
+
+    (16) if_else_instr -> IF ( expression ) instruction ELSE instruction .
+
+    IF              reduce using rule 16 (if_else_instr -> IF ( expression ) instruction ELSE instruction .)
+    WHILE           reduce using rule 16 (if_else_instr -> IF ( expression ) instruction ELSE instruction .)
+    FOR             reduce using rule 16 (if_else_instr -> IF ( expression ) instruction ELSE instruction .)
+    BREAK           reduce using rule 16 (if_else_instr -> IF ( expression ) instruction ELSE instruction .)
+    CONTINUE        reduce using rule 16 (if_else_instr -> IF ( expression ) instruction ELSE instruction .)
+    RETURN          reduce using rule 16 (if_else_instr -> IF ( expression ) instruction ELSE instruction .)
+    PRINT           reduce using rule 16 (if_else_instr -> IF ( expression ) instruction ELSE instruction .)
+    {               reduce using rule 16 (if_else_instr -> IF ( expression ) instruction ELSE instruction .)
+    ID              reduce using rule 16 (if_else_instr -> IF ( expression ) instruction ELSE instruction .)
+    $end            reduce using rule 16 (if_else_instr -> IF ( expression ) instruction ELSE instruction .)
+    }               reduce using rule 16 (if_else_instr -> IF ( expression ) instruction ELSE instruction .)
+    ELSE            reduce using rule 16 (if_else_instr -> IF ( expression ) instruction ELSE instruction .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for : in state 67 resolved as shift
+WARNING: shift/reduce conflict for ' in state 118 resolved as shift
+WARNING: shift/reduce conflict for < in state 118 resolved as shift
+WARNING: shift/reduce conflict for > in state 118 resolved as shift
+WARNING: shift/reduce conflict for EQ in state 118 resolved as shift
+WARNING: shift/reduce conflict for NEQ in state 118 resolved as shift
+WARNING: shift/reduce conflict for LESSEQ in state 118 resolved as shift
+WARNING: shift/reduce conflict for MOREEQ in state 118 resolved as shift
+WARNING: shift/reduce conflict for + in state 118 resolved as shift
+WARNING: shift/reduce conflict for - in state 118 resolved as shift
+WARNING: shift/reduce conflict for * in state 118 resolved as shift
+WARNING: shift/reduce conflict for / in state 118 resolved as shift
+WARNING: shift/reduce conflict for DOTPLUS in state 118 resolved as shift
+WARNING: shift/reduce conflict for DOTMINUS in state 118 resolved as shift
+WARNING: shift/reduce conflict for DOTMUL in state 118 resolved as shift
+WARNING: shift/reduce conflict for DOTDIV in state 118 resolved as shift

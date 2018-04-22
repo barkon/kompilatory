@@ -81,18 +81,9 @@ class MParser(object):
         """for_instr : FOR for_init instruction"""
         p[0] = data.ForInstr(p[2], p[3])
 
-    # def p_for_init(self, p):
-    #     """for_init : ID '=' for_init_var ':' for_init_var"""
-    #     p[0] = data.ForInit(p[1], p[3], p[5])
-
     def p_for_init(self, p):
         """for_init : ID '=' expression ':' expression"""
         p[0] = data.ForInit(p[1], p[3], p[5])
-
-    def p_for_init_var(self, p):
-        """for_init_var : number
-                        | lvalue"""
-        p[0] = p[1]
 
     def p_break_inst(self, p):
         """break_instr : BREAK ';'"""
@@ -111,19 +102,9 @@ class MParser(object):
                        | PRINT error ';'"""
         p[0] = data.PrintInstr(p[2])
 
-    # def p_print_vars(self, p):
-    #     """print_vars : print_vars ',' print_var
-    #                   | print_var"""
-    #     if len(p) == 4:
-    #         p[0] = data.PrintVarsList() if p[1] is None else p[1]
-    #         p[0].add_var(p[3])
-    #     else:
-    #         p[0] = data.PrintVarsList()
-    #         p[0].add_var(p[1])
-
     def p_print_vars(self, p):
-        """print_vars : print_vars ',' expression
-                      | expression"""
+        """print_vars : print_vars ',' print_var
+                      | print_var"""
         if len(p) == 4:
             p[0] = data.PrintVarsList() if p[1] is None else p[1]
             p[0].add_var(p[3])
@@ -132,8 +113,8 @@ class MParser(object):
             p[0].add_var(p[1])
 
     def p_print_var(self, p):
-        """print_var : const
-                     | lvalue"""
+        """print_var : STRING
+                     | expression """
         p[0] = p[1]
 
     def p_complex_instr(self, p):
@@ -144,11 +125,6 @@ class MParser(object):
         """number : INT
                   | FLOAT"""
         p[0] = p[1]
-
-    def p_const(self, p):
-        """const : number
-                 | STRING"""
-        p[0] = data.Const(p[1])
 
     def p_lvalue(self, p):
         """lvalue : ID
