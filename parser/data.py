@@ -17,6 +17,10 @@ class Float(Const):
     pass
 
 
+class String(Const):
+    pass
+
+
 class LValue(Node):
     def __init__(self, name, row_index=None, column_index=None):
         self.name = name

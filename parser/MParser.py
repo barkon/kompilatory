@@ -1,6 +1,7 @@
 import ply.yacc as yacc
 from scanner import Scanner
 import data
+import TreePrinter
 
 
 class MParser(object):
@@ -35,7 +36,7 @@ class MParser(object):
 
     def p_program(self, p):
         """program : instructions_opt"""
-        p[0] = data.Program(p[1])
+        print(data.Program(p[1]))
 
     def p_instructions_opt_1(self, p):
         """instructions_opt : instructions """
@@ -49,7 +50,7 @@ class MParser(object):
                         | instruction"""
         if len(p) == 3:
             p[0] = data.InstructionList() if p[1] is None else p[1]
-            p[0].add_instruction(p[1])
+            p[0].add_instruction(p[2])
         else:
             p[0] = data.InstructionList()
             p[0].add_instruction(p[1])
