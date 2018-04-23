@@ -23,7 +23,7 @@ class TreePrinter:
     def printTree(self, indent=0):
         return INDENT_TOKEN * indent + self.name + \
                ("" if self.row_index is None else "[" + str(self.row_index) +
-                ("]" if self.column_index is None else ", " + str(self.column_index) + "]")) + '\n'
+                ("]" if self.column_index is None else ", " + str(self.column_index) + "]"))
 
     @addToClass(data.Program)
     def printTree(self, indent=0):
