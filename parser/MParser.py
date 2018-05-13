@@ -159,43 +159,36 @@ class MParser(object):
                       | matrix_init
                       | '(' expression ')'
                       | '-' expression
-                      | expression '\\''
-                      | expression bin_op expression"""
+                      | expression '\\''"""
         if len(p) == 2:
             p[0] = p[1]
         elif len(p) == 3:
             p[0] = data.UnOperation(p[1], p[2]) if p[1] == '-' else data.UnOperation(p[2], p[1])
         else:
-            p[0] = p[2] if p[1] == '(' and p[2] == ')' else data.BinOperation(p[2], p[1], p[3])
-
-    def p_bin_op(self, p):
-        """bin_op : rel_op
-                  | num_op
-                  | dot_op"""
-        p[0] = p[1]
+            p[0] = p[2]
 
     def p_rel_op(self, p):
-        """rel_op : '<'
-                  | '>'
-                  | EQ
-                  | NEQ
-                  | LESSEQ
-                  | MOREEQ"""
-        p[0] = p[1]
+        """expression : expression '<' expression
+                      | expression '>' expression
+                      | expression EQ expression
+                      | expression NEQ expression
+                      | expression LESSEQ expression
+                      | expression MOREEQ expression"""
+        p[0] = data.BinOperation(p[2], p[1], p[3])
 
     def p_num_op(self, p):
-        """num_op : '+'
-                  | '-'
-                  | '*'
-                  | '/'"""
-        p[0] = p[1]
+        """expression : expression '+' expression
+                      | expression '-' expression
+                      | expression '*' expression
+                      | expression '/' expression"""
+        p[0] = data.BinOperation(p[2], p[1], p[3])
 
     def p_dot_op(self, p):
-        """dot_op : DOTPLUS
-                  | DOTMINUS
-                  | DOTMUL
-                  | DOTDIV"""
-        p[0] = p[1]
+        """expression : expression DOTPLUS expression
+                      | expression DOTMINUS expression
+                      | expression DOTMUL expression
+                      | expression DOTDIV expression"""
+        p[0] = data.BinOperation(p[2], p[1], p[3])
 
     def p_matrix_init(self, p):
         """matrix_init : eye

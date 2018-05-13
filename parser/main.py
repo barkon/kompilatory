@@ -14,5 +14,5 @@ if __name__ == '__main__':
     MParser = MParser.MParser()
     parser = yacc.yacc(module=MParser)
     text = file.read()
-    parser.parse(text, lexer=MParser.scanner)
+    ast = parser.parse(text, lexer=MParser.scanner)
 

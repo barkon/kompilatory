@@ -2,6 +2,7 @@ import data
 
 INDENT_TOKEN = '| '
 
+
 def addToClass(cls):
     def decorator(func):
         setattr(cls, func.__name__, func)
