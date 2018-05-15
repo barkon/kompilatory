@@ -23,16 +23,12 @@ class TreePrinter:
     @addToClass(AST.LValue)
     def printTree(self, indent=0):
         return INDENT_TOKEN * indent + self.name + \
-               ("" if self.row_index is None else "[" + str(self.row_index) +
-                ("]" if self.column_index is None else ", " + str(self.column_index) + "]"))
+               ("" if self.indexes is None else "[" + str(self.indexes[0]) +
+                ("]" if len(self.indexes) == 1 is None else ", " + str(self.indexes[1]) + "]"))
 
     @addToClass(AST.Program)
     def printTree(self, indent=0):
-        return self.instructions_opt.printTree(indent)
-
-    @addToClass(AST.InstructionsOpt)
-    def printTree(self, indent=0):
-        return "" if self.instructions is None else self.instructions.printTree(indent)
+        return self.instructions.printTree(indent)
 
     @addToClass(AST.InstructionList)
     def printTree(self, indent=0):
