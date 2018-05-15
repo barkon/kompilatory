@@ -21,19 +21,15 @@ class String(Const):
     pass
 
 
+
+
 class LValue(Node):
-    def __init__(self, name, row_index=None, column_index=None):
+    def __init__(self, name, indexes):
         self.name = name
-        self.row_index = row_index
-        self.column_index = column_index
+        self.indexes = indexes
 
 
 class Program(Node):
-    def __init__(self, instructions_opt):
-        self.instructions_opt = instructions_opt
-
-
-class InstructionsOpt(Node):
     def __init__(self, instructions):
         self.instructions = instructions
 
