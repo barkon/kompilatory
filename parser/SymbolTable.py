@@ -13,14 +13,18 @@ class SymbolTable(object):
         self.parent = parent
         self.name = name
         self.entries = {}
+        self.scopes = {}
 
     def put(self, name, symbol):  # put variable symbol or fundef under <name> entry
         self.entries[name] = symbol
 
+    def put_scope(self, name, indexes):
+        self.scopes[name] = indexes
+
     def get(self, name):  # get variable symbol or fundef from <name> entry
         if name in self.entries.keys():
             return self.entries[name]
-        elif self.parent.name is None:
+        elif self.parent is None:
             return None
         else:
             return self.parent.get(name)

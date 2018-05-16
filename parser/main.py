@@ -17,4 +17,4 @@ if __name__ == '__main__':
     text = file.read()
     ast = parser.parse(text, lexer=MParser.scanner)
     typechecker = TypeChecker.TypeChecker()
-    # typechecker.visit(ast)
+    typechecker.visit(ast)
