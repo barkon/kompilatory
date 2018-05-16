@@ -1,12 +1,13 @@
 
 class Node(object):
     def __str__(self):
-        return __name__
+        return self.printTree()
 
 
 class Const(Node):
-    def __init__(self, value):
+    def __init__(self, value, line):
         self.value = value
+        self.line = line
 
 
 class Integer(Const):
@@ -17,19 +18,18 @@ class Float(Const):
     pass
 
 
+class String(Const):
+    pass
+
+
 class LValue(Node):
-    def __init__(self, name, row_index=None, column_index=None):
+    def __init__(self, name, indexes, line):
         self.name = name
-        self.row_index = row_index
-        self.column_index = column_index
+        self.indexes = indexes
+        self.line = line
 
 
 class Program(Node):
-    def __init__(self, instructions_opt):
-        self.instructions_opt = instructions_opt
-
-
-class InstructionsOpt(Node):
     def __init__(self, instructions):
         self.instructions = instructions
 
@@ -43,10 +43,11 @@ class InstructionList(Node):
 
 
 class AssignmentInstr(Node):
-    def __init__(self, name, op, expr):
+    def __init__(self, name, op, expr, line):
         self.name = name
         self.op = op
         self.expr = expr
+        self.line = line
 
 
 class IfElseInstr(Node):
@@ -57,40 +58,46 @@ class IfElseInstr(Node):
 
 
 class WhileInstr(Node):
-    def __init__(self, cond, instr):
+    def __init__(self, cond, instr, line):
         self.cond = cond
         self.instr = instr
+        self.line = line
         
         
 class ForInstr(Node):
-    def __init__(self, for_assignment, instr):
-        self.for_assignment = for_assignment
+    def __init__(self, for_init, instr):
+        self.for_init = for_init
         self.instr = instr
 
 
 class ForInit(Node):
-    def __init__(self, var, fr, to):
+    def __init__(self, var, fr, to, line):
         self.var = var
         self.fr = fr
         self.to = to
+        self.line = line
 
 
 class BreakInstr(Node):
-    pass
+    def __init__(self, line):
+        self.line = line
 
 
 class ContinueInstr(Node):
-    pass
+    def __init__(self, line):
+        self.line = line
 
 
 class ReturnInstr(Node):
-    def __init__(self, ret):
+    def __init__(self, ret, line):
         self.ret = ret
+        self.line = line
 
 
 class PrintInstr(Node):
-    def __init__(self, to_print):
+    def __init__(self, to_print, line):
         self.to_print = to_print
+        self.line = line
 
 
 class InstrBlock(Node):
@@ -99,31 +106,36 @@ class InstrBlock(Node):
 
 
 class EyeInit(Node):
-    def __init__(self, size):
+    def __init__(self, size, line):
         self.size = size
+        self.line = line
 
 
 class OnesInit(Node):
-    def __init__(self, size):
+    def __init__(self, size, line):
         self.size = size
+        self.line = line
 
 
 class ZerosInit(Node):
-    def __init__(self, size):
+    def __init__(self, size, line):
         self.size = size
+        self.line = line
 
 
 class BinOperation(Node):
-    def __init__(self, operator, larg, rarg):
-        self.operator = operator
+    def __init__(self, op, larg, rarg, line):
+        self.op = op
         self.larg = larg
         self.rarg = rarg
+        self.line = line
 
 
 class UnOperation(Node):
-    def __init__(self, operator, arg):
-        self.op = operator
+    def __init__(self, op, arg, line):
+        self.op = op
         self.arg = arg
+        self.line = line
 
 
 class PrintVarsList(Node):
