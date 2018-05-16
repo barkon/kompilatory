@@ -36,7 +36,8 @@ class MParser(object):
 
     def p_program(self, p):
         """program : instructions_opt"""
-        print(AST.Program(p[1]))
+        p[0] = AST.Program(p[1])
+        print(p[0])
 
     def p_instructions_opt_1(self, p):
         """instructions_opt : instructions """
@@ -79,7 +80,7 @@ class MParser(object):
     def p_while_inst(self, p):
         """while_instr : WHILE '(' expression ')' instruction
                        | WHILE '(' error ')' instruction """
-        p[0] = AST.WhileInstr(p[3], p[5])
+        p[0] = AST.WhileInstr(p[3], p[5], p.lineno)
 
     def p_for_inst(self, p):
         """for_instr : FOR for_init instruction"""
@@ -87,24 +88,24 @@ class MParser(object):
 
     def p_for_init(self, p):
         """for_init : ID '=' expression ':' expression"""
-        p[0] = AST.ForInit(p[1], p[3], p[5])
+        p[0] = AST.ForInit(p[1], p[3], p[5], p.lineno)
 
     def p_break_inst(self, p):
         """break_instr : BREAK ';'"""
-        p[0] = AST.BreakInstr()
+        p[0] = AST.BreakInstr(p.lineno)
 
     def p_continue_inst(self, p):
         """continue_instr : CONTINUE ';'"""
-        p[0] = AST.ContinueInstr()
+        p[0] = AST.ContinueInstr(p.lineno)
 
     def p_return_instr(self, p):
         """return_instr : RETURN expression ';'"""
-        p[0] = AST.ReturnInstr(p[2])
+        p[0] = AST.ReturnInstr(p[2], p.lineno)
 
     def p_print_instr(self, p):
         """print_instr : PRINT print_vars ';'
                        | PRINT error ';'"""
-        p[0] = AST.PrintInstr(p[2])
+        p[0] = AST.PrintInstr(p[2], p.lineno)
 
     def p_print_vars(self, p):
         """print_vars : print_vars ',' print_var
@@ -127,24 +128,24 @@ class MParser(object):
 
     def p_number_int(self, p):
         """number : INT"""
-        p[0] = AST.Integer(p[1])
+        p[0] = AST.Integer(p[1], p.lineno(1))
 
     def p_number_float(self, p):
         """number : FLOAT"""
-        p[0] = AST.Float(p[1])
+        p[0] = AST.Float(p[1], p.lineno(1))
 
     def p_lvalue(self, p):
         """lvalue : ID
                   | ID '[' INT ']'
                   | ID '[' INT ',' INT ']'"""
         if len(p) == 2:
-            p[0] = AST.LValue(p[1], None)
+            p[0] = AST.LValue(p[1], None, p.lineno(1))
         else:
-            p[0] = AST.LValue(p[1], [p[3]]) if len(p) == 5 else AST.LValue(p[1], [p[3], p[5]])
+            p[0] = AST.LValue(p[1], [p[3]], p.lineno(1)) if len(p) == 5 else AST.LValue(p[1], [p[3], p[5]], p.lineno(1))
 
     def p_assignment(self, p):
         """assignment : lvalue assign_op expression"""
-        p[0] = AST.AssignmentInstr(p[1], p[2], p[3])
+        p[0] = AST.AssignmentInstr(p[1], p[2], p[3], p.lineno(1))
 
     def p_assign_op(self, p):
         """assign_op : '='
@@ -164,7 +165,7 @@ class MParser(object):
         if len(p) == 2:
             p[0] = p[1]
         elif len(p) == 3:
-            p[0] = AST.UnOperation(p[1], p[2]) if p[1] == '-' else AST.UnOperation(p[2], p[1])
+            p[0] = AST.UnOperation(p[1], p[2], p.lineno(1)) if p[1] == '-' else AST.UnOperation(p[2], p[1], p.lineno(2))
         else:
             p[0] = p[2]
 
@@ -175,21 +176,21 @@ class MParser(object):
                       | expression NEQ expression
                       | expression LESSEQ expression
                       | expression MOREEQ expression"""
-        p[0] = AST.BinOperation(p[2], p[1], p[3])
+        p[0] = AST.BinOperation(p[2], p[1], p[3], p.lineno(2))
 
     def p_num_op(self, p):
         """expression : expression '+' expression
                       | expression '-' expression
                       | expression '*' expression
                       | expression '/' expression"""
-        p[0] = AST.BinOperation(p[2], p[1], p[3])
+        p[0] = AST.BinOperation(p[2], p[1], p[3], p.lineno(2))
 
     def p_dot_op(self, p):
         """expression : expression DOTPLUS expression
                       | expression DOTMINUS expression
                       | expression DOTMUL expression
                       | expression DOTDIV expression"""
-        p[0] = AST.BinOperation(p[2], p[1], p[3])
+        p[0] = AST.BinOperation(p[2], p[1], p[3], p.lineno(2))
 
     def p_matrix_init(self, p):
         """matrix_init : eye
@@ -201,15 +202,15 @@ class MParser(object):
 
     def p_eye(self, p):
         """eye : EYE '(' INT ')' """
-        p[0] = AST.EyeInit(p[3])
+        p[0] = AST.EyeInit(p[3], p.lineno(1))
 
     def p_ones(self, p):
         """ones : ONES '(' INT ')' """
-        p[0] = AST.OnesInit(p[3])
+        p[0] = AST.OnesInit(p[3], p.lineno(1))
 
     def p_zeros(self, p):
         """zeros : ZEROS '(' INT ')' """
-        p[0] = AST.ZerosInit(p[3])
+        p[0] = AST.ZerosInit(p[3], p.lineno(1))
 
     def p_matrix_rows(self, p):
         """matrix_rows : matrix_rows ';' row_elems
