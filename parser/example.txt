@@ -1,3 +1,14 @@
-A = 2 * 3 + 4;
-B = 2 + 3 * 4;
-C = eye(ala);
+
+x=0;
+
+continue;
+
+return x;
+
+break;
+
+return x+1;
+
+return 2*x;
+
+print x;
