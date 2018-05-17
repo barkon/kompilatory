@@ -25,7 +25,7 @@ class String(Const):
 class LValue(Node):
     def __init__(self, name, indexes, line):
         self.name = name
-        self.indexes = indexes
+        self.indexes = indexes if indexes is not None else []
         self.line = line
 
 
@@ -147,7 +147,8 @@ class PrintVarsList(Node):
 
 
 class MatrixRows(Node):
-    def __init__(self):
+    def __init__(self, line):
+        self.line = line
         self.rows = []
 
     def add_row(self, row):
@@ -155,7 +156,8 @@ class MatrixRows(Node):
 
 
 class MatrixRow(Node):
-    def __init__(self):
+    def __init__(self, line):
+        self.line = line
         self.row = []
 
     def add_elem(self, elem):

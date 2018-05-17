@@ -23,8 +23,8 @@ class TreePrinter:
     @addToClass(AST.LValue)
     def printTree(self, indent=0):
         return INDENT_TOKEN * indent + self.name + \
-               ("" if self.indexes is None else "[" + str(self.indexes[0]) +
-                ("]" if len(self.indexes) == 1 is None else ", " + str(self.indexes[1]) + "]"))
+               ("" if len(self.indexes) == 0 else "[" + str(self.indexes[0]) +
+                ("]" if len(self.indexes) == 1 else ", " + str(self.indexes[1]) + "]"))
 
     @addToClass(AST.Program)
     def printTree(self, indent=0):

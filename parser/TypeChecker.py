@@ -1,6 +1,10 @@
 import AST
 import SymbolTable
 
+class Matrix():
+    def __init__(self, scopes):
+        self.scopes = scopes if scopes is not None else []
+
 typemap = dict()
 for op in ['+', '-', '/', '*']:
     typemap[(op, 'int', 'int')] = 'int'
@@ -15,7 +19,7 @@ for op in ['>', '<', '==', '!=', '>=', '<=']:
     typemap[(op, 'float', 'int')] = 'int'
 
 for op in ['.+', '.-', './', '.*']:
-    typemap[(op, 'matrix', 'matrix')] = 'matrix'
+    typemap[(op, Matrix.__name__, Matrix.__name__)] = Matrix.__name__
 
 for op in ['+=', '-=', '*=', '/=']:
     typemap[(op, 'int', 'int')] = 'int'
@@ -23,9 +27,8 @@ for op in ['+=', '-=', '*=', '/=']:
     typemap[(op, 'int', 'float')] = 'float'
     typemap[(op, 'float', 'int')] = 'float'
 
-class Matrix():
-    def __init__(self, scopes):
-        self.scopes = scopes
+forinitmap = dict()
+forinitmap[('int', 'int')]  = 'int'
 
 
 class NodeVisitor(object):
@@ -96,9 +99,9 @@ class TypeChecker(NodeVisitor):
 
     def visit_OnesInit(self, node):
         arg_type = self.visit(node.size)
+        print(arg_type)
         if arg_type != 'int':
             print('Incorrect argument type in ones function in line:')
-
         return Matrix([node.size, node.size])
 
     def visit_ZerosInit(self, node):
@@ -112,6 +115,13 @@ class TypeChecker(NodeVisitor):
         self.symtable = self.symtable.pushScope('for')
         self.visit(node.instr)
         self.symtable = self.symtable.popScope()
+
+    def visit_ForInit(self, node):
+        fr_type = self.visit(node.fr)
+        to_type = self.visit(node.to)
+        if fr_type != 'int' or to_type != 'int':
+            print("Not a valid type for for init in line: ", node.line)
+        self.symtable.put(node.variable, fr_type)
 
     def visit_WhileInstr(self, node):
         c_type = self.visit(node.cond)
@@ -138,26 +148,28 @@ class TypeChecker(NodeVisitor):
 
     def visit_LValue(self, node):
         lvalue_type = self.symtable.get(node.name)
-        if not isinstance(lvalue_type, Matrix) and node.indexes is not None:
+        if not isinstance(lvalue_type, Matrix) and len(node.indexes) != 0:
             print("Variable is a scalar, can not be referenced as a matrix: {}".format(node.line))
         elif isinstance(lvalue_type, Matrix) and len(lvalue_type.scopes) < len(node.indexes):
             print("Matrix dimension is {}: {}".format(len(lvalue_type.scopes), node.line))
         elif isinstance(lvalue_type, Matrix):
-            for i in range(len(lvalue_type.scopes)):
+            for i in range(len(node.indexes)):
                 if lvalue_type.scopes[i] < node.indexes[i]:
-                    print("Index out of bound: {}", node.line)
+                    print("Index out of bound: {}".format(node.line))
+        return lvalue_type if len(node.indexes) == 0 else 'double'
+
 
 
     def visit_AssignmentInstr(self, node):
         node_type = self.visit(node.name)
         expr_type = self.visit(node.expr)
         if node.op == '=':
-            self.symtable.put(node.name, expr_type)
+            self.symtable.put(node.name.name, expr_type)
         else:
             expr_type = typemap[(node.op, node_type, expr_type)]
             if expr_type is None:
                 print("Incompatible types for given operation: {}".format(node.line))
-            self.symtable.put(node.name, expr_type)
+            self.symtable.put(node.name.name, expr_type)
 
     def visit_WhileInstr(self, node):
         c_type = self.visit(node.cond)
@@ -179,14 +191,6 @@ class TypeChecker(NodeVisitor):
             self.visit(node.else_instr)
             self.symtable = self.symtable.popScope()
 
-    def visit_ForInit(self, node):
-        fr_type = self.visit(node.fr)
-        to_type = self.visit(node.to)
-        if fr_type == 'string' or to_type == 'string':
-            print("String is nor a valid type for for init in line: ", node.line)
-        elif fr_type != to_type:
-            print("Incompatible types at for init in line: ", node.line)
-
     def visit_ReturnInstr(self, node):
         self.visit(node.ret)
 
@@ -205,17 +209,22 @@ class TypeChecker(NodeVisitor):
         arg_type = self.symtable.get(node.arg)
         if arg_type is None:
             print("Variable ", node.arg, " undefined in line: ",node.line)
-        elif arg_type != 'matrix' and node.op == "'":
+            return None
+        elif arg_type != Matrix.__name__ and node.op == "'":
             print("Transposition operator on scalar in line: ",node.line)
+            return None
+        return arg_type
 
     def visit_MatrixRows(self, node):
         for row in node.rows:
             self.visit(row)
         prev_size = None
         for row in node.rows:
-            if prev_size != None and len(row) != prev_size:
-                print('Incompatibile verctors size in line: ')
-        return Matrix([len(node.rows), len(node.rows[0])])
+            cur_size = len(row.row)
+            if prev_size != None and cur_size != prev_size:
+                print('Incompatibile verctors size in line: ', row.line)
+            prev_size = cur_size
+        return Matrix([len(node.rows), len(node.rows[0].row)])
 
 
     def visit_MatrixRow(self, node):
@@ -223,5 +232,5 @@ class TypeChecker(NodeVisitor):
         for elem in node.row:
             elem_type = self.visit(elem)
             if prev_type != None and prev_type != elem_type:
-                print('Incompatibile types at initialization in line')
+                print('Incompatibile types at initialization in line: ', node.line)
 

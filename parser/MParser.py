@@ -216,20 +216,20 @@ class MParser(object):
         """matrix_rows : matrix_rows ';' row_elems
                        | row_elems """
         if len(p) == 4:
-            p[0] = AST.MatrixRows() if p[1] is None else p[1]
+            p[0] = AST.MatrixRows(p.lineno(1)) if p[1] is None else p[1]
             p[0].add_row(p[3])
         else:
-            p[0] = AST.MatrixRows()
+            p[0] = AST.MatrixRows(p.lineno(1))
             p[0].add_row(p[1])
 
     def p_row_elems(self, p):
         """row_elems : row_elems ',' number
                      | number """
         if len(p) == 4:
-            p[0] = AST.MatrixRow() if p[1] is None else p[1]
+            p[0] = AST.MatrixRow(p.lineno(1)) if p[1] is None else p[1]
             p[0].add_elem(p[3])
         else:
-            p[0] = AST.MatrixRow()
+            p[0] = AST.MatrixRow(p.lineno(1))
             p[0].add_elem(p[1])
 
     def p_scopes(self, p):
@@ -237,17 +237,17 @@ class MParser(object):
                 | scopes ';' scope """
 
         if len(p) == 4:
-            p[0] = AST.MatrixRows() if p[1] is None else p[1]
+            p[0] = AST.MatrixRows(p.lineno(1)) if p[1] is None else p[1]
             p[0].add_row(p[3])
         else:
-            p[0] = AST.MatrixRows()
+            p[0] = AST.MatrixRows(p.lineno(1))
             p[0].add_row(p[1])
 
     def p_scope(self, p):
         """scope : INT ':' INT
                 | number ':' number ':' number"""
 
-        p[0] = AST.MatrixRow()
+        p[0] = AST.MatrixRow(p.lineno(1))
         if len(p) == 4:
             p[0].add_from_scope(p[1], 1, p[3])
         else:
