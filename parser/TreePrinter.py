@@ -23,9 +23,8 @@ class TreePrinter:
     @addToClass(AST.LValue)
     def printTree(self, indent=0):
         return INDENT_TOKEN * indent + self.name + \
-               ("\n" if self.indexes is None else "[" + str(self.indexes[0]) +
-                ("]\n" if len(self.indexes) == 1 is None else ", " + str(self.indexes[1]) + "]\n"))
-
+               ("\n" if len(self.indexes) == 0 else "[" + str(self.indexes[0]) +
+                ("]\n" if len(self.indexes) == 1 else ", " + str(self.indexes[1]) + "]\n"))
     @addToClass(AST.Program)
     def printTree(self, indent=0):
         return self.instructions.printTree(indent)
@@ -121,7 +120,5 @@ class TreePrinter:
         ret = ''
         for i in range(len(self.row) - 1):
             ret += INDENT_TOKEN * indent + str(self.row[i])
-            ret += INDENT_TOKEN * indent + ',\n'
         ret += INDENT_TOKEN * indent + str(self.row[len(self.row) - 1])
-        ret += INDENT_TOKEN * indent + ';\n'
         return ret

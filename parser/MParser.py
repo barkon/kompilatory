@@ -200,25 +200,25 @@ class MParser(object):
         p[0] = p[1] if len(p) == 2 else p[2]
 
     def p_eye(self, p):
-        """eye : EYE '(' INT ')' """
-        p[0] = AST.EyeInit(AST.Integer(p[3], p.lineno(1)), p.lineno(1))
+        """eye : EYE '(' expression ')' """
+        p[0] = AST.EyeInit(p[3], p.lineno(1))
 
     def p_ones(self, p):
-        """ones : ONES '(' INT ')' """
-        p[0] = AST.OnesInit(AST.Integer(p[3], p.lineno(1)), p.lineno(1))
+        """ones : ONES '(' expression ')' """
+        p[0] = AST.OnesInit(p[3], p.lineno(1))
 
     def p_zeros(self, p):
-        """zeros : ZEROS '(' INT ')' """
-        p[0] = AST.ZerosInit(AST.Integer(p[3], p.lineno(1)), p.lineno(1))
+        """zeros : ZEROS '(' expression ')' """
+        p[0] = AST.ZerosInit(p[3], p.lineno(1))
 
     def p_matrix_rows(self, p):
         """matrix_rows : matrix_rows ';' row_elems
                        | row_elems """
         if len(p) == 4:
-            p[0] = AST.Matrix() if p[1] is None else p[1]
+            p[0] = AST.Matrix(p.lineno(1)) if p[1] is None else p[1]
             p[0].add_row(p[3])
         else:
-            p[0] = AST.Matrix()
+            p[0] = AST.Matrix(p.lineno(1))
             p[0].add_row(p[1])
 
     def p_row_elems(self, p):
@@ -236,10 +236,10 @@ class MParser(object):
                 | scopes ';' scope """
 
         if len(p) == 4:
-            p[0] = AST.Matrix() if p[1] is None else p[1]
+            p[0] = AST.Matrix(p.lineno(1)) if p[1] is None else p[1]
             p[0].add_row(p[3])
         else:
-            p[0] = AST.Matrix()
+            p[0] = AST.Matrix(p.lineno(1))
             p[0].add_row(p[1])
 
     def p_scope(self, p):
