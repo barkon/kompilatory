@@ -23,9 +23,8 @@ class TreePrinter:
     @addToClass(AST.LValue)
     def printTree(self, indent=0):
         return INDENT_TOKEN * indent + self.name + \
-               ("" if len(self.indexes) == 0 else "[" + str(self.indexes[0]) +
-                ("]" if len(self.indexes) == 1 else ", " + str(self.indexes[1]) + "]"))
-
+               ("\n" if len(self.indexes) == 0 else "[" + str(self.indexes[0]) +
+                ("]\n" if len(self.indexes) == 1 else ", " + str(self.indexes[1]) + "]\n"))
     @addToClass(AST.Program)
     def printTree(self, indent=0):
         return self.instructions.printTree(indent)
@@ -39,7 +38,7 @@ class TreePrinter:
 
     @addToClass(AST.AssignmentInstr)
     def printTree(self, indent=0):
-        return INDENT_TOKEN * indent + str(self.op) + '\n' + INDENT_TOKEN * (indent+1) + str(self.name) + '\n' +\
+        return INDENT_TOKEN * indent + str(self.op) + '\n' + self.lvalue.printTree(indent+1) +\
                self.expr.printTree(indent+1)
 
     @addToClass(AST.IfElseInstr)
@@ -54,7 +53,7 @@ class TreePrinter:
 
     @addToClass(AST.ForInstr)
     def printTree(self, indent=0):
-        return INDENT_TOKEN * indent + "FOR\n" + self.for_assignment.printTree(indent + 1) + self.instr.printTree(indent)
+        return INDENT_TOKEN * indent + "FOR\n" + self.for_init.printTree(indent + 1) + self.instr.printTree(indent)
 
     @addToClass(AST.ForInit)
     def printTree(self, indent=0):
@@ -82,15 +81,15 @@ class TreePrinter:
 
     @addToClass(AST.EyeInit)
     def printTree(self, indent=0):
-        return INDENT_TOKEN * indent + 'EYE\n' + INDENT_TOKEN * (indent+1) + str(self.size) + '\n'
+        return INDENT_TOKEN * indent + 'EYE\n' + INDENT_TOKEN * (indent+1) + self.size.printTree()
 
     @addToClass(AST.OnesInit)
     def printTree(self, indent=0):
-        return INDENT_TOKEN * indent + 'ONES\n' + INDENT_TOKEN * (indent+1) + str(self.size) + '\n'
+        return INDENT_TOKEN * indent + 'ONES\n' + INDENT_TOKEN * (indent+1) + self.size.printTree()
 
     @addToClass(AST.ZerosInit)
     def printTree(self, indent=0):
-        return INDENT_TOKEN * indent + 'ZEROS\n' + INDENT_TOKEN * (indent+1) + str(self.size) + '\n'
+        return INDENT_TOKEN * indent + 'ZEROS\n' + INDENT_TOKEN * (indent+1) + self.size.printTree()
 
     @addToClass(AST.BinOperation)
     def printTree(self, indent=0):
@@ -108,7 +107,7 @@ class TreePrinter:
             ret += self.print_list[i].printTree(indent)
         return ret
 
-    @addToClass(AST.MatrixRows)
+    @addToClass(AST.Matrix)
     def printTree(self, indent=0):
         ret = INDENT_TOKEN * indent + '[\n'
         for i in range(len(self.rows)):
@@ -118,8 +117,8 @@ class TreePrinter:
 
     @addToClass(AST.MatrixRow)
     def printTree(self, indent=0):
-        ret = INDENT_TOKEN * indent + '[\n'
-        for i in range(len(self.row)):
-            ret += INDENT_TOKEN * (indent+1) + str(self.row[i])
-        ret += INDENT_TOKEN * indent + ']\n'
+        ret = ''
+        for i in range(len(self.row) - 1):
+            ret += INDENT_TOKEN * indent + str(self.row[i])
+        ret += INDENT_TOKEN * indent + str(self.row[len(self.row) - 1])
         return ret

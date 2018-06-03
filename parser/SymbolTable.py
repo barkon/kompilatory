@@ -1,10 +1,9 @@
 
 
 class VariableSymbol(object):
-
     def __init__(self, name, type):
-        pass
-    #
+        self.name = name
+        self.type = type
 
 
 class SymbolTable(object):

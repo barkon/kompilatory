@@ -43,8 +43,8 @@ class InstructionList(Node):
 
 
 class AssignmentInstr(Node):
-    def __init__(self, name, op, expr, line):
-        self.name = name
+    def __init__(self, lvalue, op, expr, line):
+        self.lvalue = lvalue
         self.op = op
         self.expr = expr
         self.line = line
@@ -146,7 +146,7 @@ class PrintVarsList(Node):
         self.print_list.append(var)
 
 
-class MatrixRows(Node):
+class Matrix(Node):
     def __init__(self, line):
         self.line = line
         self.rows = []
@@ -157,8 +157,8 @@ class MatrixRows(Node):
 
 class MatrixRow(Node):
     def __init__(self, line):
-        self.line = line
         self.row = []
+        self.line = line
 
     def add_elem(self, elem):
         self.row.append(elem)
