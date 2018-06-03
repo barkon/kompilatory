@@ -14,6 +14,81 @@ class Interpreter:
     def visit(self, node):
         pass
 
+    @when(AST.Integer)
+    def visit(self, node):
+        return node.value
+
+    @when(AST.Float)
+    def visit(self, node):
+        return node.value
+
+    @when(AST.String)
+    def visit(self, node):
+        return node.value
+
+    @when(AST.LValue)
+    def visit(self, node):
+        if len(node.indexes) == 2:
+            return self.mem_stack.get(node.name)[node.indexes[0]][node.indexes[1]]
+        elif len(node.indexes) == 1:
+            return self.mem_stack.get(node.name)[node.indexes[0]]
+        else:
+            return self.mem_stack.get(node.name)
+
+    @when(AST.Program)
+    def visit(self, node):
+        self.visit(node.instructions)
+
+    @when(AST.InstructionList)
+    def visit(self, node):
+        for instruction in node.instr_list:
+            self.visit(instruction)
+
+    @when(AST.AssignmentInstr)
+    def visit(self, node):
+        expr_val = self.visit(node.expr)
+        prev_lval = self.mem_stack.get(node.lvalue.name)
+        if prev_lval is not None:
+            if len(node.lvalue.indexes) == 2:
+                lval = self.mem_stack.get(node.lvalue.name)
+                lval[node.lvalue.indexes[0]][node.lvalue.indexes[1]] = expr_val
+                self.mem_stack.set(node.lvalue.name, lval)
+            elif len(node.lvalue.indexes) == 1:
+                lval = self.mem_stack.get(node.lvalue.name)
+                lval[node.lvalue.indexes[0]] = expr_val
+                self.mem_stack.set(node.lvalue.name, lval)
+            else:
+                self.mem_stack.set(node.lvalue.name, expr_val)
+        else:
+            self.mem_stack.insert(node.lvalue.name, expr_val)
+
+    @when(AST.IfElseInstr)
+    def visit(self, node):
+        cond_val = self.visit(node.cond)
+        if cond_val:
+            self.visit(node.instr)
+        elif node.else_instr is not None:
+            self.visit(node.else_instr)
+
+    @when(AST.WhileInstr)
+    def visit(self, node):
+        cond = self.visit(node.cond)
+        while cond:
+            self.visit(node.instr)
+
+    @when(AST.ForInstr)
+    def visit(self, node):
+        varname, fr, to = self.visit(node.for_init)
+        self.mem_stack.insert(varname, fr)
+        for i in range(fr, to):
+            self.mem_stack.set(varname, i)
+            self.visit(node.instr)
+
+    @when(AST.ForInit)
+    def visit(self, node):
+        return node.var, node.fr, node.to
+        pass
+
     @when(AST.ContinueInstr)
     def visit(self, node):
         raise ContinueException
