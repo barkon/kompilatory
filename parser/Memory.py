@@ -23,7 +23,7 @@ class MemoryStack:
         found = False
         ret = None
         while not found and i >= 0:
-            found = name in self.stack[i]
+            found = name in self.stack[i].mem
             if found:
                 ret = self.stack[i].get(name)
             i -= 1
