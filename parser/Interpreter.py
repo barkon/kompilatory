@@ -3,7 +3,12 @@ from Memory import *
 from Exceptions import *
 import inspect
 from visit import *
+from Operations import *
 import TypeChecker
+
+
+bin_op_map = {'+': plus, '-': sub, '*': mul, '/': div, '.+': dot_plus, '.-': dot_sub, '.*': dot_mul, './': dot_div}
+un_op_map = {'-': neg, '\'': trans}
 
 
 class Interpreter:
@@ -24,11 +29,14 @@ class Interpreter:
 
     @when(AST.PrintInstr)
     def visit(self, node):
-        pass
+        self.visit(node.to_print)
 
     @when(AST.PrintVarsList)
     def visit(self, node):
-        pass
+        print_string = ''
+        for var in node.print_list:
+            print_string += str(self.visit(var)) + ' '
+        print(print_string)
 
     @when(AST.InstrBlock)
     def visit(self, node):
@@ -67,16 +75,18 @@ class Interpreter:
 
     @when(AST.BinOperation)
     def visit(self, node):
-        pass
+        larg = self.visit(node.larg)
+        rarg = self.visit(node.rarg)
+        return bin_op_map[node.op](larg, rarg)
 
     @when(AST.UnOperation)
     def visit(self, node):
-        pass
+        return un_op_map[node.op](node.arg)
 
-    @when(AST.Matrix)
+    @when(AST.Matrix)   # nie jestem pewien czy to jest potrzebne
     def visit(self, node):
-        pass
+        return node
 
-    @when(AST.MatrixRow)
+    @when(AST.MatrixRow)    # tak samo tu
     def visit(self, node):
-        pass
+        return node
