@@ -34,7 +34,7 @@ class MemoryStack:
 
     def set(self, name, value):     # sets variable <name> to value <value>
         for mem in self.stack:
-            if name in mem:
+            if name in mem.mem:
                 mem.put(name, value)
 
     def push(self, memory):     # pushes memory <memory> onto the stack

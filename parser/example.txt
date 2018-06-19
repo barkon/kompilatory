@@ -3,4 +3,36 @@ b = 2;
 
 c = a + b;
 
+
+
 print a, b, a+b;
+
+
+for j = 1:10 {
+    if (j == 5)
+        break;
+    print j;
+
+}
+
+i = 10;
+
+while (i > 0) {
+
+
+    i = i-1;
+    if (i == 4)
+       continue;
+    print i;
+}
+
+j = 7;
+print j;
+j-=1;
+print j;
+
+M = ones(4);
+N = ones(4);
+
+print N.+M;
+

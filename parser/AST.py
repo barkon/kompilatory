@@ -151,6 +151,13 @@ class Matrix(Node):
         self.line = line
         self.rows = []
 
+    def __str__(self):
+        ret = '['
+        for row in self.rows:
+            ret += str(row) + ';\n'
+        ret += ']'
+        return ret
+
     def add_row(self, row):
         self.rows.append(row)
 
@@ -159,6 +166,13 @@ class MatrixRow(Node):
     def __init__(self, line):
         self.row = []
         self.line = line
+
+    def __str__(self):
+        ret = ''
+        for el in range(len(self.row) - 1):
+            ret += str(self.row[el]) + ', '
+        ret += str(self.row[len(self.row) - 1])
+        return ret
 
     def add_elem(self, elem):
         self.row.append(elem)

@@ -36,5 +36,5 @@ class SymbolTable(object):
         parent_scope = self.getParentScope()
         if parent_scope is None:
             print('Cannot pop root scope')
-        parent_scope.pop(self.name)
+        parent_scope.entries.pop(self.name)
         return parent_scope

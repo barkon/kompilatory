@@ -127,7 +127,7 @@ class TypeChecker(NodeVisitor):
         to_type = self.visit(node.to)
         if fr_type != 'int' or to_type != 'int':
             print("Not a valid type for for init in line: ", node.line)
-        self.symtable.put(node.variable, fr_type)
+        self.symtable.put(node.var, fr_type)
 
     def visit_WhileInstr(self, node):
         c_type = self.visit(node.cond)
@@ -231,7 +231,12 @@ class TypeChecker(NodeVisitor):
         self.visit(node.instructions)
 
     def can_operate(self, m1: Matrix, m2: Matrix):
-        return m1.scopes == m2.scopes
+        if len(m1.scopes) == len(m2.scopes):
+            for i in range(len(m1.scopes)):
+                if self.visit(m1.scopes[i]) != self.visit(m2.scopes[i]):
+                    return False
+            return True
+        return False
 
     def visit_BinOperation(self, node):
         type1 = self.visit(node.larg)
